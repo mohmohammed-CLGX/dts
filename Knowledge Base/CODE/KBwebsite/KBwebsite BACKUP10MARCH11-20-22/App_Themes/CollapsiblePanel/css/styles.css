@@ -1,0 +1,932 @@
+/*<group=General Styles>*/
+
+body {
+	margin-top: 0px;
+	font: 62.5%/1.6em "Lucida Grande", Arial, Verdana, sans-serif;
+	color: #666;
+}
+
+p {
+}
+
+b, strong {
+
+}
+
+a:link, a:visited {
+	text-decoration: none;
+	color: #009bd9;
+}
+
+a:hover, a:active {
+	text-decoration: none;
+	color: #0060e8;
+	text-shadow: #009bd9 0px 0px 7px;
+}
+
+img {
+	border-style: none;
+}
+
+.image-left {
+	margin: 3px;
+	padding: 3px;
+	border-right: 1px dotted #ccf;
+	float: left;
+}
+
+.image-right {
+	margin: 3px;
+	padding: 3px;
+	border-left: 1px dotted #ccf;
+	float: right;
+}
+	
+/*</group>*/
+
+/*<group=Layout>*/
+
+.clearer {
+	clear: both;
+}
+
+
+/* ie version with no background */
+
+#top_grad {
+	position: fixed;
+	display: block;
+	top:  0px;
+	left: 0px;
+	height: 0px;
+	width:  0px;
+}
+
+
+/* this part too cool for ie */
+
+html>body #top_grad {
+	position: fixed;
+	display: block;
+	top:  0px;
+	left: 0px;
+	height: 600px;
+	width:  225px;
+	background-position:  0px 0px;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-image: url(images/half.gif);
+}
+
+
+
+#forum_button {
+	position: absolute;
+	top:  0px;
+	left: -75px;
+	height: 128px;
+    width:  128px;
+    z-index:  5;
+}
+
+html>body #forum_button a {
+	top:  0px;
+	left: 0px;
+	height: 128px;
+    width:  128px;
+	background-image: url(images/forum_splat.png);
+    display: block;
+}
+
+#tab_box {
+	position: absolute;
+	top:  30px;
+	left: 573px;
+	height: 200px;
+    width:  120px;
+    z-index:  2;
+}
+
+#tab_home {
+    position: absolute;
+    top:      0px;
+    left:     0px;
+    width:  113px;
+    height:  40px;
+}
+
+#tab_home a:link, #tab_home a:visited {
+    display: block;
+    width:  41px;
+    height:  40px;
+}
+
+#tab_home a:link, #tab_home a:visited {
+	background-image: url(images/tab_home_closed.gif);
+}
+
+#tab_home a:hover, #tab_home a:active {
+    display: block;
+    width:  113px;
+}
+
+#tab_home a:hover, #tab_home a:active {
+	background-image: url(images/tab_home_open.gif);
+}
+
+
+#tab_box #tab_down {
+    position: absolute;
+    top:     43px;
+    left:     0px;
+    width:  113px;
+    height:  40px;
+}
+
+#tab_down a:link, #tab_down a:visited {
+    display: block;
+    width:  41px;
+    height:  40px;
+}
+
+#tab_down a:link, #tab_down a:visited {
+	background-image: url(images/tab_down_closed.gif);
+}
+
+#tab_down a:hover, #tab_down a:active {
+    display: block;
+    width:  113px;
+}
+
+#tab_down a:hover, #tab_down a:active {
+	background-image: url(images/tab_down_open.gif);
+}
+
+
+#tab_box #tab_cart {
+    position: absolute;
+    top:     86px;
+    left:     0px;
+    width:  113px;
+    height:  40px;
+}
+
+#tab_cart a:link, #tab_cart a:visited {
+    display: block;
+    width:  41px;
+    height:  40px;
+}
+
+#tab_cart a:link, #tab_cart a:visited {
+	background-image: url(images/tab_cart_closed.gif);
+}
+
+#tab_cart a:hover, #tab_cart a:active {
+    display: block;
+    width:  113px;
+}
+
+#tab_cart a:hover, #tab_cart a:active {
+	background-image: url(images/tab_cart_open.gif);
+}
+
+
+#tab_box #tab_blog {
+    position: absolute;
+    top:     129px;
+    left:     0px;
+    width:  113px;
+    height:  40px;
+}
+
+#tab_blog a:link, #tab_blog a:visited {
+    display: block;
+    width:  41px;
+    height:  40px;
+}
+
+#tab_blog a:link, #tab_blog a:visited {
+	background-image: url(images/tab_blog_closed.gif);
+}
+
+#tab_blog a:hover, #tab_blog a:active {
+    display: block;
+    width:  113px;
+}
+
+#tab_blog a:hover, #tab_blog a:active {
+	background-image: url(images/tab_blog_open.gif);
+}
+
+
+
+
+#container {
+	position: relative;
+	width: 552px;
+	z-index: 1;
+	margin-top: 35px;
+	margin-bottom: 0px;
+	margin-left:auto;
+	margin-right:auto;
+	padding : 10px;
+    border:      1px solid #ddd;
+	text-align: left; /* Hack To Keep IE5 Windows Happy */
+	background-color: white;
+	overflow: visible;
+}
+
+#pageHeader {
+	position:      relative;
+    top:           0px;
+    left:          0px; 
+	height:        101px;
+	width:         550px;
+	border-left:   1px solid #888;
+	border-right:  1px solid #888;
+	background-image: url(images/header.jpg);
+}
+
+
+#contentContainer {
+	position:         relative;
+    top:              10px;
+    left:             0px;
+	width:            550px;
+	line-height:      1.6em;
+	border:    0px solid red;
+	background-color: #fff;
+}
+
+#contentContainer #content {
+	padding: 5px;
+}
+
+
+
+
+#sidebarContainer {
+    position: absolute;
+    top:250px;
+    right:10px;
+	width: 135px;
+	border: 0px solid red;
+	background-image: url(images/nav_bg_fill.png);
+	background-repeat:repeat-y;
+	text-align:center;
+}
+
+#sidebarContainer #sidebarTop {
+    width:135px;
+    height:50px;
+	background-image: url(images/nav_bg_top.png);
+}
+
+#sidebarContainer #sidebarBottom {
+    width:135px;
+    height:50px;
+	background-image: url(images/nav_bg_bottom.png);
+}
+
+#sidebarContainer #sidebar {
+	line-height: 1.6em;
+	border: 0px solid green;
+	padding-right:0px;
+	padding-bottom: 12px;
+}
+
+#sidebarContainer #bottom_image {
+	border: 0px solid green;
+	width: 18px;
+	height: 23px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+html>body #sidebarContainer #bottom_image {
+	background-image: url(images/yh_icon_tiny.png);
+}
+
+
+#sidebarContainer #top_image {
+	border: 0px solid green;
+	width: 18px;
+	height: 23px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+html>body #sidebarContainer #top_image {
+	background-image: url(images/yh_icon_tiny.png);
+}
+
+#sidebarContainer .sideHeader {
+	padding-top: 10px;
+	color: #ffffff;
+	border: 0px solid black;
+}
+
+
+
+
+#footer { 
+	width: 700px;
+	margin: 0px auto; /* Right And Left Margin Widths To Auto */
+	text-align: center; /* Hack To Keep IE5 Windows Happy */
+	color: #d6eafb;
+	padding-top: 10px;
+	position: relative;
+}
+
+#footer p {
+	padding: 0;
+	margin: 0;
+}
+
+#footer a:link, #footer a:visited {
+	color: #dccaaf;
+}
+
+#footer a:hover, #footer a:active {
+	background: transparent;
+	color: #f2dfc1;
+}
+
+
+
+
+#breadcrumbcontainer {
+	color: #d6eafb;
+	text-align: center;
+	padding-bottom: 5px;
+}
+
+#breadcrumbcontainer ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#breadcrumbcontainer li {
+	display: inline;
+}
+
+#breadcrumbcontainer a {
+
+}
+
+#breadcrumbcontainer a:hover {
+
+}
+
+
+
+
+#navcontainer {
+	position: relative;
+	font-size: 12px;
+    border: 0px solid red;
+    margin:0px;
+    padding:0px;
+}
+
+#navcontainer #current {
+	font-weight:bold;
+	text-shadow: #009bd9 0px 0px 7px;
+}
+
+#navcontainer #current:hover {
+	cursor:default;
+}
+
+#navcontainer .currentAncestor {
+}
+
+/* Parent - Level 0 */
+
+#navcontainer ul {
+	font-variant: small-caps;
+	list-style: none;
+    border: 0px solid red;
+    margin:0px;
+    padding:0px;
+    border-bottom:0px solid white;
+}
+
+#navcontainer li {
+	position: relative;
+    border-top: 0px solid white;
+    border-bottom: 0px solid white;
+}
+
+#navcontainer a{
+	display: block;
+	color: #ffffff;
+	text-decoration: none;
+    border: none;
+	color: #333;
+	height: 10px;
+	padding-right: 0px;
+	padding-bottom:7px;
+	padding-top:3px;
+}
+
+#navcontainer a:hover {
+	color: #0060e8;
+	text-shadow: #009bd9 0px 0px 7px;
+}
+
+#navcontainer a:active {
+
+}
+
+/* Child - Level 1 */
+
+#navcontainer ul ul {
+    border-bottom:0px solid white;
+	background-image: url(images/nav_bg_fill.png);
+}
+
+#navcontainer ul ul li {
+}
+
+#navcontainer ul ul a {
+	font-size: 11px;
+	color: #77bb33;
+    border:0px;
+}
+
+#navcontainer ul ul a:hover{
+	color: #0060e8;
+	text-shadow: #bbcc11 0px 0px 6px;
+}
+
+#navcontainer ul ul #current{
+}
+
+#navcontainer ul ul .currentAncestor {
+}
+
+/* Child - Level 2 */
+
+#navcontainer ul ul ul {
+    border-bottom:0px solid white;
+}
+
+#navcontainer ul ul ul li { 
+}
+
+#navcontainer ul ul ul a{
+	text-transform: lowercase;
+	font-variant: normal;
+	font-size: 9px;
+	color: #ffaa11;
+}
+
+#navcontainer ul ul ul a:hover{
+	color: #0060e8;
+	text-shadow: #eebb55 0px 0px 5px;
+}
+
+/* Child Level 3 */
+
+#navcontainer ul ul ul ul {
+
+}
+
+#navcontainer ul ul ul ul li { 
+}
+
+#navcontainer ul ul ul ul a{
+	padding-left: 90px;
+}
+
+#navcontainer ul ul ul ul a:hover{
+
+}
+
+/* Child Level 4 */
+
+#navcontainer ul ul ul ul ul {
+
+}
+
+#navcontainer ul ul ul ul ul li { 
+}
+
+#navcontainer ul ul ul ul ul a{
+	padding-left: 110px;
+}
+
+#navcontainer ul ul ul ul ul a:hover{
+
+}
+
+/* Child Level 5 */
+
+#navcontainer ul ul ul ul ul ul {
+
+}
+
+#navcontainer ul ul ul ul ul ul li { 
+}
+
+#navcontainer ul ul ul ul ul ul a{
+	 padding-left: 140px;
+}
+
+#navcontainer ul ul ul ul ul ul a:hover{
+}
+/*</group>*/
+
+/*<group=Global Classes>*/
+
+blockquote {
+	color: #4c4c4c;
+	font-style: italic;
+	font-size: 0.85em;
+	margin: 0;
+	padding: 5px;
+}
+
+h1 {
+	color: #8bc9fc;
+	font-size: 1.6em;
+	margin: 0 0 3px;
+	font-size: 1.6em;
+	margin: 0 0 3px;
+}
+
+h2 {
+	color: #8bc9fc;
+	font-size: 1.4em;
+	margin: 0 0 3px;
+	font-size: 1.4em;
+	margin: 0 0 3px;
+}
+
+h3 {
+	color: #8bc9fc;
+	font-size: 1.2em;
+	margin: 0 0 3px;
+	font-size: 1.2em;
+	margin: 0 0 3px;
+}
+
+h4 {
+	color: #8bc9fc;
+	font-size: 1em;
+	margin: 0 0 3px;
+	font-size: 1em;
+	margin: 0 0 3px;
+}
+
+.imageStyle {
+
+}
+	
+/*</group>*/
+
+/*<group=Blog>*/
+
+/*<group=Archive Page>*/
+
+.blog-archive-background {
+	margin-top: 0px;
+	font: 62.5%/1.6em "Lucida Grande", Arial, Verdana, sans-serif;
+	color: #666;
+}
+
+.blog-archive-headings-wrapper {
+	margin: 0px auto; /* Right And Left Margin Widths To Auto */
+	text-align: left; /* Hack To Keep IE5 Windows Happy */
+	border-right: 1px solid #88683c;
+	border-left: 1px solid #88683c;
+	position: relative;
+	height: 101px;
+}
+
+.blog-archive-entries-wrapper {
+	margin: 0px auto; /* Right And Left Margin Widths To Auto */
+	text-align: left; /* Hack To Keep IE5 Windows Happy */
+	color: #333333;
+	background: #ffffff;
+	position: relative;
+	padding-bottom: 10px;
+}
+
+.blog-archive-entries-wrapper .blog-entry {
+	padding-top: 10px;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+.blog-archive-month {
+	color: #ffffff;
+	font-size: 2.2em;
+	margin: 0 0 5px;
+	padding-top: 15px;
+	padding-left: 10px;
+	text-shadow: 2px 2px 2px #07326d;
+}
+
+.blog-archive-link {
+	margin-left: 10px;
+}
+
+.blog-archive-link a:link, .blog-archive-link a:visited {
+	color: #ffffff;
+	border-bottom-color: #ffffff;
+}
+
+	
+/*</group>*/
+
+.blog-entry {
+	border-bottom: 0px solid #667;
+	margin-bottom: 30px;
+	padding-bottom: 10px;
+	border: 0px solid red;
+	background-repeat:no-repeat;
+}
+
+html>body .blog-entry {
+	background-image: url(images/little_hg_icon.png);
+}
+
+.blog-entry-title {
+	font-size: 15px;
+	color: #4fb4ce;
+	font-variant: small-caps;
+	font-weight: normal;
+	letter-spacing: 1px;
+	margin: 0px;
+	margin-left: 40px;
+	padding: 0px;
+	padding-top: 8px;
+	color: #1870da;
+	border: 0px solid blue;
+}
+
+.blog-entry-date {
+	font-size: 8px;
+	letter-spacing: 2px;
+	margin: 0px;
+	margin-left: 40px;
+	margin-bottom: 8px;
+	color: #bfd4de;
+	color: #999999;
+}
+
+.blog-entry-category {
+	color: #156ed8;
+}
+
+.blog-category-link-enabled {
+}
+
+.blog-category-link-disabled {
+}
+
+.blog-entry-body {
+	border: 0px solid green;
+
+}
+
+.blog-entry-comments {
+	font-size: 8px;
+	letter-spacing: 2px;
+	margin-top: 5px;
+	color: #bfd4de;
+}
+	
+/*</group>*/
+
+/*<group=File Sharing>*/
+
+.filesharing-description {
+	margin-bottom: 10px;
+}
+
+.filesharing-item {
+	border: 1px solid #e6e6e6;
+	padding: 1px;
+	margin-bottom: 10px;
+}
+
+.filesharing-item-title a:link {
+	padding: 3px;
+	margin-bottom: 5px;
+	border-bottom-style: none;
+}
+
+.filesharing-item-title a:hover {
+}
+
+.filesharing-item-title a:visited {
+
+}
+
+.filesharing-item-description {
+	font-size: 0.9em;
+	padding-left: 3px;
+	color: #808080;
+}
+
+/*</group>*/
+
+/*<group=Photo Album>*/
+
+/*<group=Index Page (Thumbnail view)>*/
+
+.album-title {
+	font-size: 1.8em;
+	font-weight: normal;
+	margin-bottom: 5px;
+	color: #1870da;
+}
+
+.album-description {
+	margin-bottom: 10px;
+}
+
+.thumbnail-table {
+	width: 99%;
+}
+
+
+.thumbnail-frame {
+	border: 1px solid #e6e6e6;
+	padding: 5px;
+	margin: 5px;
+}
+
+.thumbnail-frame:hover {
+	border: 1px solid #808080;
+}
+
+.thumbnail-frame a {
+	border-style: none;
+}
+
+.thumbnail-frame a:hover {
+}
+
+.thumbnail-frame img {
+	border: none;
+}
+
+.thumbnail-caption {
+	font-size: 0.9em;
+	color: #808080;
+}
+	
+/*</group>*/
+
+/*<group=Single Page (Photo view)>*/
+
+.photo-background {
+}
+
+.photo-navigation {
+	height: 101px;
+	margin-bottom: 37px;
+	background: url(../../images/header.jpg) repeat-x;
+}
+
+.photo-links {
+	background: #ffffff;
+	padding: 5px;
+	display: block;
+}
+
+.photo-navigation a:link, .photo-navigation a:visited {
+}
+
+.photo-navigation a:hover {
+}
+
+.photo-frame{
+	background: #ffffff;
+	padding: 5px;
+}
+
+.photo-title {
+	color: #ffffff;
+	font-size: 2.4em;
+	margin: 0 0 5px;
+	padding-top: 15px;
+	font-weight: bold;
+	text-shadow: 2px 2px 2px #07326d;
+}
+
+.photo-caption {
+	font-size: 1.2em;
+	margin: 0 0 27px;
+	font-weight: bold;
+	color: #c7e5fa;
+	text-shadow: 2px 2px 2px #07326d;
+}
+
+/*</group>*/
+	
+/*</group>*/
+
+/*<group=Quicktime Page>*/
+
+.movie-description {
+
+}
+	
+/*</group>*/
+
+/*<group=Quicktime Album>*/
+
+/*<group=Index Page (Movie Thumbnail view)>*/
+
+.movie-page-title {
+	font-size: 1.8em;
+	font-weight: normal;
+	margin-bottom: 5px;
+	color: #1870da;
+}
+
+.movie-page-description {
+	margin-bottom: 10px;
+}
+
+.movie-thumbnail-frame {
+	border: 1px solid #e6e6e6;
+	padding: 1px;
+	width: 132px;
+	float: left;
+	text-align: center;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+/* Stops there from being a dotted line under the movie revews when mouse rollsover */
+.movie-thumbnail-frame a:hover {
+	border-style: none;
+}
+
+.movie-thumbnail-frame:hover {
+	border: 1px solid #808080;
+}
+
+
+.movie-thumbnail-caption {
+	font-size: 0.9em;
+	color: #808080;
+
+}
+	
+/*</group>*/
+
+/*<group=Single Page (Movie View)>*/
+
+.movie-background {
+	margin: 10px;
+	text-align: center;
+}
+
+.movie-title {
+	color: #ffffff;
+	font-size: 2.2em;
+	margin: 0 0 5px;
+	padding-top: 15px;
+	text-shadow: 2px 2px 2px #07326d;
+}
+
+.movie-frame {
+
+}
+	
+/*</group>*/
+
+
+/*</group>*/
+
+/*<group=Contact Form>*/
+.message-text { 
+} 
+
+.required-text {
+	color: #ff0000;
+} 
+
+.form-input-field {
+} 
+
+.form-input-button { 
+} 
+/*</group>*/
+
+
+.blog-archive-headings-wrapper, .blog-archive-entries-wrapper { 
+	width: 95%;
+}
