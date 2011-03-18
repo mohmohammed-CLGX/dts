@@ -1,0 +1,115 @@
+Trans.vTransDeed:
+
+SELECT  TD.CntyCd, TD.BatchDt, TD.BatchSeq, COALESCE(TL1.TransId,TD.TransId) as TransId, COALESCE(TL1.MtgSeq,T.MtgSeq) as MtgSeq
+, TD.RecordingDt as [Document Date]
+--,TD.SaleDt as [Document Date]
+, TD.RecordingPage as [Book/Page]
+, TD.DocNbr as [Document Number]
+, TD.PclidIrisFrmtd as [Other ID]
+--,TD.InputPclMatchKey as [Other ID]
+,TD.ExciseTaxNbr as [Excise Number]
+,TD.OwnrTransferPct as [Buyer Percent]
+,TD.PCTOwnrship as [Buyer Percent]-
+, TD.TaxStampAmt as [Transaction Tax]
+, TD.SalePriceAmt as [Sale Price]
+, TD.TaxStampAmtCd as [Stamp Amount Code]
+, TD.MultiSplitCd as [Multi Split Code]
+, TD.TransTyp as [Seller Carry Back] 
+,TD.SelCarryCd as [Seller Carry Back] 
+, TD.DocTyp as [Deed Type]
+, TD.TitleCompanyCd as [Title Company Tmp]
+, TL1.MtgDueDt as [Mortgage Due Date]
+, TL1.MtgIntRateTyp as [Interest Rate Type]
+, TL1.MtgAmt as [Mortgage Amount]
+, TL1.SecMCEquityLoanInd as [Trust Position]
+, TL1.SecMCOtherSubordLoanInd as [Trust Position ]
+, TD.EditCounter as [Edit Counter]
+, TD.TitleOrderNbr as [Title Order Number]
+, TD.TitleOrderAbbrev as [Title Order Abbreviation]
+, TD.PrimaryCatCd as [Compare Flag]
+, TL1.MtgLoanTypCd as [Private Party Lender 1 ]
+, TD.TitleOrderAccomodationInd as [Accommodation Recording Flag]
+
+
+FROM Trans.vTransDeed TD INNER JOIN Trans.vTrans T ON TD.CntyCd=T.CntyCd AND TD.BatchDt=T.BatchDt 
+AND TD.BatchSeq=T.BatchSeq AND TD.TransId=T.TransId
+left JOIN Trans.vTransLien TL1 ON T.CntyCd=TL1.CntyCd AND T.BatchDt=TL1.BatchDt AND T.BatchSeq=TL1.BatchSeq 
+AND T.TransId=TL1.DeedTransId
+WHERE TD.CntyCd = '01003'  and COALESCE(TL1.MtgSeq,T.MtgSeq)  < 5
+
+==================================================================================
+
+
+Trans.vTransLien
+
+SELECT TLi.CntyCd, TLi.BatchDt, TLi.BatchSeq, TLi.TransId, TLi.MtgSeq 
+, TLi.RecordingDt as [Document Date]
+--,TLi.SaleDt as [Document Date]
+, TLi.RecordingPage as [Book/Page]
+, TLi.DocNbr as [Document Number]
+, TLi.PclidIrisFrmtd as [Other ID]
+--,TLi.InputPclMatchKey as [Other ID]
+,TLi.ExciseTaxNbr as [Excise Number]
+,TLi.StndAloneMtgInd as Filler
+, TLi.MultiSplitCd as [Multi Split Code]
+, TLi.TransTyp as [Seller Carry Back] 
+,TLi.SecMCPrivatePartyLoanInd
+,TLi.SecMCConstructionLoanInd
+,TLi.SecMCRefinanceLoanInd 
+,TLi.SecMCEquityLoanInd 
+,TLi.SecMCOtherSubordLoanInd
+,TLi.SecMCConformingLoanInd
+,TLi.SecMCConventionalLoanInd
+,TLi.SecMCFhaLoanInd
+,TLi.SecMCFixedRateLoanInd
+,TLi.SecMCNonConformingLoanInd
+,TLi.SecMCSmallBusAssocLoanInd
+,TLi.SecMCVaLoanInd
+,TLi.SecMCVariableRateLoanInd
+, TLi.DocTyp as [Deed Type]
+, TLi.MtgAmt as [Mortgage Amount]
+, TLi.TitleCompanyCd as [Title Company Tmp]
+, TLi.MtgDueDt as [Mortgage Due Date]
+, TLi.MtgIntRateTyp as [Interest Rate Type]
+,TLi.MtgIntRatePct as [Interest Rate]
+, TLi.EditCounter as [Edit Counter]
+, TLi.TitleOrderNbr as [Title Order Number]
+, TLi.TitleOrderAbbrev as [Title Order Abbreviation]
+, TLi.PrimaryCatCd as [Compare Flag]-review
+,TLi.TransTyp as [Seller Carry Back]
+,TLi.SelCarryCd as [Seller Carry Back] 
+, TLi.MtgLoanTypCd as [Private Party Lender 1 ]
+, TLi.TitleOrderAccomodationInd as [Accommodation Recording Flag]
+
+
+FROM Trans.vTransLien TLi
+WHERE TLi.CntyCd = '01003' AND Tli.DeedTransId IS NULL
+
+======================================================================================
+
+Trans.vTransInvoluntaryLien:
+
+
+SELECT TInLi.CntyCd, TInLi.BatchDt, TInLi.BatchSeq, TInLi.TransId, TInLi.MtgSeq
+, TInLi.RecordingDt as [Document Date]
+--,TInLi.SaleDt as [Document Date]
+, TInLi.RecordingPage as [Book/Page]
+, TInLi.DocNbr as [Document Number]
+, TInLi.PclidIrisFrmtd as [Other ID]
+--,TInLi.InputPclMatchKey as [Other ID]
+,TInLi.TaxStampAmtCd as [Stamp Amount Code]
+, TInLi.MultiSplitCd as [Multi Split Code]
+, TInLi.TransTyp as [Seller Carry Back] 
+, TInLi.DocTyp as [Deed Type]
+,TInLi.MtgIntRatePct as [Interest Rate]
+, TInLi.TitleCompanyCd as [Title Company Tmp]
+, TInLi.EditCounter as [Edit Counter]
+, TInLi.PrimaryCatCd as [Compare Flag]
+,TInLi.TransTyp as [Seller Carry Back]
+,TInLi.SelCarryCd as [Seller Carry Back]
+, TInLi.TitleOrderAccomodationInd as [Accommodation Recording Flag]
+
+
+
+FROM Trans.vTransInvoluntaryLien TInLi
+WHERE TInLi.CntyCd = '01003'
