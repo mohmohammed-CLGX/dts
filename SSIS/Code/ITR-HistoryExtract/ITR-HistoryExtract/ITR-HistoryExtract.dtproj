@@ -28,23 +28,8 @@
   </Configurations>
   <DTSPackages>
     <DtsPackage FormatVersion="3">
-      <Name>ITRHistory (1).dtsx</Name>
-      <FullPath>ITRHistory (1).dtsx</FullPath>
-      <References />
-    </DtsPackage>
-    <DtsPackage FormatVersion="3">
-      <Name>ITRHistory_cpy.dtsx</Name>
-      <FullPath>ITRHistory_cpy.dtsx</FullPath>
-      <References />
-    </DtsPackage>
-    <DtsPackage FormatVersion="3">
-      <Name>ITRHistory_cpy (1).dtsx</Name>
-      <FullPath>ITRHistory_cpy (1).dtsx</FullPath>
-      <References />
-    </DtsPackage>
-    <DtsPackage FormatVersion="3">
-      <Name>ITRHistory_cpy (2) (1).dtsx</Name>
-      <FullPath>ITRHistory_cpy (2) (1).dtsx</FullPath>
+      <Name>ITR-HistoryExtract.dtsx</Name>
+      <FullPath>ITR-HistoryExtract.dtsx</FullPath>
       <References />
     </DtsPackage>
   </DTSPackages>
