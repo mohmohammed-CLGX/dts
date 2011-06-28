@@ -1,0 +1,87 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="cc1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>
+    <%--<asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>--%>
+      <script type="text/javascript" src="javacode.js"></script>
+</head>
+<link type="text/css" href="App_Themes/StyleSheet.css" rel="stylesheet" />
+<body bgcolor="#CCCCCC">
+    <form id="form1" runat="server">
+  
+        <asp:ScriptManager ID="ScriptManager1" runat="server" >
+        <Services> 
+                <asp:ServiceReference Path="WebService.asmx" /> 
+            </Services> 
+            </asp:ScriptManager>
+        
+        <table>
+        <tr  valign="top">
+        <td>
+        <asp:Image ID="Image1" runat="server" AlternateText="core Logic" 
+                EnableViewState="false"  ImageUrl="~\Corelogiclogo.jpg" Height="86px" Width="1034px"  
+                   />
+                   </td>
+                       
+      
+        </tr>
+        <tr valign="top" >
+        <td >
+        <%--<asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server"/>--%>
+            <asp:Menu ID="Menu1" runat="server"  
+                Orientation="Horizontal" BackColor="#F7F6F3" DynamicHorizontalOffset="2" 
+                Font-Names="Verdana" Font-Size="0.8em" ForeColor="#7C6F57" 
+                StaticSubMenuIndent="10px">
+                <StaticSelectedStyle BackColor="#5D7B9D" />
+                <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+                <DynamicHoverStyle BackColor="#7C6F57" ForeColor="White" />
+                <DynamicMenuStyle BackColor="#F7F6F3" />
+                <DynamicSelectedStyle BackColor="#5D7B9D" />
+                <DynamicMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+                <StaticHoverStyle BackColor="#7C6F57" ForeColor="White" />
+                <Items>
+                                  
+                    <asp:MenuItem Text="Data QA/QC" Value="Data QA/QC" NavigateUrl="~/DataQA-QC.aspx" ></asp:MenuItem>
+                     <asp:MenuItem Text="Transactions" Value="Transactions" NavigateUrl="~/Transactions.aspx"></asp:MenuItem>
+                     <asp:MenuItem Text="Securities & Servicing" Value="KBtest" NavigateUrl="~/kbtestpageson21-feb-11.aspx"></asp:MenuItem>
+                     <asp:MenuItem Text="Instructions" Value="Instructions" NavigateUrl="~/Instructions.aspx"></asp:MenuItem>
+                     <asp:MenuItem Text="Acronyms/Glossary" Value="Acronyms" NavigateUrl="~/Acronyms.aspx"></asp:MenuItem>
+                     <asp:MenuItem Text="Quick Guide" Value="FAQ" NavigateUrl="~/QuickGuide.aspx"></asp:MenuItem>
+                               </Items>
+               
+            </asp:Menu>
+            </td>
+        </tr>
+        </table>
+        <table width="99%" style="height: 1501px" >
+        <tr valign="top">
+        <td>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server" >
+         <asp:UpdatePanel ID="updPanel" runat="server" UpdateMode="Conditional">
+         </asp:UpdatePanel>
+        </asp:ContentPlaceHolder>
+        </td>
+           
+         <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+                    ConnectionString="<%$ ConnectionStrings:kbConnectionString %>" 
+                    SelectCommand="SELECT DISTINCT [State]   FROM [County] order by State">
+                </asp:SqlDataSource>
+                <asp:SqlDataSource ID="countySqlDataSource" runat="server" 
+                    ConnectionString="<%$ ConnectionStrings:kbConnectionString %>" 
+                    SelectCommand="SELECT * FROM [County]">
+                </asp:SqlDataSource>
+        </tr>
+        </table>
+        
+        
+        
+ 
+    </form>
+</body>
+</html>

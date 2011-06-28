@@ -1,0 +1,114 @@
+﻿/* So the overflow scrolls */
+.container {overflow:auto;}
+
+/* Keep the header cells positioned as we scroll */
+.container table th {position:relative;}
+
+/* For alignment of the scroll bar */
+.container table tbody {overflow:hidden;} 
+
+
+.CustomValidator {position:relative;margin-left:-80px;}
+
+.CustomValidator div {border:solid 1px Black;background-color:Fuchsia; position:relative;}
+
+.CustomValidator td {border:solid 1px Black;background-color:Fuchsia;}
+
+.CustomValidator .ajax__validatorcallout_popup_table {display:none;border:none;background-color:transparent;padding:0px;}
+
+.CustomValidator .ajax__validatorcallout_popup_table_row {vertical-align:top;height:100%;background-color:transparent;padding:0px;}
+
+.CustomValidator .ajax__validatorcallout_callout_cell {width:20px;height:100%;text-align:right;vertical-align:top;border:none;background-color:transparent;padding:0px;}
+
+.CustomValidator .ajax__validatorcallout_callout_table {height:100%;border:none;background-color:transparent;padding:0px;}
+
+.CustomValidator .ajax__validatorcallout_callout_table_row {background-color:Silver;padding:0px;}
+
+.CustomValidator .ajax__validatorcallout_callout_arrow_cell {padding:8px 0px 0px 0px;text-align:right;vertical-align:top;font-size:1px;border:none;background-color:transparent;}
+
+.CustomValidator .ajax__validatorcallout_callout_arrow_cell .ajax__validatorcallout_innerdiv {font-size:1px;position:relative;left:1px;border-bottom:none;border-right:none;border-left:none;width:15px;background-color:transparent;padding:0px;}
+
+.CustomValidator .ajax__validatorcallout_callout_arrow_cell .ajax__validatorcallout_innerdiv div {height:1px;overflow:hidden;border-top:none;border-bottom:none;border-right:none;padding:0px;margin-left:auto;}
+
+.CustomValidator .ajax__validatorcallout_error_message_cell {font-family:Verdana;font-size:10px;padding:5px;border-right:none;border-left:none;width:100%;}
+
+.CustomValidator .ajax__validatorcallout_icon_cell {width:20px;padding:5px;border-right:none;}
+
+.CustomValidator .ajax__validatorcallout_close_button_cell {vertical-align:top;padding:0px;text-align:right;border-left:none;}
+
+.CustomValidator .ajax__validatorcallout_close_button_cell .ajax__validatorcallout_innerdiv {border:none;text-align:center;width:10px;padding:2px;cursor:pointer;}
+
+   .grid
+        {
+            border: solid 2px #a5a4bd;
+            font-family: Tahoma;
+            font-size: 12px;
+            width: 600px;
+        }
+        .grid H2
+        {
+            background: #8988a5 url(_assets/img/title-bg.gif);
+            border-bottom: solid 1px #57566f;
+            height: 28px;
+            line-height: 28px;
+            margin: 0px;
+            padding: 0px 0px 0px 5px;
+            color: #fff;
+            font-size: 15px;
+        }
+        .grid TABLE
+        {
+            width: 600px;
+        }
+        /* grid headers */.grid #orders .head TH
+        {
+            background: #e9e9eb url(_assets/img/header-bg.gif);
+            height: 24px;
+            line-height: 24px;
+            padding-left: 6px;
+            color: #666666;
+            text-align: left;
+        }
+        .grid #orders .head TH.first
+        {
+            /* get rid of the first slash */
+            background: #e9e9eb url(_assets/img/header-bg.gif) -3px;
+            width: 20px;
+        }
+        /* group header */.grid #orders .group TH
+        {
+            padding: 10px 0px 2px 0px;
+            color: #666666;
+            text-align: left;
+            border-bottom: solid 2px #a5a4bd;
+        }
+        .grid #orders .group TH.first
+        {
+            text-align: center;
+            border-bottom: none;
+        }
+        /* data items */.grid #orders .item TD
+        {
+            padding: 3px 0px 3px 6px;
+            border-bottom: solid 1px #eae9e1;
+            color: #222222;
+        }
+        /* pager */.grid #pager .pager TD
+        {
+            height: 40px;
+        }
+        .grid #pager .pager .commands
+        {
+            height: 40px;
+            padding: 4px 0px 0px 25px;
+        }
+        .grid #pager .pager .info
+        {
+            padding: 4px 25px 0px 0px;
+            text-align: right;
+        }
+        .hidden
+        {
+            display: none;
+            visibility: hidden;
+        }

@@ -1,0 +1,20 @@
+C:\Vs2008demoProjects\KBwebsite (2)\KBDAL\bin\Debug\KBDAL.dll
+C:\Vs2008demoProjects\KBwebsite (2)\KBDAL\bin\Debug\KBDAL.pdb
+C:\Vs2008demoProjects\KBwebsite (2)\KBDAL\obj\Debug\ResolveAssemblyReference.cache
+C:\Vs2008demoProjects\KBwebsite (2)\KBDAL\obj\Debug\KBDAL.dll
+C:\Vs2008demoProjects\KBwebsite (2)\KBDAL\obj\Debug\KBDAL.pdb
+C:\corelogic\KnowledgeBase\code\22mar11\KBDAL\bin\Debug\KBDAL.dll
+C:\corelogic\KnowledgeBase\code\22mar11\KBDAL\bin\Debug\KBDAL.pdb
+C:\corelogic\KnowledgeBase\code\22mar11\KBDAL\obj\Debug\ResolveAssemblyReference.cache
+C:\corelogic\KnowledgeBase\code\22mar11\KBDAL\obj\Debug\KBDAL.dll
+C:\corelogic\KnowledgeBase\code\22mar11\KBDAL\obj\Debug\KBDAL.pdb
+C:\KB\22mar11\KBWebsite\KBDAL\bin\Debug\KBDAL.dll
+C:\KB\22mar11\KBWebsite\KBDAL\bin\Debug\KBDAL.pdb
+C:\KB\22mar11\KBWebsite\KBDAL\obj\Debug\ResolveAssemblyReference.cache
+C:\KB\22mar11\KBWebsite\KBDAL\obj\Debug\KBDAL.dll
+C:\KB\22mar11\KBWebsite\KBDAL\obj\Debug\KBDAL.pdb
+C:\corelogic\kb as on june 28 2011\KBWebsite\KBDAL\bin\Debug\KBDAL.dll
+C:\corelogic\kb as on june 28 2011\KBWebsite\KBDAL\bin\Debug\KBDAL.pdb
+C:\corelogic\kb as on june 28 2011\KBWebsite\KBDAL\obj\Debug\ResolveAssemblyReference.cache
+C:\corelogic\kb as on june 28 2011\KBWebsite\KBDAL\obj\Debug\KBDAL.dll
+C:\corelogic\kb as on june 28 2011\KBWebsite\KBDAL\obj\Debug\KBDAL.pdb

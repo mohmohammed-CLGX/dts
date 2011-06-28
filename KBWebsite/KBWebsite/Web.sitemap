@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0">
+  http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+
+  <siteMapNode url="default.aspx" title="Home"  description="Sitemap example's home page">
+
+    <siteMapNode url="DataQA-QC.aspx" title="Data QA/QC"  description="Services listing page" >
+      
+    </siteMapNode>
+    <siteMapNode url="Transactions.aspx" title="Transactions"  description="Services listing page" >
+
+    </siteMapNode>
+    <siteMapNode url="kbtestpageson21-feb-11.aspx" title="KB Test"  description="KB Test" >
+
+    </siteMapNode>
+    <siteMapNode url="Instructions.aspx" title="Instructions"  description="Services listing page" >
+
+    </siteMapNode>
+    <siteMapNode url="Acronyms.aspx" title="Acronyms/Glossary"  description="Services listing page" >
+
+    </siteMapNode>
+    <siteMapNode url="FAQ.aspx" title="FAQ"  description="Services listing page" >
+
+    </siteMapNode>
+  </siteMapNode>
+ 
+</siteMap>
+
+
