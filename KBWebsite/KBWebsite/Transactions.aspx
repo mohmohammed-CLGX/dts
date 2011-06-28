@@ -337,7 +337,7 @@
             
             <asp:Panel ID="PanelRecentissue" runat="server"  Width="1000px" Height="380px"  
                 GroupingText="Recent Issues" Font-Size="Small">
-                       <div style="width:1000px; height:380px; overflow:auto;">
+                       <div style="width:1000px; height:360px; overflow:auto;">
                        <asp:GridView ID="gvrecent" runat="server" AutoGenerateColumns="False" 
                 DataKeyNames="IDIssue"
               
