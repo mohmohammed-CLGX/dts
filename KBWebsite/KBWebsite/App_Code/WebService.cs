@@ -34,8 +34,8 @@ public class WebService : System.Web.Services.WebService
     public string FetchOneCustomer(string IssueID)
     {
         string sql = "SELECT County.FIPS, County.StateCounty, County.State, County.County, [IDIssue]," +
-                     "[FIPSCounty] ,[IDProcessingType],[IDFileType] ,[IDIssueType] ,[Edition] ,[Version],[Title]," +
-                     "[IssueDetails] ,[Resolution] ,[Submitter],case([Relatedlink]) when '' then null else [Relatedlink] end  as Relatedlink   ,[ICP],[IssueCreatedDate],[IssueCreatedUser]," +
+                     "[FIPSCounty] ,[IDProcessingType],[IDFileType] ,[IDIssueType] ,isnull([Edition],'') as Edition ,isnull([Version],'') as Version,[Title]," +
+                     "[IssueDetails] ,[Resolution] ,[Submitter],case([Relatedlink]) when '' then null else [Relatedlink] end  as Relatedlink   ,isnull([ICP],'') as ICP,[IssueCreatedDate],[IssueCreatedUser]," +
                      "[IssueUpdatedDate],[IssueUpdatedUser],[Isuplodedfile] ,[IDuploadedfile] FROM " +
                      " County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty where IDissue=" + IssueID;
         try

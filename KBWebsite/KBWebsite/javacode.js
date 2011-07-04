@@ -58,7 +58,13 @@
 
                      for (var i = 0; i < tags.length; i++) {
                          if (tags[i].nodeType == 1) {
-                             var xmlvalue = tags[i].childNodes[0].nodeValue;
+                             var xmlvalue ;
+                             try {
+                                 xmlvalue = tags[i].childNodes[0].nodeValue;
+                             }
+                             catch (Error) {
+                                 xmlvalue = "";
+                             }
 
                              switch (tags[i].nodeName) {
                                  case "IDIssue":
@@ -82,13 +88,25 @@
 
 
                                  case "Edition":
+                                     if (xmlvalue != "0")
                                      document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtpupEditionsch').value = xmlvalue;
+                                 else
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtpupEditionsch').value = "N/A";
+                             
                                      break;
                                  case "Version":
-                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtpupVersionsch').value = xmlvalue;
+                                     if (xmlvalue != "0")
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtpupVersionsch').value = xmlvalue;
+                                     else
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtpupVersionsch').value = "N/A";
+                                 
                                      break;
                                  case "ICP":
-                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtpupicpsch').value = xmlvalue;
+                                     if (xmlvalue != "0")
+                                        document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtpupicpsch').value = xmlvalue;
+                                    else
+                                        document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtpupicpsch').value = "N/A";
+                                   
                                      break;
                                  case "County":
                                      document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtpupcountysch').value = xmlvalue;
@@ -148,7 +166,14 @@
 
                      for (var i = 0; i < tags.length; i++) {
                          if (tags[i].nodeType == 1) {
-                             var xmlvalue = tags[i].childNodes[0].nodeValue;
+                             var xmlvalue;
+                             try{
+                              xmlvalue= tags[i].childNodes[0].nodeValue;
+                             }
+                             catch (err)
+                             {
+                             xmlvalue="";
+                             }
 
                              switch (tags[i].nodeName) {
                                  case "IDIssue":
@@ -172,16 +197,32 @@
 
 
                                  case "Edition":
-                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupEdition').value = xmlvalue;
+                                    if(xmlvalue!="0")
+                                        document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupEdition').value = xmlvalue;
+                                    else
+                                        document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupEdition').value = "N/A";
+                                   
                                      break;
                                  case "Version":
-                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupVersion').value = xmlvalue;
+                                     if (xmlvalue != "0")
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupVersion').value = xmlvalue;
+                                     else
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupVersion').value = "N/A";
+                                 
                                      break;
                                  case "ICP":
+                                  if (xmlvalue != "0")
                                      document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupicp').value = xmlvalue;
+                                 else
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupicp').value = "N/A";
+                               
                                      break;
                                  case "County":
-                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupcounty').value = xmlvalue;
+                                    
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpupcounty').value = xmlvalue;
+                                     
+                                         
+                                 
                                      break;
                                  case "Relatedlink":
                                      document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtpuprlinks').value = xmlvalue;

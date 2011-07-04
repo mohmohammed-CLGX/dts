@@ -18,3 +18,8 @@ C:\corelogic\kb as on june 28 2011\KBWebsite\KBDAL\bin\Debug\KBDAL.pdb
 C:\corelogic\kb as on june 28 2011\KBWebsite\KBDAL\obj\Debug\ResolveAssemblyReference.cache
 C:\corelogic\kb as on june 28 2011\KBWebsite\KBDAL\obj\Debug\KBDAL.dll
 C:\corelogic\kb as on june 28 2011\KBWebsite\KBDAL\obj\Debug\KBDAL.pdb
+C:\corelogic\kbwebsite\KBDAL\bin\Debug\KBDAL.dll
+C:\corelogic\kbwebsite\KBDAL\bin\Debug\KBDAL.pdb
+C:\corelogic\kbwebsite\KBDAL\obj\Debug\ResolveAssemblyReference.cache
+C:\corelogic\kbwebsite\KBDAL\obj\Debug\KBDAL.dll
+C:\corelogic\kbwebsite\KBDAL\obj\Debug\KBDAL.pdb

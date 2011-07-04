@@ -172,6 +172,11 @@
                 Recent Issues
             </HeaderTemplate>
             <ContentTemplate>
+                <table><tr><td align="right">
+              <asp:Label ID="lblerrrecent" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
+                            <asp:Label ID="lblmsgrecent" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
+            
+            </td></tr></table>
                 <table>
                     <tr>
                         <td width="340px">
@@ -220,7 +225,7 @@
                     <tr>
                         <td>
                             <asp:Panel ID="PanelRecentissue" runat="server" Width="1000px" Height="380px" GroupingText="Recent Issues"
-                                Font-Size="Small">
+                                Font-Size="X-Small">
                                 <div style="width: 980px; height: 380px; overflow: auto;">
                                     <asp:GridView ID="gvrecent" runat="server" AutoGenerateColumns="False" DataKeyNames="IDIssue"
                                         OnRowDataBound="gvrecent_RowDataBound" DataKeys="IDIssue" Width="1500px" CellPadding="4"

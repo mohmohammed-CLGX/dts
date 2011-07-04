@@ -161,12 +161,17 @@ public partial class Transactions : System.Web.UI.Page
 
     protected void btnupdate_Click(object sender, EventArgs e)
     {
+        string stredition = txtpupEdition.Text.ToUpper() != "N/A" ? txtpupEdition.Text : "null";
+        string strversion = txtpupVersion.Text.ToUpper() != "N/A" ? txtpupVersion.Text : "null";
+        string strICP = txtpupicp.Text.ToUpper() != "N/A" ? txtpupicp.Text : "null";
+        
+        
         string sql = "Update Issuetbl Set IDProcessingType=" + ddlpupptype.SelectedValue.ToString() +
                      ", IDFileType=" + ddlpupftype.SelectedValue.ToString() + " ,IDIssueType=" + ddlpupitype.SelectedValue.ToString() +
-                     " ,Edition=" + txtpupEdition.Text + " ,Version=" + txtpupVersion.Text + " ,Title='" + txtpuptitle.Text +
+                     " ,Edition=" + stredition + " ,Version=" + strversion + " ,Title='" + txtpuptitle.Text +
                      "' ,IssueDetails='" + txtpupissue.Text + "' ,Resolution='" + txtpupresolution.Text +
                      "' ,Submitter='" + txtpupSubmitter.Text + "' ,Relatedlink='" + txtpuprlinks.Text +
-                     "' ,ICP=" + txtpupicp.Text + " Where IDIssue=" + hidCusCode.Value;
+                     "' ,ICP=" + strICP + " Where IDIssue=" + hidCusCode.Value;
         try
         {
             SqlConnection conn = new SqlConnection(strconn);
@@ -204,11 +209,13 @@ public partial class Transactions : System.Web.UI.Page
             {
                 gvrecent.DataSource = ds.Tables[0];
                 gvrecent.DataBind();
+                TabContainer1.ActiveTab = TabContainer1.Tabs[0];
             }
             else
             {
                 gvrecent.DataSource = ds.Tables[0].DefaultView;
                 gvrecent.DataBind();
+                TabContainer1.ActiveTab = TabContainer1.Tabs[0];
             }
         }
         catch (Exception ex)
@@ -221,12 +228,14 @@ public partial class Transactions : System.Web.UI.Page
 
     protected void btnrecentgo_Click(object sender, EventArgs e)
     {
+        lblerrrecent.Text = lblmsgrecent.Text = "";
         if (ddlRecentState.SelectedValue != "" || txtRecentFromdt.Text != "")
         {
             string strstate = ddlRecentState.SelectedValue;
             string strfips = ddlRecentCounty.SelectedValue;
             string strfdate = txtRecentFromdt.Text;
             string strtdate = txtRecentTodt.Text;
+
             string strsql = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
                            "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, " +
                            "Issuetbl.Title, Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
@@ -247,9 +256,14 @@ public partial class Transactions : System.Web.UI.Page
             {
                 strsql = strsql + " county.FIPS='" + strfips + "' and";
             }
-            if (strfdate != "")
+            if (checkdates(strfdate, strtdate))
             {
                 strsql = strsql + " Issuetbl.IssueCreatedDate>='" + strfdate + "' and Issuetbl.IssueCreatedDate<='" + strtdate + "'";
+            }
+            else
+            {
+                lblerrrecent.Text = "Please Enter correct Dates";
+                return;
             }
 
             int stlen = strsql.Trim().Length;
@@ -1167,12 +1181,19 @@ public partial class Transactions : System.Web.UI.Page
     }
     protected void btnupdatesch_Click(object sender, EventArgs e)
     {
+
+        string stredition = txtpupEditionsch.Text.ToUpper() != "N/A" ? txtpupEditionsch.Text : "null";
+        string strversion = txtpupVersionsch.Text.ToUpper() != "N/A" ? txtpupVersionsch.Text : "null";
+        string strICP = txtpupicpsch.Text.ToUpper() != "N/A" ? txtpupicpsch.Text : "null";
+
         string sql = "Update Issuetbl Set IDProcessingType=" + ddlpupptypesch.SelectedValue.ToString() +
                      ", IDFileType=" + ddlpupftypesch.SelectedValue.ToString() + " ,IDIssueType=" + ddlpupitypesch.SelectedValue.ToString() +
-                     " ,Edition=" + txtpupEditionsch.Text + " ,Version=" + txtpupVersionsch.Text + " ,Title='" + txtpuptitlesch.Text +
+                     " ,Edition=" + stredition + " ,Version=" + strversion + " ,Title='" + txtpuptitlesch.Text +
                      "' ,IssueDetails='" + txtpupissuesch.Text + "' ,Resolution='" + txtpupresolutionsch.Text +
                      "' ,Submitter='" + txtpupSubmittersch.Text + "' ,Relatedlink='" + txtpuprlinkssch.Text +
-                     "' ,ICP=" + txtpupicpsch.Text + " Where IDIssue=" + hidsch.Value;
+                     "' ,ICP=" + strICP + " Where IDIssue=" + hidsch.Value;
+
+       
         try
         {
             SqlConnection conn = new SqlConnection(strconn);
@@ -1180,7 +1201,7 @@ public partial class Transactions : System.Web.UI.Page
             SqlCommand cmd = new SqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
             conn.Close();
-
+            TabContainer1.ActiveTab = TabContainer1.Tabs[1];
          //   bindschgrid();
         }
         catch (Exception ex)
