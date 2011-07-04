@@ -19,36 +19,65 @@ public partial class Transactions : System.Web.UI.Page
     {
         strconn = System.Configuration.ConfigurationManager.ConnectionStrings["kbConnectionString"].ToString();
         btnupdate.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnupdate.UniqueID, "");
+        btnupdatesch.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnupdatesch.UniqueID, "");
         if (!IsPostBack)
         {
             bindrecentgv();
+            bindnewrecentgrid();
+            radioandor.SelectedIndex = 0;
+
         }
-        
+       
         //GridView6.DataBind();
        // GridViewResult.DataBind();
         ddlstate_countynew.Attributes.Add("onchange", "return newstateselchange();");
         ddlfpisnew.Attributes.Add("onchange", "return newFipsselchange();");
+        ddlfipssch.Attributes.Add("onchange", "return fipsschonchange();");
+
+        txtcountysch.Style.Add("display", "none");
 
        // ddlRecentFips.Attributes.Add("onchange", "return fipsselchangeRecent();");
 
-        ddlFipssch.Attributes.Add("onchange", "return fipsselchange();");
-        ddlcountysch1.Attributes.Add("onchange", "return countyselchange();");
-     //   ddlRecentCounty.Attributes.Add("onchange", "return countyselchangeRecent();");
-        chkstatesch.Attributes.Add("onclick", "return chkstate();");
-        chkcountysch1.Attributes.Add("onclick", "return chkcounty();");
-        chkFipssch.Attributes.Add("onclick", "return chkfips();");
+      //  ddlFipssch.Attributes.Add("onchange", "return fipsselchange();");
+       // ddlcountysch1.Attributes.Add("onchange", "return countyselchange();");
         Button3.Attributes.Add("onclick", "OpenUrlLinks();return false;");
      //  Button3.Attributes.Add("OnClick", "OpenSearchResults('" + txtRelatedLinksnew.ClientID + "');");
-        ddlstatesch.Attributes.Add("onchange", "stateselchange();");
-        chkIssueTypesch.Attributes.Add("onclick", "Togglecheck('" + chkIssueTypesch.ClientID + "','" + ddlIssuetypesch.ClientID + "','yes');");
-        chkFilesch.Attributes.Add("onclick", "Togglecheck('" + chkFilesch.ClientID + "','" + ddlFileTypesch.ClientID + "','yes');");
-        chkProcessingsch.Attributes.Add("onclick", "Togglecheck('" + chkProcessingsch.ClientID + "','" + ddlProcessingsch.ClientID + "','yes');");
-        chkEditionsch.Attributes.Add("onclick", "Togglecheck('" + chkEditionsch.ClientID + "','" + txtEditionsch.ClientID + "','no');");
-        chkRelatedICPsch.Attributes.Add("onclick", "Togglecheck('" + chkRelatedICPsch.ClientID + "','" + txtRelatedICPsch.ClientID + "','no');");
-        chkSubmittersch.Attributes.Add("onclick", "Togglecheck('" + chkSubmittersch.ClientID + "','" + txtSubmittersch.ClientID + "','no');");
-        chkIssuedetailsch.Attributes.Add("onclick", "Togglecheck('" + chkIssuedetailsch.ClientID + "','" + txtchkIssuedetailsch.ClientID + "','no');");
-        chkResolutionsch.Attributes.Add("onclick", "Togglecheck('" + chkResolutionsch.ClientID + "','" + txtResolutionsch.ClientID + "','no');");
-     
+      //  ddlstatesch.Attributes.Add("onchange", "stateselchange();");
+      
+    }
+
+    private void bindnewrecentgrid()
+    {
+        string strsql = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
+               "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, Issuetbl.Title," +
+               "Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink, Issuetbl.ICP, " +
+               "Issuetbl.IssueCreatedDate, Issuetbl.IssueCreatedUser FROM County " +
+               " INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
+               " INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
+               " INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
+               " INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType order by Issuetbl.IDIssue desc";
+
+        DataSet ds = new DataSet();
+        try
+        {
+            SqlDataAdapter da = new SqlDataAdapter(strsql, strconn);
+            da.Fill(ds);
+            da.Dispose();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                RecentIssuesgrid.DataSource = ds.Tables[0];
+                RecentIssuesgrid.DataBind();
+            }
+            else
+            {
+                RecentIssuesgrid.DataSource = ds.Tables[0].DefaultView;
+                RecentIssuesgrid.DataBind();
+            }
+        }
+        catch (Exception ex)
+        {
+        }
+
     }
     DBConnectionsKB objdbkb = new DBConnectionsKB();
 
@@ -163,7 +192,7 @@ public partial class Transactions : System.Web.UI.Page
                 " INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
                 " INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
                 " INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
-                " INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType";
+                " INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType order by Issuetbl.IDIssue desc";
 
         DataSet ds = new DataSet();
         try
@@ -236,7 +265,7 @@ public partial class Transactions : System.Web.UI.Page
             {
 
                 SqlConnection conn = new SqlConnection(strconn);
-                da = new SqlDataAdapter(strsql, conn);
+                da = new SqlDataAdapter(strsql + " order by Issuetbl.IDIssue desc", conn);
                 da.Fill(ds);
                 da.Dispose();
                 gvrecent.DataSource = ds.Tables[0];
@@ -311,7 +340,7 @@ public partial class Transactions : System.Web.UI.Page
                 txtRelatedLinksnew.Text = _gridView.SelectedRow.Cells[15].Text;
                 txtICPnew.Text = _gridView.SelectedRow.Cells[16].Text;
                 Panel2.GroupingText = "Details";
-                Button1.Text = "Clear";
+                btnNew.Text = "Clear";
                 TabContainer1.ActiveTabIndex = 2;
                 break;
         }
@@ -344,12 +373,13 @@ public partial class Transactions : System.Web.UI.Page
     {
 
     }
-    protected void Button1_Click(object sender, EventArgs e)
+    protected void btnNew_Click(object sender, EventArgs e)
     {
 
-        if (Button1.Text == "Clear")
+        lblmsgnew.Text = lblerrnew.Text = "";
+        if (btnNew.Text == "Clear")
         {
-            Button1.Text = "Submit";
+            btnNew.Text = "Submit";
             ddlstate_countynew.SelectedIndex = -1;
             ddlfpisnew.SelectedIndex = -1;
             ddlProcessingtypenew.SelectedIndex = -1;
@@ -371,7 +401,7 @@ public partial class Transactions : System.Web.UI.Page
         }
        
         string FIPSCounty = "00000";
-        if (ddlstate_countynew.SelectedValue.ToString() == "NW")
+        if (ddlstate_countynew.SelectedValue.ToString() == "00")
         {
              FIPSCounty = "00000";
 
@@ -435,22 +465,31 @@ public partial class Transactions : System.Web.UI.Page
             txtICPnew.Text = "N/A";
             txtSubmitternew.Text = "";
             txtRelatedLinksnew.Text = "";
-         
-          //  GridView5.DataBind();
-            //GridView6.DataBind();
-            GridViewResult.DataBind();
-            RecentIssuesgrid.DataBind();
+            lblmsgnew.Text = "New Issue Submited Successfully";
+          
+            bindnewrecentgrid();
 
 
         }
         catch (Exception ex)
         {
+            lblerrnew.Text = "Unable To Submite New Issue";
         }
     }
 
 
 
 
+    protected void bindprocessingddlcontrols()
+    {
+        ddlProcessingtypenew.Items.Clear();
+        ddlProcessingtypenew.Items.Add("--Select--");
+        ddlProcessingtypenew.DataBind();
+
+        ddlProcessingsch.Items.Clear();
+        ddlProcessingsch.Items.Add("--Select--");
+        ddlProcessingsch.DataBind();
+    }
 
     protected void gridprocessingtype_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -470,12 +509,17 @@ public partial class Transactions : System.Web.UI.Page
                 try
                 {
                    // ProcessingTypeObjectDataSource.InsertParameters
-                    ProcessingTypeObjectDataSource.InsertParameters["ProcessingType"].DefaultValue = newtxtproctype.Text;
-                   ProcessingTypeObjectDataSource.InsertParameters["ProcessingTypeDescription"].DefaultValue = newtxtDescription.Text;
+                    //SqlDataSourceProcessingType
+                    SqlDataSourceProcessingType.InsertParameters["ProcessingType"].DefaultValue = newtxtproctype.Text;
+                    SqlDataSourceProcessingType.InsertParameters["ProcessingTypeDescription"].DefaultValue = newtxtDescription.Text;
 
-                    ProcessingTypeObjectDataSource.Insert();
+                    SqlDataSourceProcessingType.Insert();
 
                     gridprocessingtype.DataBind();
+
+                    bindprocessingddlcontrols();
+
+
                 }
                 catch (Exception ex)
                 {
@@ -484,6 +528,38 @@ public partial class Transactions : System.Web.UI.Page
             }
         }
     }
+
+
+    
+
+    protected void gridprocessingtype_RowUpdated(object sender, GridViewUpdatedEventArgs e)
+    {
+        bindprocessingddlcontrols();
+    }
+    protected void gridprocessingtype_RowDeleted(object sender, GridViewDeletedEventArgs e)
+    {
+        bindprocessingddlcontrols();
+    }
+
+
+    protected void bindFileTypeddlcontrols()
+    {
+
+
+
+        ddlFileTypenew.Items.Clear();
+        ddlFileTypenew.Items.Add("--Select--");
+        ddlFileTypenew.DataBind();
+
+
+        ddlFileTypesch.Items.Clear();
+        ddlFileTypesch.Items.Add("--Select--");
+        ddlFileTypesch.DataBind();
+    }
+
+
+
+
        protected void gridFileType_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         if (e.CommandName == "InsertNew")
@@ -506,8 +582,10 @@ public partial class Transactions : System.Web.UI.Page
                     SqlDataSourceFileType.InsertParameters["FileTypeDescription"].DefaultValue = newtxtfileDescription.Text;
 
                     SqlDataSourceFileType.Insert();
-
+                    //FileTypeObjectDataSource.DataBind();
+                 
                     gridFileType.DataBind();
+                    bindFileTypeddlcontrols();
                 }
                 catch (Exception ex)
                 {
@@ -515,7 +593,36 @@ public partial class Transactions : System.Web.UI.Page
                 }
             }
         }
+        
     }
+       protected void gridFileType_RowUpdated(object sender, GridViewUpdatedEventArgs e)
+       {
+           bindFileTypeddlcontrols();
+       }
+       protected void gridFileType_RowDeleted(object sender, GridViewDeletedEventArgs e)
+       {
+           bindFileTypeddlcontrols();
+       }
+
+       protected void bindissuetypeddlcontrols()
+       {
+
+          
+
+
+           ddlIssueTypenew.Items.Clear();
+           ddlIssueTypenew.Items.Add("--Select--");
+           ddlIssueTypenew.DataBind();
+
+
+           ddlIssuetypesch.Items.Clear();
+           ddlIssuetypesch.Items.Add("--Select--");
+           ddlIssuetypesch.DataBind();
+       }
+
+
+
+
     protected void gridissuetype_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         if (e.CommandName == "InsertNew")
@@ -540,6 +647,7 @@ public partial class Transactions : System.Web.UI.Page
                     SqlDataSourceIssuetype.Insert();
 
                     gridissuetype.DataBind();
+                    bindissuetypeddlcontrols();
                 }
                 catch (Exception ex)
                 {
@@ -547,6 +655,24 @@ public partial class Transactions : System.Web.UI.Page
                 }
             }
         }
+    }
+
+    protected void gridissuetype_RowUpdated(object sender, GridViewUpdatedEventArgs e)
+    {
+        bindissuetypeddlcontrols();
+    }
+    protected void gridissuetype_RowDeleted(object sender, GridViewDeletedEventArgs e)
+    {
+        bindissuetypeddlcontrols();
+    }
+
+    protected void gridfaq_RowUpdated(object sender, GridViewUpdatedEventArgs e)
+    {
+        ListViewfaq.DataBind();
+    }
+    protected void gridfaq_RowDeleted(object sender, GridViewDeletedEventArgs e)
+    {
+        ListViewfaq.DataBind();
     }
     protected void gridfaq_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -574,8 +700,8 @@ public partial class Transactions : System.Web.UI.Page
                     SqlDataSourcefaq.InsertParameters["Faqsans"].DefaultValue = newtxtFaqsans.Text;
 
                     SqlDataSourcefaq.Insert();
-                    
 
+                    ListViewfaq.DataBind();
                     gridfaq.DataBind();
                 }
                 catch (Exception ex)
@@ -588,142 +714,314 @@ public partial class Transactions : System.Web.UI.Page
 
     protected void btnsearch_Click(object sender, EventArgs e)
     {
-        string strwhere=" where ";
-        string strstate="";
-        string strfips = "";
-        if (chkstatesch.Checked)
+
+        Errorsch.Text = MSGsch.Text = "";
+
+        if (checkschcontrol())
         {
-            strstate = ddlstatesch.SelectedValue;
-            strwhere += "County.State='" + strstate + "' and ";
-
-        }
-        if (chkcountysch1.Checked)
-        {
-            strfips = ddlFipssch.SelectedItem.Text;
-            strwhere += "Issuetbl.FIPSCounty='" + strfips + "' and ";
-        }
-        if (chkFipssch.Checked)
-        {
-            strfips = ddlFipssch.SelectedItem.Text;
-            strwhere += "Issuetbl.FIPSCounty='" + strfips + "' and ";
-        }
-
-        if (chkIssueTypesch.Checked) { strwhere += "Issuetbl.IDIssueType=" + ddlIssuetypesch.SelectedValue + " and "; }
-
-
-        if (chkFilesch.Checked) { strwhere += "Issuetbl.IDFileType=" + ddlFileTypesch.SelectedValue + " and "; }
-
-        if (chkProcessingsch.Checked) { strwhere += "Issuetbl.IDProcessingType=" + ddlProcessingsch.SelectedValue + " and "; }
-        if (chkEditionsch.Checked)
-        {
-            if (txtEditionsch.Text.Length > 0)
+            string strwhere = " where ";
+            string strstate = "";
+            string strfips = "";
+            string straddor="";
+             if (radioandor.SelectedIndex>-1)
+                 straddor = " " + radioandor.SelectedItem.Text+" ";
+            if (straddor == string.Empty)
+                straddor = " and";
+            if (ddlstatesch.SelectedValue != "")
             {
-                strwhere += "Issuetbl.Edition=" + txtEditionsch.Text.Split('/')[0] + " and ";
-                strwhere += "Issuetbl.Version=" + txtEditionsch.Text.Split('/')[1] + " and ";
+                strstate = ddlstatesch.SelectedValue;
+                strwhere += "County.State='" + strstate + "' " + straddor;
+
             }
-        }
-        if (chkRelatedICPsch.Checked)
-        {
-            if(txtRelatedICPsch.Text.Length>0)
-                strwhere += "Issuetbl.ICP=" + txtRelatedICPsch.Text + " and ";
+            if (ddlcountysch.SelectedValue != "")
+            {
+             
+                strwhere += "Issuetbl.FIPSCounty='" + ddlcountysch.SelectedValue + "' " + straddor;
 
-        }
-        if (chkSubmittersch.Checked)
-        {
-            if(txtSubmittersch.Text.Length>0)
-                strwhere += "Issuetbl.Submitter='" + txtSubmittersch.Text.Trim() + "' and ";
-
-        }
-        if (chkDatesch.Checked)
-        {
-            //txtfdatesch
+            }
             
-            if ( txtfdatesch.Text.Length > 0)
-                strwhere += "Issuetbl.IssueCreatedDate>='" + txtfdatesch.Text.Trim() + "' and ";
-            if(txttdatesch.Text.Length>0)
-                strwhere += "Issuetbl.IssueCreatedDate<='" + txttdatesch.Text.Trim() + "' and ";
+            if (ddlfipssch.SelectedIndex > 0)
+            {
+                strfips = ddlfipssch.SelectedValue;
+                strwhere += "Issuetbl.FIPSCounty='" + strfips + "' " + straddor;
+            }
+            
 
-        }
-        if (chkIssuedetailsch.Checked)
-        {
+            if (ddlIssuetypesch.SelectedIndex > 0) { strwhere += "Issuetbl.IDIssueType=" + ddlIssuetypesch.SelectedValue + straddor; }
+
+
+            if (ddlFileTypesch.SelectedIndex > 0) { strwhere += "Issuetbl.IDFileType=" + ddlFileTypesch.SelectedValue + straddor; }
+
+            if (ddlProcessingsch.SelectedIndex > 0) { strwhere += "Issuetbl.IDProcessingType=" + ddlProcessingsch.SelectedValue + straddor; }
+            if (txtEditionsch.Text != string.Empty)
+            {
+
+                int i;
+                if(int.TryParse(txtEditionsch.Text,out i))
+                {
+                    strwhere += "Issuetbl.Edition=" + txtEditionsch.Text + straddor;
+                }
+                else if (txtEditionsch.Text.ToUpper() == "N/A" || txtEditionsch.Text.ToUpper() == "NA")
+                {
+                    strwhere += "Issuetbl.Edition=null";
+                }
+
+            }
+            if (txtVersionsch.Text.Length > 0)
+                {
+                    int i;
+                    if (int.TryParse(txtVersionsch.Text, out i))
+                    {
+                        
+                        strwhere += "Issuetbl.Version=" + txtVersionsch.Text + straddor;
+                    }
+                    else if (txtVersionsch.Text.ToUpper() == "N/A" || txtVersionsch.Text.ToUpper() == "NA")
+                    {
+                        strwhere += "Issuetbl.Version=null";
+                    }
+                   
+                }
+
+
+            if (txtRelatedICPsch.Text.Length > 0)
+            {
+                int i;
+                if (int.TryParse(txtVersionsch.Text, out i))
+                {
+                    strwhere += "Issuetbl.Version=" + txtVersionsch.Text + straddor;
+                }
+                else if (txtVersionsch.Text.ToUpper() == "N/A" || txtVersionsch.Text.ToUpper() == "NA")
+                {
+                    strwhere += "Issuetbl.Version=null";
+                }
+                strwhere += "Issuetbl.ICP=" + txtRelatedICPsch.Text + straddor;
+            }
+
+
+
+            if (txtSubmittersch.Text.Length > 0)
+                strwhere += "Issuetbl.Submitter='" + txtSubmittersch.Text.Trim() + "'" + straddor;
+            if (txtfdatesch.Text.Length > 0)
+            {
+                if (txttdatesch.Text.Length > 0)
+                {
+                    if (checkdates(txtfdatesch.Text, txttdatesch.Text))
+                    {
+                        if (txtfdatesch.Text.Length > 0)
+                            strwhere += "Issuetbl.IssueCreatedDate>='" + txtfdatesch.Text.Trim() + "'" + straddor;
+                        if (txttdatesch.Text.Length > 0)
+                            strwhere += "Issuetbl.IssueCreatedDate<='" + txttdatesch.Text.Trim() + "'" + straddor;
+                    }
+                    else
+                    {
+                        Errorsch.Text = "From date should be less than To date";
+                        return;
+                    }
+                }
+                else
+                {
+                    Errorsch.Text = "Please Enter both From date and To date";
+                    return;
+                }
+            }
+
+
+
+
             if (ddlwildcsh.SelectedValue != "0")
             {
                 if (ddlwildcsh.SelectedValue == "Like")
                 {
-                    if(txtchkIssuedetailsch.Text.Length>0)
-                        strwhere += "Issuetbl.IssueDetails Like '" + txtchkIssuedetailsch.Text + "' and ";
+                    if (txtIssuedetailsch.Text.Length > 0)
+                        strwhere += "Issuetbl.IssueDetails Like '%" + txtIssuedetailsch.Text + "%'" + straddor;
                 }
                 else if (ddlwildcsh.SelectedValue == "Not Like")
                 {
-                    if (txtchkIssuedetailsch.Text.Length > 0)
-                        strwhere += "Issuetbl.IssueDetails Not Like '" + txtchkIssuedetailsch.Text + "' and ";
+                    if (txtIssuedetailsch.Text.Length > 0)
+                        strwhere += "Issuetbl.IssueDetails Not Like '%" + txtIssuedetailsch.Text + "%'" + straddor;
                 }
                 else if (ddlwildcsh.SelectedValue == "Contains")
                 {
-                    if (txtchkIssuedetailsch.Text.Length > 0)
+                    if (txtIssuedetailsch.Text.Length > 0)
                     {
-                        strwhere += "CONTAINS(Issuetbl.IssueDetails , '\"" + txtchkIssuedetailsch.Text + "\"') and ";
+                        strwhere += "CONTAINS(Issuetbl.IssueDetails , '\"" + txtIssuedetailsch.Text + "\"')" + straddor;
                     }
-                     
+
                 }
 
             }
             else
             {
-                if(txtchkIssuedetailsch.Text.Length>0)
-                    strwhere += "Issuetbl.IssueDetails='" + txtchkIssuedetailsch.Text.Trim() + "' and ";
+                if (txtIssuedetailsch.Text.Length > 0)
+                    strwhere += "Issuetbl.IssueDetails='" + txtIssuedetailsch.Text.Trim() + "'" + straddor;
             }
 
-        }
 
 
-
-        
-        int stlen=strwhere.Trim().Length;
-
-        if(strwhere.Length==5)
-            strwhere="";
-        else if(strwhere.IndexOf("and")>0)
-        {
-            if (strwhere.Substring(stlen - 2, 3) == "and")
-                strwhere = strwhere.Substring(0, stlen - 3);
-        }
-
-        string strselect = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType,"+
-                           "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, "+
-                           "Issuetbl.Title, Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink,"+
-                        "Issuetbl.ICP,Issuetbl.IssueCreatedDate FROM  County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
-                        "INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType "+
-                        "INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType "+
-                        "INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType " + strwhere;
-
-        SqlDataAdapter da;
-        DataSet ds=new DataSet();
-        
-        try
-        {
-            
-            SqlConnection conn = new SqlConnection(strconn);
-            da = new SqlDataAdapter(strselect, conn);
-            da.Fill(ds);
-            da.Dispose();
-            if (ds.Tables[0].Rows.Count > 0)
+            if (ddlwildcardsresolutionsch.SelectedValue != "0")
             {
-                GridViewResult.Visible = true;
-                GridViewResult.DataSource = ds.Tables[0];
-                GridViewResult.DataBind();
+                if (ddlwildcardsresolutionsch.SelectedValue == "Like")
+                {
+                    if (txtResolutionsch.Text.Length > 0)
+                        strwhere += "Issuetbl.Resolution Like '%" + txtResolutionsch.Text + "%'" + straddor;
+                }
+                else if (ddlwildcardsresolutionsch.SelectedValue == "Not Like")
+                {
+                    if (txtResolutionsch.Text.Length > 0)
+                        strwhere += "Issuetbl.Resolution Not Like '%" + txtResolutionsch.Text + "%'" + straddor;
+                }
+                else if (ddlwildcardsresolutionsch.SelectedValue == "Contains")
+                {
+                    if (txtResolutionsch.Text.Length > 0)
+                    {
+                        strwhere += "CONTAINS(Issuetbl.Resolution , '\"" + txtResolutionsch.Text + "\"')" + straddor;
+                    }
+
+                }
+
             }
-           
+            else
+            {
+                if (txtResolutionsch.Text.Length > 0)
+                    strwhere += "Issuetbl.Resolution='" + txtResolutionsch.Text.Trim() + "'" + straddor;
+            }
+
+
+
+
+            int stlen = strwhere.Trim().Length;
+
+            if (strwhere.Length == 5)
+                strwhere = "";
+            else if (strwhere.IndexOf(straddor) > 0)
+            {
+                if (straddor.ToUpper().Trim() == "AND")
+                {
+                    if (strwhere.Substring(stlen - 2, 3).ToUpper().Trim() == "AND")
+                        strwhere = strwhere.Substring(0, stlen - 3);
+                }
+                else
+                {
+                    if (strwhere.Substring(stlen - 2, 3).ToUpper().Trim()== "OR")
+                        strwhere = strwhere.Substring(0, stlen - 2);
+                }
+            }
+
+            string strselect = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
+                               "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, " +
+                               "Issuetbl.Title, Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
+                            "Issuetbl.ICP,Issuetbl.IssueCreatedDate ,[IssueCreatedUser] FROM  County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
+                            "INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
+                            "INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
+                            "INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType " + strwhere + " order by Issuetbl.IDIssue desc";
+
+            SqlDataAdapter da;
+            DataSet ds = new DataSet();
+
+            try
+            {
+
+                SqlConnection conn = new SqlConnection(strconn);
+                da = new SqlDataAdapter(strselect, conn);
+                da.Fill(ds);
+                da.Dispose();
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    GridViewResult.Visible = true;
+                    MSGsch.Text = "Search Result with Rows Count: " + ds.Tables[0].Rows.Count;
+                    GridViewResult.DataSource = ds.Tables[0];
+                    GridViewResult.DataBind();
+
+                    clearschcontrols();
+                }
+                else
+                {
+                    MSGsch.Text = "No Records Found";
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+            }
 
         }
-        catch (Exception ex)
+        else
         {
+            Errorsch.Text = "Please Select one search criteria ";
         }
-
-
         
     }
 
+    private bool checkdates(string p, string p_2)
+    {
+        bool retval = false;
+        DateTime dt1, dt2;
+        if (DateTime.TryParse(p, out dt1))
+        {
+            if (DateTime.TryParse(p_2, out dt2))
+            {
+                if (dt1 < dt2)
+                {
+                    retval = true;
+                }
+            }
+            
+        }
+        
+        
+        return retval;
+        
+    }
+
+    protected bool  checkschcontrol()
+    {
+        bool retval=false;
+        if (ddlstatesch.SelectedValue !="" ||
+         ddlcountysch.SelectedValue != "" ||
+         ddlfipssch.SelectedIndex > 0 ||
+         txtcountysch.Text != "" ||
+         ddlFileTypesch.SelectedIndex > 0 ||
+         ddlIssuetypesch.SelectedIndex > 0 ||
+         ddlProcessingsch.SelectedIndex > 0 ||
+         txtEditionsch.Text != "" ||
+         txtVersionsch.Text != "" ||
+         txtRelatedICPsch.Text != "" ||
+         txtSubmittersch.Text != "" ||
+         txtfdatesch.Text != "" ||
+         txttdatesch.Text != "" ||
+         txtIssuedetailsch.Text != "" ||
+         txtResolutionsch.Text != "")
+        {
+            retval=true;
+        }
+        return retval;
+        }
+
+    protected void clearschcontrols()
+    {
+       // ddlstatesch.SelectedValue = "";
+        //ddlcountysch.SelectedValue = "";
+        CascadingDropDown1.SelectedValue = "";
+        CascadingDropDown2.SelectedValue = "";
+        ddlfipssch.SelectedIndex = 0;
+        txtcountysch.Text = "";
+        ddlFileTypesch.SelectedIndex = 0;
+        ddlIssuetypesch.SelectedIndex = 0;
+        ddlProcessingsch.SelectedIndex = 0;
+        txtEditionsch.Text = "";
+        txtVersionsch.Text = "";
+        txtRelatedICPsch.Text = "";
+        txtSubmittersch.Text = "";
+        txtfdatesch.Text = "";
+        txttdatesch.Text = "";
+        ddlwildcsh.SelectedIndex = 0;
+        ddlwildcardsresolutionsch.SelectedIndex = 0;
+        txtIssuedetailsch.Text = "";
+        txtResolutionsch.Text = "";
+        
+
+    }
     protected void Gridrecent_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         GridView _gridView = (GridView)sender;
@@ -784,93 +1082,244 @@ public partial class Transactions : System.Web.UI.Page
     }
     protected void GridViewResult_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        GridView _gridView = (GridView)sender;
+        //GridView _gridView = (GridView)sender;
 
-        // Get the selected index and the command name
+        //// Get the selected index and the command name
 
-        int _selectedIndex = int.Parse(e.CommandArgument.ToString());
-        string _commandName = e.CommandName;
+        //int _selectedIndex = int.Parse(e.CommandArgument.ToString());
+        //string _commandName = e.CommandName;
 
-        switch (_commandName)
-        {
-            case ("SingleClick"):
-                _gridView.SelectedIndex = _selectedIndex;
-                //this.Message.Text += "Single clicked GridView row at index " + _selectedIndex.ToString() + "<br />";
-                break;
-            case ("DoubleClick"):
-                _gridView.SelectedIndex = _selectedIndex;
-                // this.Message.Text += "Double clicked GridView row at index " + _selectedIndex.ToString() + "<br />";
-                string strid = _gridView.SelectedRow.Cells[2].Text;
-                string strselect = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
-                               "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, " +
-                               "Issuetbl.Title, Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
-                            "Issuetbl.ICP,Issuetbl.IssueCreatedDate FROM  County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
-                            "INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
-                            "INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
-                            "INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType where Issuetbl.IDIssue=" + strid; 
+        //switch (_commandName)
+        //{
+        //    case ("SingleClick"):
+        //        _gridView.SelectedIndex = _selectedIndex;
+        //        //this.Message.Text += "Single clicked GridView row at index " + _selectedIndex.ToString() + "<br />";
+        //        break;
+        //    case ("DoubleClick"):
+        //        _gridView.SelectedIndex = _selectedIndex;
+        //        // this.Message.Text += "Double clicked GridView row at index " + _selectedIndex.ToString() + "<br />";
+        //        string strid = _gridView.SelectedRow.Cells[2].Text;
+        //        string strselect = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
+        //                       "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, " +
+        //                       "Issuetbl.Title, Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
+        //                    "Issuetbl.ICP,Issuetbl.IssueCreatedDate FROM  County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
+        //                    "INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
+        //                    "INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
+        //                    "INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType where Issuetbl.IDIssue=" + strid; 
 
-                SqlDataAdapter da;
-                DataSet ds = new DataSet();
+        //        SqlDataAdapter da;
+        //        DataSet ds = new DataSet();
 
-                try
-                {
+        //        try
+        //        {
 
-                    SqlConnection conn = new SqlConnection(strconn);
-                    da = new SqlDataAdapter(strselect, conn);
-                    da.Fill(ds);
-                    da.Dispose();
-                    //Panelshowinfo.Visible = true;
-                  //  Panel6.Visible = false;
-                   // DetailsViewsch.Visible = true;
-                   // DetailsViewsch.AutoGenerateRows = true;
-                  //  DetailsViewsch.
+        //            SqlConnection conn = new SqlConnection(strconn);
+        //            da = new SqlDataAdapter(strselect, conn);
+        //            da.Fill(ds);
+        //            da.Dispose();
+        //            //Panelshowinfo.Visible = true;
+        //          //  Panel6.Visible = false;
+        //           // DetailsViewsch.Visible = true;
+        //           // DetailsViewsch.AutoGenerateRows = true;
+        //          //  DetailsViewsch.
 
-                    //DetailsViewsch.DataSource = ds.Tables[0];
+        //            //DetailsViewsch.DataSource = ds.Tables[0];
 
-                    //DetailsViewsch.DataBind();
-                    //DetailsViewsch.Focus();
+        //            //DetailsViewsch.DataBind();
+        //            //DetailsViewsch.Focus();
 
 
-                }
-                catch (Exception ex)
-                {
-                }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //        }
 
-            //    TabContainer1.ActiveTabIndex = 1;
-                break;
-        }
+        //    //    TabContainer1.ActiveTabIndex = 1;
+        //        break;
+        //}
     }
     protected void GridViewResult_RowCreated(object sender, GridViewRowEventArgs e)
     {
-        if (e.Row.RowType == DataControlRowType.DataRow)
-        {
-            e.Row.Attributes.Add("onMouseOver", "this.style.background='#eeff00'");
-            e.Row.Attributes.Add("onMouseOut", "this.style.background='#ffffff'");
-        }
+        //if (e.Row.RowType == DataControlRowType.DataRow)
+        //{
+        //    e.Row.Attributes.Add("onMouseOver", "this.style.background='#eeff00'");
+        //    e.Row.Attributes.Add("onMouseOut", "this.style.background='#ffffff'");
+        //}
     }
     protected void GridViewResult_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            // Get the LinkButton control in the first cell
-            LinkButton _singleClickButton = (LinkButton)e.Row.Cells[0].Controls[0];
-            // Get the javascript which is assigned to this LinkButton
-            string _jsSingle = ClientScript.GetPostBackClientHyperlink(_singleClickButton, "");
-            // To prevent the first click from posting back immediately 
-            // (therefore giving the user a chance to double click) pause the 
-            // postback for 300 milliseconds by using setTimeout
-            _jsSingle = _jsSingle.Insert(11, "setTimeout(\"");
-            _jsSingle += "\", 300)";
-            // Add this javascript to the onclick Attribute of the row
-            e.Row.Attributes["onclick"] = _jsSingle;
+            HyperLink HyperLink1 = (HyperLink)e.Row.Cells[0].Controls[0];
 
-            // Get the LinkButton control in the second cell
-            LinkButton _doubleClickButton = (LinkButton)e.Row.Cells[1].Controls[0];
-            // Get the javascript which is assigned to this LinkButton
-            string _jsDouble = ClientScript.GetPostBackClientHyperlink(_doubleClickButton, "");
-            // Add this javascript to the ondblclick Attribute of the row
-            e.Row.Attributes["ondblclick"] = _jsDouble;
+            HyperLink1.ImageUrl = "~/img/select.png";
+            HyperLink1.ToolTip = "Detail view";
+            DataRowView row = (DataRowView)e.Row.DataItem;
+            //if (objTemp != null)
+            //{
+            //    string id = objTemp.ToString();
+            HyperLink1.Attributes.Add("onclick", "ShowMyModalPopupsch('" + row["IDIssue"] + "')");
+           
+                //Do your operations
+           // }
+            // _singleClickButton.Attributes.Add("onclick", "ShowMyModalPopup('" + gvrecent.DataKeys[e.Row.RowIndex].Value + "')");
         }
+    }
+    protected void btnupdatesch_Click(object sender, EventArgs e)
+    {
+        string sql = "Update Issuetbl Set IDProcessingType=" + ddlpupptypesch.SelectedValue.ToString() +
+                     ", IDFileType=" + ddlpupftypesch.SelectedValue.ToString() + " ,IDIssueType=" + ddlpupitypesch.SelectedValue.ToString() +
+                     " ,Edition=" + txtpupEditionsch.Text + " ,Version=" + txtpupVersionsch.Text + " ,Title='" + txtpuptitlesch.Text +
+                     "' ,IssueDetails='" + txtpupissuesch.Text + "' ,Resolution='" + txtpupresolutionsch.Text +
+                     "' ,Submitter='" + txtpupSubmittersch.Text + "' ,Relatedlink='" + txtpuprlinkssch.Text +
+                     "' ,ICP=" + txtpupicpsch.Text + " Where IDIssue=" + hidsch.Value;
+        try
+        {
+            SqlConnection conn = new SqlConnection(strconn);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+
+         //   bindschgrid();
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
+
+    private void bindschgrid()
+    {
+        string strwhere = " where ";
+        string strstate = "";
+        string strfips = "";
+        if (ddlstatesch.SelectedIndex > 0)
+        {
+            strstate = ddlstatesch.SelectedValue;
+            strwhere += "County.State='" + strstate + "' and ";
+
+        }
+        if (ddlfipssch.SelectedIndex > 0)
+        {
+            strfips = ddlfipssch.SelectedValue;
+            strwhere += "Issuetbl.FIPSCounty='" + strfips + "' and ";
+        }
+        //if (ddlFipssch.SelectedIndex > 0)
+        //{
+        //    strfips = ddlFipssch.SelectedItem.Text;
+        //    strwhere += "Issuetbl.FIPSCounty='" + strfips + "' and ";
+        //}
+
+        if (ddlIssuetypesch.SelectedIndex > 0) { strwhere += "Issuetbl.IDIssueType=" + ddlIssuetypesch.SelectedValue + " and "; }
+
+
+        if (ddlFileTypesch.SelectedIndex > 0) { strwhere += "Issuetbl.IDFileType=" + ddlFileTypesch.SelectedValue + " and "; }
+
+        if (ddlProcessingsch.SelectedIndex > 0) { strwhere += "Issuetbl.IDProcessingType=" + ddlProcessingsch.SelectedValue + " and "; }
+        if (txtEditionsch.Text != string.Empty)
+        {
+            if (txtEditionsch.Text.Length > 0)
+            {
+                strwhere += "Issuetbl.Edition=" + txtEditionsch.Text.Split('/')[0] + " and ";
+                strwhere += "Issuetbl.Version=" + txtEditionsch.Text.Split('/')[1] + " and ";
+            }
+        }
+
+        if (txtRelatedICPsch.Text.Length > 0)
+            strwhere += "Issuetbl.ICP=" + txtRelatedICPsch.Text + " and ";
+
+
+
+        if (txtSubmittersch.Text.Length > 0)
+            strwhere += "Issuetbl.Submitter='" + txtSubmittersch.Text.Trim() + "' and ";
+
+
+        if (txtfdatesch.Text.Length > 0)
+            strwhere += "Issuetbl.IssueCreatedDate>='" + txtfdatesch.Text.Trim() + "' and ";
+        if (txttdatesch.Text.Length > 0)
+            strwhere += "Issuetbl.IssueCreatedDate<='" + txttdatesch.Text.Trim() + "' and ";
+
+
+
+        if (ddlwildcsh.SelectedValue != "0")
+        {
+            if (ddlwildcsh.SelectedValue == "Like")
+            {
+                if (txtIssuedetailsch.Text.Length > 0)
+                    strwhere += "Issuetbl.IssueDetails Like '" + txtIssuedetailsch.Text + "' and ";
+            }
+            else if (ddlwildcsh.SelectedValue == "Not Like")
+            {
+                if (txtIssuedetailsch.Text.Length > 0)
+                    strwhere += "Issuetbl.IssueDetails Not Like '" + txtIssuedetailsch.Text + "' and ";
+            }
+            else if (ddlwildcsh.SelectedValue == "Contains")
+            {
+                if (txtIssuedetailsch.Text.Length > 0)
+                {
+                    strwhere += "CONTAINS(Issuetbl.IssueDetails , '\"" + txtIssuedetailsch.Text + "\"') and ";
+                }
+
+            }
+
+        }
+        else
+        {
+            if (txtIssuedetailsch.Text.Length > 0)
+                strwhere += "Issuetbl.IssueDetails='" + txtIssuedetailsch.Text.Trim() + "' and ";
+        }
+
+
+
+
+
+
+        int stlen = strwhere.Trim().Length;
+
+        if (strwhere.Length == 5)
+            strwhere = "";
+        else if (strwhere.IndexOf("and") > 0)
+        {
+            if (strwhere.Substring(stlen - 2, 3) == "and")
+                strwhere = strwhere.Substring(0, stlen - 3);
+        }
+
+        string strselect = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
+                           "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, " +
+                           "Issuetbl.Title, Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
+                        "Issuetbl.ICP,Issuetbl.IssueCreatedDate ,[IssueCreatedUser] FROM  County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
+                        "INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
+                        "INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
+                        "INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType " + strwhere + " order by Issuetbl.IDIssue desc";
+
+        SqlDataAdapter da;
+        DataSet ds = new DataSet();
+
+        try
+        {
+
+            SqlConnection conn = new SqlConnection(strconn);
+            da = new SqlDataAdapter(strselect, conn);
+            da.Fill(ds);
+            da.Dispose();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                GridViewResult.Visible = true;
+                GridViewResult.DataSource = ds.Tables[0];
+                GridViewResult.DataBind();
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+        }
+
+
+
+       
+       
     }
     protected void Button5_Click(object sender, EventArgs e)
     {
@@ -970,6 +1419,33 @@ public partial class Transactions : System.Web.UI.Page
         }
     }
 
-   
 
+
+    protected void TabContainer1_ActiveTabChanged(object sender, EventArgs e)
+    {
+        if (TabContainer1.TabIndex ==0)
+        {
+
+        }
+        else if (TabContainer1.TabIndex == 1)
+        {
+            ddlFileTypesch.Items.Clear();
+            ddlFileTypesch.DataBind();
+        }
+        else if (TabContainer1.TabIndex == 2)
+        {
+            ddlFileTypesch.Items.Clear();
+            ddlFileTypesch.DataBind();
+        }
+        else if (TabContainer1.TabIndex == 3)
+        {
+        }
+        else if (TabContainer1.TabIndex == 4)
+        {
+        }
+    }
+
+
+
+    
 }

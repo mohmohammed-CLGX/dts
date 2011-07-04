@@ -38,11 +38,35 @@ public class WebService : System.Web.Services.WebService
                      "[IssueDetails] ,[Resolution] ,[Submitter],case([Relatedlink]) when '' then null else [Relatedlink] end  as Relatedlink   ,[ICP],[IssueCreatedDate],[IssueCreatedUser]," +
                      "[IssueUpdatedDate],[IssueUpdatedUser],[Isuplodedfile] ,[IDuploadedfile] FROM " +
                      " County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty where IDissue=" + IssueID;
+        try
+        {
+            SqlDataAdapter da = new SqlDataAdapter(sql, System.Configuration.ConfigurationManager.ConnectionStrings["kbConnectionString"].ToString());
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+
+            return ds.GetXml();
+        }
+        catch (Exception ex)
+        {
+            return "";
+        }
+    }
+
+    [WebMethod]
+    public string getstatefromfips(string fips)
+    {
+        try
+        {
+        string sql = "select state,county from county where fips='" + fips + "'";
         SqlDataAdapter da = new SqlDataAdapter(sql, System.Configuration.ConfigurationManager.ConnectionStrings["kbConnectionString"].ToString());
         DataSet ds = new DataSet();
         da.Fill(ds);
-
-        return ds.GetXml();
+        return ds.Tables[0].Rows[0]["state"].ToString() + ";" + ds.Tables[0].Rows[0]["county"].ToString();
+        }
+        catch (Exception ex)
+        {
+            return "";
+        }
     }
 }
 

@@ -6,9 +6,48 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <link type="text/css" href="App_Themes/datePicker.css" rel="stylesheet" />
     <link type="text/css" href="_assets/css/grid.css" rel="stylesheet" />
-    <link type="text/css" href="StyleSheet.css" rel="stylesheet" />   
-  
-    <script language="javascript"  type="text/javascript">
+    <link type="text/css" href="StyleSheet.css" rel="stylesheet" />
+
+    <script language="javascript" type="text/javascript">
+
+
+                function fipsschonchange() {
+
+
+            
+                var ddlfipsschvalue = document.getElementById("<%=ddlfipssch.ClientID%>")
+                if (ddlfipsschvalue.selectedIndex > 0) {
+                    WebService.getstatefromfips(ddlfipsschvalue.value, setstate);
+                }
+                else {
+                    var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
+                    var ddlcounty = document.getElementById("<%=ddlcountysch.ClientID%>");
+                    var txt = document.getElementById("<%=txtcountysch.ClientID%>");
+                    ddlstate.selectedIndex = 0;
+                    ddlstate.disabled = false;
+                    ddlcounty.style.display = "";
+                    txt.style.display = 'none'
+                    txt.value = "";
+                }
+                   
+                   
+                }
+                function setstate(state) {
+                    var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
+                    var ddlcounty = document.getElementById("<%=ddlcountysch.ClientID%>");
+
+                    var txt = document.getElementById("<%=txtcountysch.ClientID%>");
+                    var ddlfipsschvalue = document.getElementById("<%=ddlfipssch.ClientID%>").value;
+                    // document.getElementById("sel").value = 3
+                    var mySplitResult = state.split(";");
+                    ddlstate.value = mySplitResult[0];
+                    //ddlcounty.value = ddlfipsschvalue;
+                    ddlstate.disabled = true;
+                    ddlcounty.style.display = 'none';
+                    txt.style.display = "";
+                    txt.value = mySplitResult[1];
+                    
+                }
         function OpenSearchResults(str) {
             var url = document.getElementById(str);
 
@@ -48,163 +87,24 @@
         }
 
 
-        function fipsselchange() {
-
-            var ddlFips = document.getElementById("<%=ddlFipssch.ClientID%>");
-            var Text = ddlFips.options[ddlFips.selectedIndex].text;
-            var Value = ddlFips.options[ddlFips.selectedIndex].value;
-            var ddlcounty = document.getElementById("<%=ddlcountysch1.ClientID%>");
-            var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
-            ddlcounty.value = Value;
-            ddlstate.value = Value.split(" ")[0];
-
-            // alert("fips :" + Value);
-        }
+        
         function countyselchange() {
-            var ddlcounty = document.getElementById("<%=ddlcountysch1.ClientID%>");
+            var ddlcounty = document.getElementById("<%=ddlcountysch.ClientID%>");
             var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
-            var ddlFips = document.getElementById("<%=ddlFipssch.ClientID%>");
             var Text = ddlcounty.options[ddlcounty.selectedIndex].text;
             var Value = ddlcounty.options[ddlcounty.selectedIndex].value;
 
-            ddlFips.value = ddlcounty.options[ddlcounty.selectedIndex].value;
             ddlstate.value = ddlcounty.options[ddlcounty.selectedIndex].value.split(" ")[0];
 
             //alert("county :" + Value);
 
         }
-        function stateselchange() {
-            var ddlcounty = document.getElementById("<%=ddlcountysch1.ClientID%>");
-            var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
-            //var ddlFips = document.getElementById("<%=ddlFipssch.ClientID%>");
-            var chkfips = document.getElementById("<%=chkFipssch.ClientID%>");
-            var chkstate = document.getElementById("<%=chkstatesch.ClientID%>");
-            var chkcountysch1 = document.getElementById("<%=chkcountysch1.ClientID%>");
-            
-//            if (ddlstate.options[ddlstate.selectedIndex].value == "1") {
-//                chkfips.disabled = true;
-//                chkcountysch1.disabled = true;
-//            }
-//            else {
-//                chkfips.disabled = false;
-//                chkcountysch1.disabled = false;
-
-//            }
-
-        }
-        function chkstate() {
-            var chkstate = document.getElementById("<%=chkstatesch.ClientID%>");
-            var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
-
-            var ddlFips = document.getElementById("<%=ddlFipssch.ClientID%>");
-            var chkfips = document.getElementById("<%=chkFipssch.ClientID%>");
-
-            var chkcountysch1 = document.getElementById("<%=chkcountysch1.ClientID%>");
-            var ddlcountysch1 = document.getElementById("<%=ddlcountysch1.ClientID%>");
-
-            var ddlcountyschajax = document.getElementById("<%=ddlcountyschajax.ClientID%>");
 
 
 
-            if (chkstate.checked) { //ddlstate.style. = 'none';
-                ddlstate.disabled = false;
-                chkfips.disabled = true;
-                chkcountysch1.disabled = true;
-                
-                ddlFips.disabled = false;
-                ddlcountysch1.disabled = false;
-                ddlcountysch1.style.visibility = "hidden";
-                ddlcountyschajax.style.visibility = "visible";
-
-               
-
-            }
-            else {
-                // ddlstate.style.display = '';
-                ddlstate.disabled = true;
-                ddlstate.value = 0;
-
-                chkfips.disabled = false;
-                chkcountysch1.disabled = false;
-                ddlFips.disabled = true;
-                ddlcountysch1.disabled = true;
-                ddlFips.value = 0;
-                ddlcountysch1.value = 0;
-                ddlcountysch1.style.visibility = "visible";
-                ddlcountyschajax.style.visibility = "hidden";
-                
-
-            }
-        }
-
-        function chkfips() {
-            var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
-            var ddlFips = document.getElementById("<%=ddlFipssch.ClientID%>");
-            var chkfips = document.getElementById("<%=chkFipssch.ClientID%>");
-            var chkstate = document.getElementById("<%=chkstatesch.ClientID%>");
-            var chkcountysch1 = document.getElementById("<%=chkcountysch1.ClientID%>");
-            var ddlcountysch1 = document.getElementById("<%=ddlcountysch1.ClientID%>");
-            if (chkfips.checked) { //ddlstate.style. = 'none';
-                ddlFips.value = 0;
-                ddlstate.disabled = true;
-                ddlstate.value = 0;
-                ddlcountysch1.disabled = true;
-                ddlcountysch1.value = 0;
-                ddlFips.disabled = false;
-                chkstate.disabled = true;
-                chkstate.checked = false;
-                chkcountysch1.disabled = true;
-                chkcountysch1.checked = false;
-            }
-            else {
-
-
-                ddlFips.disabled = true;
-                ddlFips.value = 0;
-                ddlcountysch1.value = 0;
-                ddlstate.value = 0;
-                chkstate.disabled = false;
-                //chkstate.checked = false;
-                chkcountysch1.disabled = false;
-                //chkcountysch1.checked = false;
-            }
-
-        }
 
 
 
-        function chkcounty() {
-            var chkcountysch1 = document.getElementById("<%=chkcountysch1.ClientID%>");
-            var ddlcountysch1 = document.getElementById("<%=ddlcountysch1.ClientID%>");
-            var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
-            var ddlFips = document.getElementById("<%=ddlFipssch.ClientID%>");
-            var chkfips = document.getElementById("<%=chkFipssch.ClientID%>");
-            var chkstate = document.getElementById("<%=chkstatesch.ClientID%>");
-
-
-            if (chkcountysch1.checked) { //ddlstate.style. = 'none';
-                ddlcountysch1.disabled = false;
-                ddlFips.value = 0;
-                ddlstate.disabled = true;
-                ddlstate.value = 0;
-                ddlFips.disabled = true;
-                chkstate.disabled = true;
-                chkstate.checked = false;
-                chkfips.checked = false;
-                chkfips.disabled = true;
-
-            }
-            else {
-                // ddlstate.style.display = '';
-                ddlcountysch1.disabled = true;
-                ddlFips.value = 0;
-                chkstate.disabled = false;
-                ddlcountysch1.value = 0;
-                ddlstate.value = 0;
-                chkfips.disabled = false;
-
-            }
-        }
 
 
         function Togglecheck(checkid, Childid, isddl) {
@@ -264,332 +164,297 @@
    
   
     </script>
-   
-  
-    
 
-   
-
-   
-
-    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="0" Width="1032px"
-        Height="1000px">
+    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="2" Width="1032px"
+        Height="1000px" onactivetabchanged="TabContainer1_ActiveTabChanged" >
         <cc1:TabPanel runat="server" HeaderText="Recent Issues" ID="RecentIssuestab">
             <HeaderTemplate>
                 Recent Issues
             </HeaderTemplate>
             <ContentTemplate>
-            
                 <table>
                     <tr>
                         <td width="340px">
-                            <asp:Panel ID="Panel11" runat="server" GroupingText="State/County" 
-                                Font-Size="X-Small" Width="330px">
-                                <asp:DropDownList ID="ddlRecentState" runat="server" 
-                                    Width="150px"       AppendDataBoundItems="True"      Font-Size="X-Small">
-                                </asp:DropDownList>
-                                
-                                <asp:DropDownList ID="ddlRecentCounty" runat="server"  Width="150px" AppendDataBoundItems="True"
+                            <asp:Panel ID="Panel11" runat="server" GroupingText="State/County" Font-Size="X-Small"
+                                Width="330px">
+                                <asp:DropDownList ID="ddlRecentState" runat="server" Width="150px" AppendDataBoundItems="True"
                                     Font-Size="X-Small">
-                                    
                                 </asp:DropDownList>
-                                
-                               <cc1:CascadingDropDown ID="ccddRegion" runat="server" Category="State" TargetControlID="ddlRecentState"
-        PromptText="-Select State-" LoadingText="Loading State.." ServicePath="statecounty.asmx"
-        ServiceMethod="CountryRegion" Enabled="True">
-    </cc1:CascadingDropDown>
-    <cc1:CascadingDropDown ID="ccddState" runat="server" Category="STATE" TargetControlID="ddlRecentCounty"
-        PromptText="-Select County-" LoadingText="Loading County.." ServicePath="statecounty.asmx"
-        ServiceMethod="StateProvince" ParentControlID="ddlRecentState" Enabled="True">
-    </cc1:CascadingDropDown>
+                                <asp:DropDownList ID="ddlRecentCounty" runat="server" Width="150px" AppendDataBoundItems="True"
+                                    Font-Size="X-Small">
+                                </asp:DropDownList>
+                                <cc1:CascadingDropDown ID="ccddRegion" runat="server" Category="State" TargetControlID="ddlRecentState"
+                                    PromptText="-Select State-" LoadingText="Loading State.." ServicePath="statecounty.asmx"
+                                    ServiceMethod="CountryRegion" Enabled="True">
+                                </cc1:CascadingDropDown>
+                                <cc1:CascadingDropDown ID="ccddState" runat="server" Category="STATE" TargetControlID="ddlRecentCounty"
+                                    PromptText="-Select County-" LoadingText="Loading County.." ServicePath="statecounty.asmx"
+                                    ServiceMethod="StateProvince" ParentControlID="ddlRecentState" Enabled="True">
+                                </cc1:CascadingDropDown>
                             </asp:Panel>
                         </td>
-                       
                         <td width="250px">
-                            <asp:Panel  GroupingText="Date" Width="250px" 
-                                Font-Size="X-Small" ID="Panelfdt" runat="server">
-                                <asp:ImageButton ID="ImageButton3" runat="server" Height="20px" 
-                                    ImageAlign="Middle" ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
-                                <asp:TextBox ID="txtRecentFromdt" runat="server" Font-Size="X-Small" 
-                                    MaxLength="10"  Width="55px" ></asp:TextBox>TO
-                                    <asp:ImageButton ID="ImageButton4" runat="server" Height="20px" 
-                                    ImageAlign="Middle" ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
-                                <asp:TextBox ID="txtRecentTodt" runat="server" Font-Size="X-Small" 
-                                    MaxLength="10"  Width="55px" ></asp:TextBox>
-                                <cc1:CalendarExtender ID="clxfdt" runat="server" Enabled="True" 
-                                    PopupButtonID="ImageButton3" TargetControlID="txtRecentFromdt">
+                            <asp:Panel GroupingText="Date" Width="250px" Font-Size="X-Small" ID="Panelfdt" runat="server">
+                                <asp:ImageButton ID="ImageButton3" runat="server" Height="20px" ImageAlign="Middle"
+                                    ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
+                                <asp:TextBox ID="txtRecentFromdt" runat="server" Font-Size="X-Small" MaxLength="10"
+                                    Width="55px"></asp:TextBox>TO
+                                <asp:ImageButton ID="ImageButton4" runat="server" Height="20px" ImageAlign="Middle"
+                                    ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
+                                <asp:TextBox ID="txtRecentTodt" runat="server" Font-Size="X-Small" MaxLength="10"
+                                    Width="55px"></asp:TextBox>
+                                <cc1:CalendarExtender ID="clxfdt" runat="server" Enabled="True" PopupButtonID="ImageButton3"
+                                    TargetControlID="txtRecentFromdt">
                                 </cc1:CalendarExtender>
-                                <cc1:CalendarExtender ID="CalendarExtender3" runat="server" Enabled="True" 
-                                    PopupButtonID="ImageButton4" TargetControlID="txtRecentTodt">
+                                <cc1:CalendarExtender ID="CalendarExtender3" runat="server" Enabled="True" PopupButtonID="ImageButton4"
+                                    TargetControlID="txtRecentTodt">
                                 </cc1:CalendarExtender>
-                              
                             </asp:Panel>
                         </td>
                         <td width="100px">
-                          <asp:Button runat="server" ID="btnrecentgo" Text="GO" 
-                                onclick="btnrecentgo_Click" />
+                            <asp:Button runat="server" ID="btnrecentgo" Text="GO" OnClick="btnrecentgo_Click" />
                         </td>
                     </tr>
-                    </table>
-       <table>
-        <tr>
-        <td>
-            
-            <asp:Panel ID="PanelRecentissue" runat="server"  Width="1000px" Height="380px"  
-                GroupingText="Recent Issues" Font-Size="Small">
-                       <div style="width:1000px; height:360px; overflow:auto;">
-                       <asp:GridView ID="gvrecent" runat="server" AutoGenerateColumns="False" 
-                DataKeyNames="IDIssue"
-              
-                 OnRowCreated="gvrecent_RowCreated" 
-                OnRowDataBound="gvrecent_RowDataBound" DataKeys="IDIssue" Width="1500px" >
-                <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
-                <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-                <Columns>
-                <asp:HyperLinkField AccessibleHeaderText="HyperLink1"  Text="Select" 
-                        HeaderImageUrl="~/img/select.png" >
-                    <ControlStyle Font-Underline="True" />
-                    </asp:HyperLinkField>
-                    <asp:ImageField AccessibleHeaderText="select" NullImageUrl="~/img/select.png" 
-                        ReadOnly="True">
-                    </asp:ImageField> 
-                    
-                    <asp:BoundField DataField="IDIssue" HeaderText="ID" InsertVisible="False" 
-                        ReadOnly="True" SortExpression="IDIssue" />
-                        <asp:BoundField DataField="IssueCreatedDate" dataformatstring="{0:MMM d, yyyy}" 
-                        htmlencode="False" HeaderText="Created Date" 
-                        SortExpression="IssueCreatedDate" >
-                            <ItemStyle Width="130px" />
-                    </asp:BoundField>
-                    <asp:BoundField DataField="FIPSCounty" HeaderText="FIPS" 
-                        SortExpression="FIPSCounty" />
-                    <asp:BoundField DataField="County" HeaderText="County" 
-                        SortExpression="County" />
-                    <asp:BoundField DataField="State" HeaderText="State" SortExpression="State" />
-                    <asp:BoundField DataField="FileType" HeaderText="File Type" 
-                        SortExpression="FileType" >
-                        <ItemStyle Width="150px" />
-                    </asp:BoundField>
-                    <asp:BoundField DataField="IssueType" HeaderText="Issue Type" 
-                        SortExpression="IssueType">
-                        <ItemStyle Width="150px" />
-                    </asp:BoundField>
-                    <asp:BoundField DataField="ProcessingType" HeaderText="Processing Type" 
-                        SortExpression="ProcessingType">
-                   
-                        <ItemStyle Width="250px" />
-                    </asp:BoundField>
-                   
-                    <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title" >
-                        <ItemStyle Width="200px" />
-                    </asp:BoundField>
-                    <asp:BoundField DataField="IssueDetails" HeaderText="Issue Details" 
-                        SortExpression="IssueDetails" >
-                        <ItemStyle Width="300px" />
-                        </asp:BoundField>
-                    <asp:BoundField DataField="Resolution" HeaderText="Resolution" 
-                        SortExpression="Resolution" >
-                        <ItemStyle Width="300px" />
-                        </asp:BoundField>
-                    <asp:BoundField DataField="Submitter" HeaderText="Submitter" 
-                        SortExpression="Submitter" />
-                         <asp:BoundField DataField="Edition" HeaderText="Edition" 
-                        SortExpression="Edition" />
-                    <asp:BoundField DataField="Version" HeaderText="Version" 
-                        SortExpression="Version" />   
-                    
-                    <asp:BoundField DataField="IssueCreatedUser" HeaderText="Created User" 
-                        SortExpression="IssueCreatedUser" />
-                    
-                </Columns>
-            </asp:GridView>   
-                        </div>      
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <asp:Panel ID="PanelRecentissue" runat="server" Width="1000px" Height="380px" GroupingText="Recent Issues"
+                                Font-Size="Small">
+                                <div style="width: 980px; height: 380px; overflow: auto;">
+                                    <asp:GridView ID="gvrecent" runat="server" AutoGenerateColumns="False" DataKeyNames="IDIssue"
+                                        OnRowDataBound="gvrecent_RowDataBound" DataKeys="IDIssue" Width="1500px" CellPadding="4"
+                                        ForeColor="#333333" GridLines="None">
+                                        <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
+                                        <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
+                                        <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <EditRowStyle BackColor="#999999" />
+                                        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                                        <Columns>
+                                            <asp:HyperLinkField AccessibleHeaderText="HyperLink1" Text="Select" HeaderImageUrl="~/img/select.png">
+                                                <ControlStyle Font-Underline="True" />
+                                            </asp:HyperLinkField>
+                                            <asp:ImageField AccessibleHeaderText="select" NullImageUrl="~/img/select.png" ReadOnly="True">
+                                            </asp:ImageField>
+                                            <asp:BoundField DataField="IDIssue" HeaderText="ID" InsertVisible="False" ReadOnly="True"
+                                                SortExpression="IDIssue" />
+                                            <asp:BoundField DataField="IssueCreatedDate" DataFormatString="{0:MMM d, yyyy}" HtmlEncode="False"
+                                                HeaderText="Created Date" SortExpression="IssueCreatedDate">
+                                                <ItemStyle Width="130px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="FIPSCounty" HeaderText="FIPS" SortExpression="FIPSCounty" />
+                                            <asp:BoundField DataField="County" HeaderText="County" SortExpression="County" />
+                                            <asp:BoundField DataField="State" HeaderText="State" SortExpression="State" />
+                                            <asp:BoundField DataField="FileType" HeaderText="File Type" SortExpression="FileType">
+                                                <ItemStyle Width="150px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="IssueType" HeaderText="Issue Type" SortExpression="IssueType">
+                                                <ItemStyle Width="150px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="ProcessingType" HeaderText="Processing Type" SortExpression="ProcessingType">
+                                                <ItemStyle Width="250px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title">
+                                                <ItemStyle Width="200px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="IssueDetails" HeaderText="Issue Details" SortExpression="IssueDetails">
+                                                <ItemStyle Width="300px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Resolution" HeaderText="Resolution" SortExpression="Resolution">
+                                                <ItemStyle Width="300px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Submitter" HeaderText="Submitter" SortExpression="Submitter" />
+                                            <asp:BoundField DataField="Edition" HeaderText="Edition" SortExpression="Edition" />
+                                            <asp:BoundField DataField="Version" HeaderText="Version" SortExpression="Version" />
+                                            <asp:BoundField DataField="IssueCreatedUser" HeaderText="Created User" SortExpression="IssueCreatedUser" />
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
                             </asp:Panel>
-           </td>  
-           </tr>
-            <tr>
-            <td>
-         <asp:Panel ID="Panel14" runat="server" BackColor="LightGray" Height="600px" 
-                Width="500px" >
-               
-               <table  >
-                 <tr>
-                 <td width="13px"></td>
-                     <td>  
-                            <asp:Label ID="Label1" runat="server" Text="Issue ID # :"/>
-                     </td>
-                     <td>       
-                            <asp:Label ID="lblID" runat="server" Text="Label"></asp:Label> 
-                            <asp:HiddenField ID="hidCusCode" runat="server" /> 
-                      </td>
-                </tr>
-                
-                <tr>
-              <td width="13px"></td>
-                    <td>
-                            <asp:Label ID="Label2" runat="server" Text="FIPS:"/> 
-                    </td>
-                    <td>
-                            <asp:TextBox ID="txtpupfips" runat="server" ReadOnly="True"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                <td></td>
-                  <td>
-                            <asp:Label ID="Label3" runat="server" Text="State:"/> 
-                    </td>
-                    <td>
-                            <asp:TextBox ID="txtpupstate" runat="server" ReadOnly="True"></asp:TextBox>
-                            
-                    </td>
-                
-                </tr>
-                <tr>
-                <td width="13px"></td>
-                    <td>
-                            <asp:Label ID="Label4" runat="server" Text="County:"/> 
-                    </td>
-                    <td>
-                    <asp:TextBox ID="txtpupcounty" runat="server" ReadOnly="True"></asp:TextBox> 
-                    </td>
-                </tr>
-             
-                <tr>
-               <td width="13px"></td>
-                    <td>
-                             <asp:Label ID="Label5" runat="server" Text="Processing Type:"/> 
-                    </td>
-                    <td>
-                            <asp:DropDownList ID="ddlpupptype" runat="server"    Width="200px" 
-                                     DataSourceID="ProcessingTypeObjectDataSource" DataTextField="ProcessingType" 
-                                     DataValueField="IDProcessingType"> 
-                            </asp:DropDownList>
-                    </td>
-                </tr>
-             
-                <tr>
-               <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="lblftype" runat="server" Text="File Type:"/> 
-                    </td>
-                    <td>
-                     <asp:DropDownList ID="ddlpupftype" runat="server"    Width="200px" 
-                            DataSourceID="FileTypeObjectDataSource" DataTextField="FileType" 
-                            DataValueField="IDFileType"> </asp:DropDownList>
-                    </td>
-                </tr>
-                
-                
-                <tr>
-                <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="Label7" runat="server" Text="Issue Type:"/> 
-                    </td>
-                    <td>
-                      <asp:DropDownList ID="ddlpupitype" runat="server"    Width="200px" 
-                            DataSourceID="IssueTypeObjectDataSource" DataTextField="IssueType" 
-                            DataValueField="IDIssueType"> </asp:DropDownList>
-                    </td>
-                </tr>
-                <tr>
-                <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="Label8" runat="server" Text="Edition:"/> 
-                    </td>
-                    <td>
-                      <asp:TextBox ID="txtpupEdition" runat="server"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="Label9" runat="server" Text="Version:"/> 
-                    </td>
-                    <td>
-                      <asp:TextBox ID="txtpupVersion" runat="server"></asp:TextBox> 
-                    </td>
-                </tr>
-                <tr>
-               <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="Label10" runat="server" Text="ICP:"/> 
-                    </td>
-                    <td>
-                      <asp:TextBox ID="txtpupicp" runat="server"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="Label11" runat="server" Text="Title:"/> 
-                    </td>
-                    <td>
-                     <asp:TextBox ID="txtpuptitle" runat="server"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="Label12" runat="server" Text="Submitter:"/> 
-                    </td>
-                    <td>
-                     <asp:TextBox ID="txtpupSubmitter" runat="server"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="Label13" runat="server" Text="RelatedLinks:"/> 
-                    </td>
-                    <td>
-                     <asp:TextBox ID="txtpuprlinks" runat="server"  TextMode="MultiLine" 
-                            Width="330px"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-               <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="Label14" runat="server" Text="Issue Details:"/> 
-                    </td>
-                    <td>
-                     <asp:TextBox ID="txtpupissue" runat="server" Rows="4" TextMode="MultiLine" 
-                            Width="330px"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-               <td width="13px"></td>
-                    <td>
-                    <asp:Label ID="Label15" runat="server" Text="Resolution:"/> 
-                    </td>
-                    <td>
-                     <asp:TextBox ID="txtpupresolution" runat="server" Rows="4" Width="330px" 
-                            TextMode="MultiLine"></asp:TextBox>
-                    </td>
-                </tr>
-                 <tr>
-                   <td width="13px"></td>
-                    <td>
-                    <asp:Button ID="btnupdate" runat="server" Text="Update" OnClick="btnupdate_Click" /> 
-                    </td>
-                    <td>
-                      <asp:Button ID="btncancel" runat="server" Text="Cancel" /> 
-                    </td>
-                </tr>
-          
-           
-            </table>
-        </asp:Panel> 
-        
-      
-        </td>
-        </tr>
-        </table>
-              <cc1:ModalPopupExtender ID="ModalPopupExtender1" runat="server" PopupControlID="Panel14" 
-       TargetControlID="Panel14" 
-    
-       CancelControlID="btncancel"    OnCancelScript="HideModalPopup()" DropShadow="True" 
-                   BackgroundCssClass="modal" DynamicServicePath="" Enabled="True" > </cc1:ModalPopupExtender>         
-                    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:Panel ID="Panel14" runat="server" BackColor="LightGray" Height="600px" Width="500px">
+                                <table>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label1" runat="server" Text="Issue ID # :" />
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="lblID" runat="server" Text="Label"></asp:Label>
+                                            <asp:HiddenField ID="hidCusCode" runat="server" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label2" runat="server" Text="FIPS:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupfips" runat="server" ReadOnly="True"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label3" runat="server" Text="State:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupstate" runat="server" ReadOnly="True"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label4" runat="server" Text="County:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupcounty" runat="server" ReadOnly="True"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label5" runat="server" Text="Processing Type:" />
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlpupptype" runat="server" Width="200px" DataSourceID="ProcessingTypeObjectDataSource"
+                                                DataTextField="ProcessingType" DataValueField="IDProcessingType">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="lblftype" runat="server" Text="File Type:" />
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlpupftype" runat="server" Width="200px" DataSourceID="FileTypeObjectDataSource"
+                                                DataTextField="FileType" DataValueField="IDFileType">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label7" runat="server" Text="Issue Type:" />
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlpupitype" runat="server" Width="200px" DataSourceID="IssueTypeObjectDataSource"
+                                                DataTextField="IssueType" DataValueField="IDIssueType">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label8" runat="server" Text="Edition:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupEdition" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label9" runat="server" Text="Version:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupVersion" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label10" runat="server" Text="ICP:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupicp" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label11" runat="server" Text="Title:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpuptitle" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label12" runat="server" Text="Submitter:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupSubmitter" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label13" runat="server" Text="RelatedLinks:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpuprlinks" runat="server" TextMode="MultiLine" Width="330px"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label14" runat="server" Text="Issue Details:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupissue" runat="server" Rows="4" TextMode="MultiLine" Width="330px"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label15" runat="server" Text="Resolution:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupresolution" runat="server" Rows="4" Width="330px" TextMode="MultiLine"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Button ID="btnupdate" runat="server" Text="Update" OnClick="btnupdate_Click" />
+                                        </td>
+                                        <td>
+                                            <asp:Button ID="btncancel" runat="server" Text="Cancel" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </td>
+                    </tr>
+                </table>
+                <cc1:ModalPopupExtender ID="ModalPopupExtender1" runat="server" PopupControlID="Panel14"
+                    TargetControlID="Panel14" CancelControlID="btncancel" OnCancelScript="HideModalPopup()"
+                    DropShadow="True" BackgroundCssClass="modal" DynamicServicePath="" Enabled="True">
+                </cc1:ModalPopupExtender>
             </ContentTemplate>
         </cc1:TabPanel>
         <cc1:TabPanel ID="SearchIssuestab" runat="server" HeaderText="Search Issues">
@@ -598,12 +463,18 @@
             </HeaderTemplate>
             <ContentTemplate>
                 <table style="width: 100%;" width="1000">
+                    <tr><td>
+                    
+                    </td></tr>
                     <tr>
-                        <td>
+                        <td >
+                            &nbsp;</td>
+                        <td class="style4" align="right">
+                           <asp:Label ID="Errorsch" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
+                            <asp:Label ID="MSGsch" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
                         </td>
-                        <td class="style4">
-                        </td>
-                        <td class="style5">
+                        <td class="style5" >
+                         
                         </td>
                     </tr>
                     <tr>
@@ -614,82 +485,68 @@
                                 Font-Size="Smaller" Width="1000px">
                                 <table style="width: 100%; height: 67px;">
                                     <tr>
-                                        <td class="style6" style="height: 30px; width: 168px">
-                                            <asp:CheckBox ID="chkstatesch" runat="server" Text="State" Font-Size="X-Small" />
-                                        </td>
-                                        <td class="style7" style="width: 123px; height: 30px">
-                                            <asp:CheckBox ID="chkcountysch1" runat="server" Text="County" Font-Size="X-Small" />
-                                        </td>
-                                        <td style="width: 118px; height: 30px">
-                                            <asp:CheckBox ID="chkFipssch" runat="server" Text="Fips" />
-                                        </td>
-                                        <td style="height: 30px">
-                                            <asp:CheckBox ID="chkIssueTypesch" runat="server" Text="Issue Type" />
-                                        </td>
-                                        <td style="height: 30px">
-                                            <asp:CheckBox ID="chkFilesch" runat="server" Text="File Type" />
-                                        </td>
-                                        <td style="height: 30px; width: 168px">
-                                            <asp:CheckBox ID="chkProcessingsch" runat="server" Text="Processing Type" />
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td class="style14" style="width: 168px">
-                                            <asp:DropDownList ID="ddlstatesch" runat="server" DataSourceID="StateObjectDataSource"
-                                                DataTextField="State" DataValueField="State" Width="150px" Enabled="False" AppendDataBoundItems="True"
-                                                Font-Size="X-Small">
-                                                <asp:ListItem Value="0" Text="---Select State---"></asp:ListItem>
-                                               <%-- <asp:ListItem Value="1" Text="Nation Wide"></asp:ListItem>
-                                                <asp:ListItem Value="2" Text="N/A"></asp:ListItem>--%>
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td class="style15" style="width: 123px">
-                                            <asp:DropDownList ID="ddlcountysch1" runat="server" DataSourceID="FIPSObjectDataSource"
-                                                DataTextField="County" DataValueField="StateCounty" Width="150px" Enabled="False"
-                                                AppendDataBoundItems="True" Font-Size="X-Small">
-                                                <asp:ListItem Value="0" Text="---Select---"></asp:ListItem>
-                                                <asp:ListItem Value="2" Text="N/A"></asp:ListItem>
-                                                 </asp:DropDownList>
-                                                <asp:DropDownList ID="ddlcountyschajax" runat="server" 
-                                               Width="150px"   Visible="true"  Font-Size="X-Small">
-                                                                                              
-                                            </asp:DropDownList>
-                                            <cc1:CascadingDropDown ID="ccddStatesch" runat="server" Category="State" 
-                                            TargetControlID="ddlcountyschajax"
-                                             PromptText="-Select County-" LoadingText="Loading County.." ServicePath="statecounty.asmx"
-                                             ServiceMethod="StateProvince" ParentControlID="ddlstatesch" Enabled="True">
-                                            </cc1:CascadingDropDown>  
+                                            <asp:Panel ID="panelstatecountysch" runat="server" GroupingText="State/County" Font-Size="X-Small"
+                                                Width="330px">
+                                                <asp:DropDownList ID="ddlstatesch" runat="server" Width="150px" AppendDataBoundItems="True"
+                                                    Font-Size="X-Small">
+                                                </asp:DropDownList>
+                                                <asp:DropDownList ID="ddlcountysch" runat="server" Width="150px" AppendDataBoundItems="True"
+                                                    Font-Size="X-Small">
+                                                </asp:DropDownList>
+                                                <asp:TextBox ID="txtcountysch"   runat="server" Width="150px" 
+                                                    Font-Size="X-Small" Enabled="False"></asp:TextBox>
+                                                <cc1:CascadingDropDown ID="CascadingDropDown1" runat="server" Category="State" TargetControlID="ddlstatesch"
+                                                    PromptText="-Select State-" LoadingText="Loading State.." ServicePath="statecounty.asmx"
+                                                    ServiceMethod="CountryRegion" Enabled="True">
+                                                </cc1:CascadingDropDown>
+                                                <cc1:CascadingDropDown ID="CascadingDropDown2" runat="server" Category="STATE" TargetControlID="ddlcountysch"
+                                                    PromptText="-Select County-" LoadingText="Loading County.." ServicePath="statecounty.asmx"
+                                                    ServiceMethod="StateProvince" ParentControlID="ddlstatesch" Enabled="True">
+                                                </cc1:CascadingDropDown>
+                                            </asp:Panel>
                                             
+                                           
                                             
                                         </td>
-                                        <td class="style16" style="width: 118px">
-                                            <asp:DropDownList ID="ddlFipssch" runat="server" Width="80px" DataSourceID="FIPSObjectDataSource"
-                                                DataTextField="FIPS" DataValueField="StateCounty" Enabled="False" AppendDataBoundItems="True"
-                                                Font-Size="X-Small">
-                                                <asp:ListItem Value="0" Text="---Select---"></asp:ListItem>
-                                                <asp:ListItem Value="2" Text="N/A"></asp:ListItem>
-                                            </asp:DropDownList>
+                                        <td  >
                                         </td>
-                                        <td class="style16">
+                                        <td  style="width: 75px">
+                                            <asp:Panel ID="Panelschfips" runat="server" GroupingText="Fips" Font-Size="X-Small">
+                                          <asp:DropDownList ID="ddlfipssch" runat="server"  AppendDataBoundItems="True"
+                                                   DataSourceID="FIPSObjectDataSource"
+                                        DataTextField="FIPS" DataValueField="FIPS" Font-Size="X-Small" Width="75px">
+                                        <asp:ListItem Text="---Select---" Value="0"></asp:ListItem>
+                                        
+                                    </asp:DropDownList></asp:Panel>
+                                        </td>
+                                        <td >
+                                         <asp:Panel ID="PanelIssuetypesch" runat="server" GroupingText="Issue Type" Font-Size="X-Small">
                                             <asp:DropDownList ID="ddlIssuetypesch" runat="server" Width="150px" DataSourceID="IssueTypeObjectDataSource"
                                                 DataTextField="IssueType" DataValueField="IDIssueType" AppendDataBoundItems="True"
-                                                Enabled="False" Font-Size="X-Small">
+                                                 Font-Size="X-Small">
                                                 <asp:ListItem Value="0" Text="---Select---"></asp:ListItem>
                                             </asp:DropDownList>
+                                            </asp:Panel>
+                                            
                                         </td>
                                         <td class="style16">
-                                            <asp:DropDownList ID="ddlFileTypesch" runat="server" Width="150px" DataSourceID="FileTypeObjectDataSource"
+                                         <asp:Panel ID="PanelFileTypesch" runat="server" GroupingText="File Type" Font-Size="X-Small">
+                                               <asp:DropDownList ID="ddlFileTypesch" runat="server" Width="150px" DataSourceID="FileTypeObjectDataSource"
                                                 DataTextField="FileType" DataValueField="IDFileType" AppendDataBoundItems="True"
-                                                Enabled="False" Font-Size="X-Small">
+                                                Font-Size="X-Small">
                                                 <asp:ListItem Value="0" Text="---Select---"></asp:ListItem>
                                             </asp:DropDownList>
+                                             </asp:Panel>
                                         </td>
                                         <td class="style16" style="width: 168px">
-                                            <asp:DropDownList ID="ddlProcessingsch" runat="server" Width="150px" DataSourceID="ProcessingTypeObjectDataSource"
+                                            <asp:Panel ID="PanelProcessingTypesch" runat="server" GroupingText="Processing Type" Font-Size="X-Small">
+                                              <asp:DropDownList ID="ddlProcessingsch" runat="server" Width="150px" DataSourceID="ProcessingTypeObjectDataSource"
                                                 DataTextField="ProcessingType" DataValueField="IDProcessingType" AppendDataBoundItems="True"
-                                                Enabled="False" Font-Size="X-Small">
+                                                 Font-Size="X-Small">
                                                 <asp:ListItem Value="0" Text="---Select---"></asp:ListItem>
                                             </asp:DropDownList>
+                                            </asp:Panel>
                                         </td>
                                     </tr>
                                 </table>
@@ -703,187 +560,423 @@
                             &nbsp;
                         </td>
                         <td class="style2">
-                            <asp:Panel ID="Panel3" runat="server" BackColor="#CCCCCC" GroupingText="Search by"
-                                Font-Size="Smaller" Width="1000px">
-                                <table style="width: 100%;">
+                            <asp:Panel ID="Panel3" runat="server" BackColor="#CCCCCC" Font-Size="Smaller" 
+                                GroupingText="Search by" Width="1000px">
+                                <table style="width: 100%; height:100%;">
                                     <tr>
                                         <td class="style6">
                                             &nbsp;
                                         </td>
                                         <td class="style7">
-                                            <asp:CheckBox ID="chkEditionsch" runat="server" Text="Edition/Version" />
-                                        </td>
-                                        <td>
-                                            <asp:CheckBox ID="chkRelatedICPsch" runat="server" Text="Related ICP" />
-                                        </td>
-                                        <td>
-                                            <asp:CheckBox ID="chkSubmittersch" runat="server" Text="Submitter" />
-                                        </td>
-                                        <td>
-                                            <asp:CheckBox ID="chkDatesch" runat="server" Text="Date" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="style6">
-                                            &nbsp;
-                                        </td>
-                                        <td class="style7">
-                                            <asp:TextBox ID="txtEditionsch" runat="server" MaxLength="7" Width="75px" Enabled="False"
-                                                Font-Size="X-Small"></asp:TextBox>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtRelatedICPsch" runat="server" Enabled="False" Font-Size="X-Small"></asp:TextBox>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtSubmittersch" runat="server" Enabled="False" Font-Size="X-Small"></asp:TextBox>
-                                        </td>
-                                        <td>
-                                            <asp:ImageButton ID="ImageButton1" runat="server" Height="20px" Width="20px" ImageUrl="~/App_Themes/calendar_icon.png"
-                                                ImageAlign="Middle" />
-                                            <asp:TextBox ID="txtfdatesch" runat="server" MaxLength="10" Width="55px" 
-                                                Font-Size="X-Small"></asp:TextBox>TO
-                                            <cc1:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtfdatesch"
-                                                PopupButtonID="ImageButton1" Enabled="True" />
-                                            <asp:TextBox ID="txttdatesch" runat="server" MaxLength="10" Width="58px" Font-Size="X-Small" ></asp:TextBox>
-                                            <cc1:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="txttdatesch"
-                                                PopupButtonID="ImageButton2" Enabled="True" />
-                                            <asp:ImageButton ID="ImageButton2" runat="server" Height="20px" ImageAlign="Middle"
-                                                ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </asp:Panel>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            &nbsp;
-                        </td>
-                        <td class="style2">
-                            <asp:Panel ID="Panel5" runat="server" BackColor="#CCCCCC" GroupingText="Search by"
-                                Font-Size="Smaller" Width="1000px">
-                                <table style="width: 100%;">
-                                    <tr>
-                                        <td class="style6">
-                                            &nbsp;
-                                        </td>
-                                        <td class="style7">
-                                            <asp:CheckBox ID="chkIssuedetailsch" runat="server" Text="Issue details " />
-                                        </td>
-                                        <td>
-                                            <asp:Panel ID="Panelwild" runat="server" GroupingText="Wildcard" Width="164px" Height="42px">
-                                                <asp:DropDownList ID="ddlwildcsh" runat="server" Height="16px" Width="121px" Font-Size="X-Small">
-                                                    <asp:ListItem Value="0">---Select---</asp:ListItem>
-                                                    <asp:ListItem>Like</asp:ListItem>
-                                                    <asp:ListItem>Contains</asp:ListItem>
-                                                    <asp:ListItem>Not Like</asp:ListItem>
-                                                </asp:DropDownList>
+                                            <asp:Panel ID="Paneleditionsch" runat="server" Font-Size="X-Small" 
+                                                GroupingText="Edition\version">
+                                                <asp:TextBox ID="txtEditionsch" runat="server" Font-Size="X-Small" 
+                                                    MaxLength="2" Width="15px"></asp:TextBox>
+                                                \
+                                                <asp:TextBox ID="txtVersionsch" runat="server" Font-Size="X-Small" 
+                                                    MaxLength="2" Width="15px"></asp:TextBox>
+                                                    
+                                                    <asp:RegularExpressionValidator ID="ValidatEditionsch" runat="server" ValidationExpression="^(()|(N/A)|(100)|(\d{0,2}))$"
+                                                    ErrorMessage="Edition should be in the range of 0-100 or N/A" Display="None"
+                                                    ControlToValidate="txtEditionsch" />
+                                                <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender3" runat="server" TargetControlID="ValidatEditionsch"
+                                                    Enabled="True">
+                                                </cc1:ValidatorCalloutExtender>
+                                                
+                                                 <asp:RegularExpressionValidator ID="Validatversionsch" runat="server" ValidationExpression="^(()|(N/A)|([0-9]|1[0-9]|2[0-5]))$"
+                                                    ErrorMessage="Version should be in the range of 0-25 or N/A" Display="None" ControlToValidate="txtVersionsch" />
+                                                <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender4" runat="server" TargetControlID="Validatversionsch"
+                                                    Enabled="True">
+                                                </cc1:ValidatorCalloutExtender>
                                             </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:CheckBox ID="chkResolutionsch" runat="server" Text="Resolution/Recommended Action" />
+                                            <asp:Panel ID="PanelIcpsch" runat="server" Font-Size="X-Small" 
+                                                GroupingText="ICP">
+                                                <asp:TextBox ID="txtRelatedICPsch" runat="server" Font-Size="X-Small" 
+                                                    MaxLength="5" Width="40px"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            &nbsp;
+                                            <asp:Panel ID="PanelSubmittersch" runat="server" Font-Size="X-Small" 
+                                                GroupingText="Submitter">
+                                                <asp:TextBox ID="txtSubmittersch" runat="server" Font-Size="X-Small"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="style6">
-                                            &nbsp;
-                                        </td>
-                                        <td class="style7" colspan="2">
-                                            <asp:TextBox ID="txtchkIssuedetailsch" runat="server" Height="59px" TextMode="MultiLine"
-                                                Width="492px" Enabled="False" Font-Size="X-Small"></asp:TextBox>
-                                        </td>
-                                        <td colspan="2">
-                                            <asp:TextBox ID="txtResolutionsch" runat="server" Height="58px" TextMode="MultiLine"
-                                                Width="436px" Enabled="False" Font-Size="X-Small"></asp:TextBox>
+                                        <td>
+                                            <asp:Panel ID="PanelDatesch" runat="server" Font-Size="X-Small" 
+                                                GroupingText="Date">
+                                                <asp:ImageButton ID="ImageButton1" runat="server" Height="20px" 
+                                                    ImageAlign="Middle" ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
+                                                <asp:TextBox ID="txtfdatesch" runat="server" Font-Size="X-Small" MaxLength="10" 
+                                                    Width="55px"></asp:TextBox>
+                                                TO
+                                                <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" 
+                                                    PopupButtonID="ImageButton1" TargetControlID="txtfdatesch">
+                                                </cc1:CalendarExtender>
+                                                <asp:TextBox ID="txttdatesch" runat="server" Font-Size="X-Small" MaxLength="10" 
+                                                    Width="58px"></asp:TextBox>
+                                                <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Enabled="True" 
+                                                    PopupButtonID="ImageButton2" TargetControlID="txttdatesch">
+                                                </cc1:CalendarExtender>
+                                                <asp:ImageButton ID="ImageButton2" runat="server" Height="20px" 
+                                                    ImageAlign="Middle" ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
+                                            </asp:Panel>
                                         </td>
                                     </tr>
                                 </table>
                             </asp:Panel>
                         </td>
-                        <td>
-                            &nbsp;
-                        </td>
                         <tr>
-                            <td colspan="2" align="right">
-                                <asp:Button ID="btnsearch" runat="server" Font-Size="X-Small" Text="Search" OnClick="btnsearch_Click" />
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td class="style2">
+                                <asp:Panel ID="Panel5" runat="server" BackColor="#CCCCCC" Font-Size="Smaller" 
+                                    GroupingText="Search by" Width="1000px" Height="130px">
+                                    <table style="width: 100%; height: 100%;">
+                                        <tr>
+                                            <td class="style7">
+                                                <asp:Panel ID="PanelIssuesch" runat="server" GroupingText="Issue Detail" 
+                                                    Height="75px" Width="520px">
+                                                    <table>
+                                                        <tr>
+                                                            <td Width="164px">
+                                                                <asp:Label ID="Label17" runat="server" Text="Wildcard"></asp:Label>
+                                                                <asp:DropDownList ID="ddlwildcsh" runat="server" Font-Size="X-Small" 
+                                                                    Height="16px" Width="121px">
+                                                                    <asp:ListItem Value="0">---Select---</asp:ListItem>
+                                                                    <asp:ListItem>Like</asp:ListItem>
+                                                                    <asp:ListItem>Contains</asp:ListItem>
+                                                                    <asp:ListItem>Not Like</asp:ListItem>
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <asp:TextBox ID="txtIssuedetailsch" runat="server" Font-Size="X-Small" 
+                                                                    Height="59px" TextMode="MultiLine" Width="492px"></asp:TextBox>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </asp:Panel>
+                                            </td>
+                                            <td>
+                                                <asp:Panel ID="PanelResolutionsch" runat="server" GroupingText="Resolution" 
+                                                    Height="75px" Width="460px">
+                                                    <table>
+                                                        <tr>
+                                                            <td Width="164px">
+                                                                <asp:Label ID="Label32" runat="server" Text="Wildcard"></asp:Label>
+                                                                <asp:DropDownList ID="ddlwildcardsresolutionsch" runat="server" Font-Size="X-Small" 
+                                                                    Height="16px" Width="121px">
+                                                                    <asp:ListItem Value="0">---Select---</asp:ListItem>
+                                                                    <asp:ListItem>Like</asp:ListItem>
+                                                                    <asp:ListItem>Contains</asp:ListItem>
+                                                                    <asp:ListItem>Not Like</asp:ListItem>
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <asp:TextBox ID="txtResolutionsch" runat="server" Font-Size="X-Small" 
+                                                                    Height="58px" TextMode="MultiLine" Width="436px"></asp:TextBox>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </asp:Panel>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </asp:Panel>
+                            </td>
+                            <td>
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            
+                            <td align="right" colspan="2" width="200px">
+                                <asp:RadioButtonList ID="radioandor" runat="server" 
+                                    RepeatDirection="Horizontal"  Font-Size="X-Small"  >
+                                 <asp:listitem value="And" />
+                                    <asp:listitem value="Or" />
+                                </asp:RadioButtonList>
+                           
+                                <asp:Button ID="btnsearch" runat="server" Font-Size="X-Small" 
+                                    OnClick="btnsearch_Click" Text="Search" />
                             </td>
                         </tr>
                     </tr>
                     <tr>
-                        <td colspan="2" align="left">
-                            <asp:Panel ID="Panel6" runat="server" ScrollBars="Auto" GroupingText="Search Result"
-                                Font-Size="X-Small" Width="1000px" Height="400px">
-                                <asp:GridView ID="GridViewResult" runat="server" AutoGenerateColumns="False" 
-                                    CellPadding="4" Font-Size="X-Small" ForeColor="#333333" GridLines="None" 
-                                    OnRowCommand="GridViewResult_RowCommand" 
-                                    OnRowCreated="GridViewResult_RowCreated" 
-                                    OnRowDataBound="GridViewResult_RowDataBound" 
-                                    OnSelectedIndexChanged="GridViewResult_SelectedIndexChanged" Visible="False" 
-                                    Width="1300px">
-                                    <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
-                                    <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-                                    <Columns>
-                                        <asp:ButtonField CommandName="SingleClick" Text="SingleClick" Visible="False" />
-                                        <asp:ButtonField CommandName="DoubleClick" Text="DoubleClick" Visible="False" />
-                                        <asp:BoundField DataField="IDIssue" HeaderText="ID" ReadOnly="True" 
-                                            SortExpression="IDIssue" />
-                                        <asp:BoundField DataField="IssueCreatedDate" DataFormatString="{0:d}" 
-                                            HeaderText="Date" ReadOnly="True" SortExpression="IssueCreatedDate" />
-                                        <asp:BoundField DataField="FIPSCounty" HeaderText="Fips" ReadOnly="True" />
-                                        <asp:BoundField DataField="County" HeaderText="County" ReadOnly="True" 
-                                            SortExpression="County" />
-                                        <asp:BoundField DataField="State" HeaderText="State" ReadOnly="True" 
-                                            SortExpression="State" />
-                                        <asp:BoundField DataField="IssueType" HeaderText="IssueType" ReadOnly="True" 
-                                            SortExpression="IssueType" />
-                                        <asp:BoundField DataField="FileType" HeaderText="FileType" ReadOnly="True" 
-                                            SortExpression="FileType" />
-                                        <asp:BoundField DataField="ProcessingType" HeaderText="ProcessingType" 
-                                            ReadOnly="True" SortExpression="ProcessingType" />
-                                        <asp:BoundField DataField="Edition" HeaderText="Edition" ReadOnly="True" 
-                                            SortExpression="Edition" />
-                                        <asp:BoundField DataField="Version" HeaderText="Version" ReadOnly="True" 
-                                            SortExpression="Version" />
-                                        <asp:BoundField DataField="Title" HeaderText="Title" ReadOnly="True" 
-                                            SortExpression="Title" />
-                                        <asp:BoundField DataField="IssueDetails" HeaderText="Issue Details" 
-                                            ReadOnly="True" SortExpression="IssueDetails">
-                                            <ItemStyle Width="300px" />
-                                        </asp:BoundField>
-                                        <asp:BoundField DataField="Resolution" HeaderText="Resolution" ReadOnly="True" 
-                                            SortExpression="Resolution">
-                                            <ItemStyle Width="200px" />
-                                        </asp:BoundField>
-                                        <asp:BoundField DataField="Submitter" HeaderText="Submitter" ReadOnly="True" 
-                                            SortExpression="Submitter" />
-                                        <asp:BoundField DataField="Relatedlink" HeaderText="Relatedlink" 
-                                            ReadOnly="True" SortExpression="Relatedlink" />
-                                        <asp:BoundField DataField="ICP" HeaderText="ICP" ReadOnly="True" 
-                                            SortExpression="ICP" />
-                                    </Columns>
-                                    <EditRowStyle BackColor="#999999" />
-                                    <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                                    <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                                    <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
-                                    <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
-                                </asp:GridView>
+                        <td align="left" colspan="2">
+                            <asp:Panel ID="Panel6" runat="server" Font-Size="X-Small" 
+                                GroupingText="Search Result" Height="380px" Width="1000px">
+                                <div style="width: 980px; height: 380px; overflow: auto;">
+                                    <asp:GridView ID="GridViewResult" runat="server" AutoGenerateColumns="False" 
+                                        CellPadding="4" DataKeys="IDIssue" Font-Size="X-Small" ForeColor="#333333" 
+                                        GridLines="None" OnRowDataBound="GridViewResult_RowDataBound" Width="1500px">
+                                        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                                        <Columns>
+                                            <asp:HyperLinkField AccessibleHeaderText="HyperLink1" 
+                                                HeaderImageUrl="~/img/select.png" Text="Select">
+                                                <ControlStyle Font-Underline="True" />
+                                            </asp:HyperLinkField>
+                                            <asp:ImageField AccessibleHeaderText="select" NullImageUrl="~/img/select.png" 
+                                                ReadOnly="True">
+                                            </asp:ImageField>
+                                            <asp:BoundField DataField="IDIssue" HeaderText="ID" InsertVisible="False" 
+                                                ReadOnly="True" SortExpression="IDIssue" />
+                                            <asp:BoundField DataField="IssueCreatedDate" DataFormatString="{0:MMM d, yyyy}" 
+                                                HeaderText="Created Date" HtmlEncode="False" SortExpression="IssueCreatedDate">
+                                                <ItemStyle Width="130px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="FIPSCounty" HeaderText="FIPS" 
+                                                SortExpression="FIPSCounty" />
+                                            <asp:BoundField DataField="County" HeaderText="County" 
+                                                SortExpression="County" />
+                                            <asp:BoundField DataField="State" HeaderText="State" SortExpression="State" />
+                                            <asp:BoundField DataField="FileType" HeaderText="File Type" 
+                                                SortExpression="FileType">
+                                                <ItemStyle Width="150px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="IssueType" HeaderText="Issue Type" 
+                                                SortExpression="IssueType">
+                                                <ItemStyle Width="150px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="ProcessingType" HeaderText="Processing Type" 
+                                                SortExpression="ProcessingType">
+                                                <ItemStyle Width="250px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title">
+                                                <ItemStyle Width="200px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="IssueDetails" HeaderText="Issue Details" 
+                                                SortExpression="IssueDetails">
+                                                <ItemStyle Width="300px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Resolution" HeaderText="Resolution" 
+                                                SortExpression="Resolution">
+                                                <ItemStyle Width="300px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Submitter" HeaderText="Submitter" 
+                                                SortExpression="Submitter" />
+                                            <asp:BoundField DataField="Edition" HeaderText="Edition" 
+                                                SortExpression="Edition" />
+                                            <asp:BoundField DataField="Version" HeaderText="Version" 
+                                                SortExpression="Version" />
+                                            <asp:BoundField DataField="IssueCreatedUser" HeaderText="Created User" 
+                                                SortExpression="IssueCreatedUser" />
+                                        </Columns>
+                                        <EditRowStyle BackColor="#999999" />
+                                        <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
+                                        <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
+                                        <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                                    </asp:GridView>
+                                </div>
                             </asp:Panel>
                         </td>
                     </tr>
-                   
                     <tr>
                         <td colspan="3">
+                        </td>
                     </tr>
                 </table>
+                <table>
+                    <tr>
+                        <td>
+                            <asp:Panel ID="panalpopupsch" runat="server" BackColor="LightGray" Height="600px"
+                                Width="500px">
+                                <table>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label16" runat="server" Text="Issue ID # :" />
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="lblschID" runat="server" Text="Label"></asp:Label>
+                                            <asp:HiddenField ID="hidsch" runat="server" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label18" runat="server" Text="FIPS:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupfipssch" runat="server" ReadOnly="True"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label19" runat="server" Text="State:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupstatesch" runat="server" ReadOnly="True"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label20" runat="server" Text="County:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupcountysch" runat="server" ReadOnly="True"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label21" runat="server" Text="Processing Type:" />
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlpupptypesch" runat="server" Width="200px" DataSourceID="ProcessingTypeObjectDataSource"
+                                                DataTextField="ProcessingType" DataValueField="IDProcessingType">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label22" runat="server" Text="File Type:" />
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlpupftypesch" runat="server" Width="200px" DataSourceID="FileTypeObjectDataSource"
+                                                DataTextField="FileType" DataValueField="IDFileType">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label23" runat="server" Text="Issue Type:" />
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlpupitypesch" runat="server" Width="200px" DataSourceID="IssueTypeObjectDataSource"
+                                                DataTextField="IssueType" DataValueField="IDIssueType">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label24" runat="server" Text="Edition:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupEditionsch" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label25" runat="server" Text="Version:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupVersionsch" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label26" runat="server" Text="ICP:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupicpsch" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label27" runat="server" Text="Title:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpuptitlesch" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label28" runat="server" Text="Submitter:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupSubmittersch" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label29" runat="server" Text="RelatedLinks:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpuprlinkssch" runat="server" TextMode="MultiLine" Width="330px"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label30" runat="server" Text="Issue Details:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupissuesch" runat="server" Rows="4" TextMode="MultiLine" Width="330px"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label31" runat="server" Text="Resolution:" />
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtpupresolutionsch" runat="server" Rows="4" Width="330px" TextMode="MultiLine"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td>
+                                            <asp:Button ID="btnupdatesch" runat="server" Text="Update" OnClick="btnupdatesch_Click" />
+                                        </td>
+                                        <td>
+                                            <asp:Button ID="btncancelsch" runat="server" Text="Cancel" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </td>
+                    </tr>
+                </table>
+                <cc1:ModalPopupExtender ID="ModalPopupExtendersch" runat="server" PopupControlID="panalpopupsch"
+                    TargetControlID="panalpopupsch" CancelControlID="btncancelsch" OnCancelScript="HideModalPopupsch()"
+                    DropShadow="True" BackgroundCssClass="modal" DynamicServicePath="" Enabled="True">
+                </cc1:ModalPopupExtender>
             </ContentTemplate>
         </cc1:TabPanel>
         <cc1:TabPanel ID="NewIssuetab" runat="server" HeaderText="New Issue" Width="1400px">
             <HeaderTemplate>
                 New Issue</HeaderTemplate>
             <ContentTemplate>
+            <table><tr><td align="right">
+              <asp:Label ID="lblerrnew" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
+                            <asp:Label ID="lblmsgnew" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
+            
+            </td></tr></table>
                 <asp:Panel ID="Panel2" runat="server" GroupingText="Add New" Font-Size="XX-Small">
                     <table style="width: 87%;">
                         <tr>
@@ -946,7 +1039,7 @@
                                                     ErrorMessage="Edition should be in the range of 0-100 or N/A" Display="None"
                                                     ControlToValidate="txtEditionnew" />
                                                 <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender2" runat="server" TargetControlID="ValidatEditionnew"
-                                                    Enabled="True" >
+                                                    Enabled="True">
                                                 </cc1:ValidatorCalloutExtender>
                                             </asp:Panel>
                                         </td>
@@ -957,7 +1050,7 @@
                                                 <asp:RegularExpressionValidator ID="Validatversionnew" runat="server" ValidationExpression="^((N/A)|([0-9]|1[0-9]|2[0-5]))$"
                                                     ErrorMessage="Version should be in the range of 0-25 or N/A" Display="None" ControlToValidate="txtVersionnew" />
                                                 <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender1" runat="server" TargetControlID="Validatversionnew"
-                                                    Enabled="True" >
+                                                    Enabled="True">
                                                 </cc1:ValidatorCalloutExtender>
                                             </asp:Panel>
                                         </td>
@@ -993,8 +1086,8 @@
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Panel
                                     ID="Panel9" runat="server" GroupingText="Related Links">
                                     <asp:TextBox ID="txtRelatedLinksnew" runat="server" Font-Size="X-Small" Width="242px"></asp:TextBox>
-                                    <asp:Button ID="Button3" runat="server" Font-Size="XX-Small" Text="Go To Link" 
-                                        CausesValidation="False" UseSubmitBehavior="False"/>
+                                    <asp:Button ID="Button3" runat="server" Font-Size="XX-Small" Text="Go To Link" CausesValidation="False"
+                                        UseSubmitBehavior="False" />
                                 </asp:Panel>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:Panel ID="Panel15" runat="server" GroupingText="Upload File">
@@ -1018,58 +1111,62 @@
                             <tr>
                                 <td style="height: 30px" colspan="4" align="right">
                                     <br />
-                                    <asp:Button ID="Button1" runat="server" Font-Size="X-Small" OnClick="Button1_Click"
+                                    <asp:Button ID="btnNew" runat="server" Font-Size="X-Small" OnClick="btnNew_Click"
                                         Text="Save" />
                                 </td>
                             </tr>
                     </table>
                 </asp:Panel>
-                <asp:Panel ID="Panel1" runat="server"  GroupingText="Recently Added"
-                   Width="1000px" Font-Size="X-Small" Height="400px" ScrollBars="Auto">
-                    <asp:GridView ID="RecentIssuesgrid" runat="server" AutoGenerateColumns="False" CellPadding="4"
-                        DataSourceID="IssueObjectDataSource" ForeColor="#333333" GridLines="None">
-                        <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
-                        <Columns>
-                            <asp:BoundField DataField="IDIssue" HeaderText="IDIssue" SortExpression="IDIssue" />
-                            <asp:BoundField DataField="IssueCreatedDate" DataFormatString="{0:d}" HeaderText="Date"
-                                SortExpression="IssueCreatedDate" />
-                            <asp:BoundField DataField="FIPSCounty" HeaderText="FIPS" SortExpression="FIPSCounty" />
-                            <asp:BoundField DataField="State" HeaderText="State" SortExpression="State" />
-                            <asp:BoundField DataField="County" HeaderText="County" SortExpression="County" />
-                            <asp:BoundField DataField="IDProcessingType" HeaderText="IDProcessingType" SortExpression="IDProcessingType"
-                                Visible="False" />
-                            <asp:BoundField DataField="ProcessingType" HeaderText="Processing Type" SortExpression="ProcessingType" />
-                            <asp:BoundField DataField="IDFileType" HeaderText="IDFileType" SortExpression="IDFileType"
-                                Visible="False" />
-                            <asp:BoundField DataField="FileType" HeaderText="File Type" SortExpression="FileType" />
-                            <asp:BoundField DataField="IDIssueType" HeaderText="IDIssueType" SortExpression="IDIssueType"
-                                Visible="False" />
-                            <asp:BoundField DataField="IssueType" HeaderText="Issue Type" SortExpression="IssueType" />
-                            <asp:BoundField DataField="Edition" HeaderText="Edition" SortExpression="Edition" />
-                            <asp:BoundField DataField="Version" HeaderText="Version" SortExpression="Version" />
-                            <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title" />
-                            <asp:BoundField DataField="IssueDetails" HeaderText="Details" SortExpression="IssueDetails" />
-                            <asp:BoundField DataField="Resolution" HeaderText="Resolution" SortExpression="Resolution" />
-                            <asp:BoundField DataField="Submitter" HeaderText="Submitter" SortExpression="Submitter" />
-                            <asp:BoundField DataField="Relatedlink" HeaderText="Relatedlink" SortExpression="Relatedlink" />
-                            <asp:BoundField DataField="ICP" HeaderText="ICP" SortExpression="ICP" />
-                            <asp:BoundField DataField="IssueCreatedUser" HeaderText="IssueCreatedUser" SortExpression="IssueCreatedUser" />
-                            <asp:BoundField DataField="IssueUpdatedDate" HeaderText="IssueUpdatedDate" SortExpression="IssueUpdatedDate"
-                                Visible="False" />
-                            <asp:BoundField DataField="IssueUpdatedUser" HeaderText="IssueUpdatedUser" SortExpression="IssueUpdatedUser"
-                                Visible="False" />
-                            <asp:CheckBoxField DataField="Isuplodedfile" HeaderText="Isuplodedfile" SortExpression="Isuplodedfile"
-                                Visible="False" />
-                            <asp:BoundField DataField="IDuploadedfile" HeaderText="IDuploadedfile" SortExpression="IDuploadedfile"
-                                Visible="False" />
-                        </Columns>
-                        <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                        <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
-                        <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
-                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                        <EditRowStyle BackColor="#999999" />
-                        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-                    </asp:GridView>
+                <asp:Panel ID="Panel1" runat="server" GroupingText="Recently Added" Width="1000px"
+                    Font-Size="X-Small" Height="380px" >
+                      <div style="width: 980px; height: 380px; overflow: auto;">
+                    <asp:GridView ID="RecentIssuesgrid" runat="server" AutoGenerateColumns="False" 
+                        DataKeyNames="IDIssue"
+                                         DataKeys="IDIssue" Width="1500px" CellPadding="4"
+                                        ForeColor="#333333" GridLines="None">
+                                        <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
+                                        <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
+                                        <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <EditRowStyle BackColor="#999999" />
+                                        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                                        <Columns>
+                                           
+                                            <asp:BoundField DataField="IDIssue" HeaderText="ID" InsertVisible="False" ReadOnly="True"
+                                                SortExpression="IDIssue" />
+                                            <asp:BoundField DataField="IssueCreatedDate" DataFormatString="{0:MMM d, yyyy}" HtmlEncode="False"
+                                                HeaderText="Created Date" SortExpression="IssueCreatedDate">
+                                                <ItemStyle Width="130px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="FIPSCounty" HeaderText="FIPS" SortExpression="FIPSCounty" />
+                                            <asp:BoundField DataField="County" HeaderText="County" SortExpression="County" />
+                                            <asp:BoundField DataField="State" HeaderText="State" SortExpression="State" />
+                                            <asp:BoundField DataField="FileType" HeaderText="File Type" SortExpression="FileType">
+                                                <ItemStyle Width="150px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="IssueType" HeaderText="Issue Type" SortExpression="IssueType">
+                                                <ItemStyle Width="150px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="ProcessingType" HeaderText="Processing Type" SortExpression="ProcessingType">
+                                                <ItemStyle Width="250px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title">
+                                                <ItemStyle Width="200px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="IssueDetails" HeaderText="Issue Details" SortExpression="IssueDetails">
+                                                <ItemStyle Width="300px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Resolution" HeaderText="Resolution" SortExpression="Resolution">
+                                                <ItemStyle Width="300px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Submitter" HeaderText="Submitter" SortExpression="Submitter" />
+                                            <asp:BoundField DataField="Edition" HeaderText="Edition" SortExpression="Edition" />
+                                            <asp:BoundField DataField="Version" HeaderText="Version" SortExpression="Version" />
+                                            <asp:BoundField DataField="IssueCreatedUser" HeaderText="Created User" SortExpression="IssueCreatedUser" />
+                                        </Columns>
+                                    </asp:GridView>
+                     </div>
                 </asp:Panel>
             </ContentTemplate>
         </cc1:TabPanel>
@@ -1112,9 +1209,11 @@
                                     height="30px" width="750px" /></asp:Panel>
                             <asp:Panel ID="panelProcessing" runat="server" Height="400px" Width="750px" ScrollBars="Auto">
                                 <asp:GridView ID="gridprocessingtype" runat="server" AutoGenerateColumns="False"
-                                    DataKeyNames="IDProcessingType" DataSourceID="ProcessingTypeObjectDataSource"
+                                    DataKeyNames="IDProcessingType" DataSourceID="SqlDataSourceProcessingType"
                                     CellPadding="4" ForeColor="#333333" GridLines="Vertical" Width="98%" ShowFooter="True"
-                                    EnableModelValidation="True" OnRowCommand="gridprocessingtype_RowCommand">
+                                    EnableModelValidation="True" OnRowCommand="gridprocessingtype_RowCommand" 
+                                    onrowdeleted="gridprocessingtype_RowDeleted" 
+                                    onrowupdated="gridprocessingtype_RowUpdated">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1174,6 +1273,24 @@
                                     <EditRowStyle BackColor="#2461BF" />
                                     <AlternatingRowStyle BackColor="White" />
                                 </asp:GridView>
+                                <asp:SqlDataSource ID="SqlDataSourceProcessingType" runat="server" ConnectionString="<%$ ConnectionStrings:kbConnectionString %>"
+                                    DeleteCommand="DELETE FROM [ProcessingTypetbl] WHERE [IDProcessingType] = @IDProcessingType" 
+                                    InsertCommand="INSERT INTO [ProcessingTypetbl] ([ProcessingType], [ProcessingTypeDescription]) VALUES (@ProcessingType, @ProcessingTypeDescription)"
+                                    SelectCommand="SELECT * FROM [ProcessingTypetbl]" 
+                                    UpdateCommand="UPDATE [ProcessingTypetbl] SET [ProcessingType] = @ProcessingType, [ProcessingTypeDescription] = @ProcessingTypeDescription WHERE [IDProcessingType] = @IDProcessingType">
+                                    <DeleteParameters>
+                                        <asp:Parameter Name="IDProcessingType" Type="Int32" />
+                                    </DeleteParameters>
+                                    <UpdateParameters>
+                                        <asp:Parameter Name="ProcessingType" Type="String" />
+                                        <asp:Parameter Name="ProcessingTypeDescription" Type="String" />
+                                        <asp:Parameter Name="IDProcessingType" Type="Int32" />
+                                    </UpdateParameters>
+                                    <InsertParameters>
+                                        <asp:Parameter Name="ProcessingType" Type="String" />
+                                        <asp:Parameter Name="ProcessingTypeDescription" Type="String" />
+                                    </InsertParameters>
+                                </asp:SqlDataSource>
                             </asp:Panel>
                             <asp:Panel ID="panelFiletypeTitle" runat="server" Height="30px" Width="750px">
                                 <img id="imgFiletypeTitle" src="App_Themes/CollapsiblePanel/images/Filetypeclose.png"
@@ -1181,7 +1298,9 @@
                             <asp:Panel ID="panelFiletype" runat="server" Height="400px" Width="750px" ScrollBars="Auto">
                                 <asp:GridView ID="gridFileType" runat="server" AutoGenerateColumns="False" DataKeyNames="IDFileType"
                                     DataSourceID="SqlDataSourceFileType" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
-                                    Width="98%" ShowFooter="True" EnableModelValidation="True" OnRowCommand="gridFileType_RowCommand">
+                                    Width="98%" ShowFooter="True" EnableModelValidation="True" 
+                                    OnRowCommand="gridFileType_RowCommand" 
+                                    onrowupdated="gridFileType_RowUpdated" onrowdeleted="gridFileType_RowDeleted">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1265,7 +1384,9 @@
                                 ScrollBars="Auto">
                                 <asp:GridView ID="gridissuetype" runat="server" AutoGenerateColumns="False" DataKeyNames="IDIssueType"
                                     DataSourceID="SqlDataSourceIssuetype" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
-                                    Width="98%" ShowFooter="True" EnableModelValidation="True" OnRowCommand="gridissuetype_RowCommand">
+                                    Width="98%" ShowFooter="True" EnableModelValidation="True" 
+                                    OnRowCommand="gridissuetype_RowCommand" onrowdeleted="gridissuetype_RowDeleted" 
+                                    onrowupdated="gridissuetype_RowUpdated">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1348,9 +1469,11 @@
                                 <img id="img1" src="App_Themes/CollapsiblePanel/images/faqsclose.png" height="30px"
                                     width="750px" /></asp:Panel>
                             <asp:Panel ID="panelfaqDetail" runat="server" Height="400px" Width="750px" ScrollBars="Auto">
-                               <asp:GridView ID="gridfaq" runat="server" AutoGenerateColumns="False" DataKeyNames="IDfaq"
+                                <asp:GridView ID="gridfaq" runat="server" AutoGenerateColumns="False" DataKeyNames="IDfaq"
                                     DataSourceID="SqlDataSourcefaq" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
-                                    Width="98%" ShowFooter="True" EnableModelValidation="True" OnRowCommand="gridfaq_RowCommand">
+                                    Width="98%" ShowFooter="True" EnableModelValidation="True" OnRowCommand="gridfaq_RowCommand"
+                                     onrowdeleted="gridfaq_RowDeleted" 
+                                    onrowupdated="gridfaq_RowUpdated">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1410,10 +1533,8 @@
                                     <EditRowStyle BackColor="#2461BF" />
                                     <AlternatingRowStyle BackColor="White" />
                                 </asp:GridView>
-                                
                                 <asp:SqlDataSource ID="SqlDataSourcefaq" runat="server" ConnectionString="<%$ ConnectionStrings:kbConnectionString %>"
-                                    DeleteCommand="DELETE FROM [faqtbl] WHERE [IDFaq] = @IDFaq" 
-                                    InsertCommand="INSERT INTO [faqtbl] ([Faqs], [Faqsans]) VALUES (@Faqs, @Faqsans)"
+                                    DeleteCommand="DELETE FROM [faqtbl] WHERE [IDFaq] = @IDFaq" InsertCommand="INSERT INTO [faqtbl] ([Faqs], [Faqsans]) VALUES (@Faqs, @Faqsans)"
                                     SelectCommand="SELECT * FROM [faqtbl]" UpdateCommand="UPDATE [faqtbl] SET [Faqs] = @Faqs, [Faqsans] = @Faqsans WHERE [IDFaq] = @IDFaq">
                                     <DeleteParameters>
                                         <asp:Parameter Name="IDFaq" Type="Int32" />
@@ -1439,23 +1560,8 @@
                 <table width="98%">
                     <tr>
                         <td>
-                            <asp:ListView ID="ListView1" runat="server" DataKeyNames="IDFaq" DataSourceID="SqlDataSourcefaqlist">
-                                <ItemTemplate>
-                                    <li style="background-color: #DCDCDC; color: #000000;">
-                                        <asp:Label ID="FaqsLabel" runat="server" Text='<%#Eval("Faqs") %>' />
-                                        <br />
-                                        <asp:Label ID="FaqsansLabel" runat="server" Text='<%# Eval("Faqsans") %>' />
-                                        <br />
-                                    </li>
-                                </ItemTemplate>
-                                <LayoutTemplate>
-                                    <ul id="itemPlaceholderContainer" runat="server" style="font-family: Verdana, Arial, Helvetica, sans-serif;">
-                                        <li id="itemPlaceholder" runat="server" />
-                                    </ul>
-                                    <div style="text-align: center; background-color: #CCCCCC; font-family: Verdana, Arial, Helvetica, sans-serif;
-                                        color: #000000;">
-                                    </div>
-                                </LayoutTemplate>
+                            <asp:ListView ID="ListViewfaq" runat="server" DataKeyNames="IDFaq" 
+                                DataSourceID="SqlDataSourcefaqlist">
                                 <AlternatingItemTemplate>
                                     <li style="background-color: #FFF8DC;">
                                         <asp:Label ID="FaqsLabel" runat="server" Text='<%#Eval("Faqs") %>' />
@@ -1495,6 +1601,22 @@
                                 <ItemSeparatorTemplate>
                                     <br />
                                 </ItemSeparatorTemplate>
+                                <ItemTemplate>
+                                    <li style="background-color: #DCDCDC; color: #000000;">
+                                        <asp:Label ID="FaqsLabel" runat="server" Text='<%#Eval("Faqs") %>' />
+                                        <br />
+                                        <asp:Label ID="FaqsansLabel" runat="server" Text='<%# Eval("Faqsans") %>' />
+                                        <br />
+                                    </li>
+                                </ItemTemplate>
+                                <LayoutTemplate>
+                                    <ul id="itemPlaceholderContainer" runat="server" style="font-family: Verdana, Arial, Helvetica, sans-serif;">
+                                        <li id="itemPlaceholder" runat="server" />
+                                    </ul>
+                                    <div style="text-align: center; background-color: #CCCCCC; font-family: Verdana, Arial, Helvetica, sans-serif;
+                                        color: #000000;">
+                                    </div>
+                                </LayoutTemplate>
                                 <SelectedItemTemplate>
                                     <li style="background-color: #008A8C; font-weight: bold; color: #FFFFFF;">IDFaq:
                                         <asp:Label ID="IDFaqLabel" runat="server" Text='<%# Eval("IDFaq") %>' />
