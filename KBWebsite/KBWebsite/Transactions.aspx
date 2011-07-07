@@ -4,9 +4,9 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <link type="text/css" href="App_Themes/datePicker.css" rel="stylesheet" />
-    <link type="text/css" href="_assets/css/grid.css" rel="stylesheet" />
-    <link type="text/css" href="StyleSheet.css" rel="stylesheet" />
+   
+    
+   
 
     <script language="javascript" type="text/javascript">
 
@@ -165,7 +165,7 @@
         
     </script>
 
-    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="3" Width="1032px"
+    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="2" Width="1032px"
         Height="1000px" onactivetabchanged="TabContainer1_ActiveTabChanged" >
         <cc1:TabPanel runat="server" HeaderText="Recent Issues" ID="RecentIssuestab">
             <HeaderTemplate>
@@ -1009,7 +1009,7 @@
             <ContentTemplate>
             <table><tr><td align="right">
               <asp:Label ID="lblerrnew" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
-                            <asp:Label ID="lblmsgnew" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
+              <asp:Label ID="lblmsgnew" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
             
             </td></tr></table>
                 <asp:Panel ID="Panel2" runat="server" GroupingText="Add New" Font-Size="XX-Small">
@@ -1146,8 +1146,6 @@
                             <tr>
                                 <td style="height: 30px" colspan="4" align="right">
                                     <br />
-                                    <asp:Button ID="Button4" runat="server" OnClick="Button4_Click"
-                                        Text="Button" />
                                     <asp:Button ID="btnNew" runat="server" Font-Size="X-Small" 
                                         OnClick="btnNew_Click" Text="Save" />
                                 </td>
@@ -1236,10 +1234,13 @@
                     CollapsedImage="App_Themes/CollapsiblePanel/images/faqsopen.png" SuppressPostBack="True"
                     Enabled="True">
                 </cc1:CollapsiblePanelExtender>
+               
+                
+                    
                 <table><tr><td align="right">
               <asp:Label ID="lblmastererror" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
-                            <asp:Label ID="lblmastermsg" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
-                    <asp:HiddenField ID="hidmaster" runat="server" />
+                            <asp:Label ID="lblmasternew" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
+                   
             </td></tr></table>
                 
                 <table width="100%" style="height: 90%">
@@ -1257,7 +1258,8 @@
                                     EnableModelValidation="True" OnRowCommand="gridprocessingtype_RowCommand" 
                                     onrowdeleted="gridprocessingtype_RowDeleted" 
                                     onrowupdated="gridprocessingtype_RowUpdated" 
-                                    onrowediting="gridprocessingtype_RowEditing">
+                                    onrowediting="gridprocessingtype_RowEditing" 
+                                    onrowdeleting="gridprocessingtype_RowDeleting">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1344,7 +1346,9 @@
                                     DataSourceID="SqlDataSourceFileType" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
                                     Width="98%" ShowFooter="True" EnableModelValidation="True" 
                                     OnRowCommand="gridFileType_RowCommand" 
-                                    onrowupdated="gridFileType_RowUpdated" onrowdeleted="gridFileType_RowDeleted">
+                                    onrowupdated="gridFileType_RowUpdated" 
+                                    onrowdeleted="gridFileType_RowDeleted" onrowdeleting="gridFileType_RowDeleting" 
+                                    onrowediting="gridFileType_RowEditing">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1430,7 +1434,9 @@
                                     DataSourceID="SqlDataSourceIssuetype" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
                                     Width="98%" ShowFooter="True" EnableModelValidation="True" 
                                     OnRowCommand="gridissuetype_RowCommand" onrowdeleted="gridissuetype_RowDeleted" 
-                                    onrowupdated="gridissuetype_RowUpdated">
+                                    onrowupdated="gridissuetype_RowUpdated" 
+                                    onrowdeleting="gridissuetype_RowDeleting" 
+                                    onrowediting="gridissuetype_RowEditing">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">

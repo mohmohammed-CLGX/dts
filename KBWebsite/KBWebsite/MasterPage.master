@@ -10,8 +10,10 @@
     <%--<asp:ContentPlaceHolder id="head" runat="server">
     </asp:ContentPlaceHolder>--%>
       <script type="text/javascript" src="javacode.js"></script>
+      <link type="text/css" href="App_Themes/StyleSheet.css" rel="stylesheet" />
+      <link type="text/css" href="_assets/css/grid.css" rel="stylesheet" />
 </head>
-<link type="text/css" href="App_Themes/StyleSheet.css" rel="stylesheet" />
+
 <body bgcolor="#CCCCCC">
     <form id="form1" runat="server">
   
@@ -64,6 +66,7 @@
         <td>
         <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server" >
          <asp:UpdatePanel ID="updPanel" runat="server" UpdateMode="Conditional">
+         
          </asp:UpdatePanel>
         </asp:ContentPlaceHolder>
         </td>

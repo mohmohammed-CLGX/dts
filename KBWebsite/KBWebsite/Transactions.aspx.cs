@@ -22,6 +22,7 @@ public partial class Transactions : System.Web.UI.Page
         btnupdatesch.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnupdatesch.UniqueID, "");
         btnrecentdown.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnrecentdown.UniqueID, "");
         btnschdown.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnschdown.UniqueID, "");
+       
         if (!IsPostBack)
         {
             bindrecentgv();
@@ -750,7 +751,48 @@ public partial class Transactions : System.Web.UI.Page
     {
         bindprocessingddlcontrols();
     }
+    protected void gridprocessingtype_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        lblmastererror.Text = "";
 
+        string strid;
+        GridViewRow row = gridprocessingtype.Rows[e.RowIndex];
+
+        strid = ((Label)(row.FindControl("Labelprocid"))).Text;
+
+        int count = getrecordcount("IDProcessingType", strid);
+
+        if (count > 0)
+        {
+            Alert.Show("You cannot delete this Master Record. As (" + count + ") “Issues Records” Related to it.  ");
+            e.Cancel = true;
+        }
+        
+    }
+
+    protected void gridprocessingtype_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        lblmastererror.Text = "";
+
+        string strid;
+        GridViewRow row = gridprocessingtype.Rows[e.NewEditIndex];
+
+        strid = ((Label)(row.FindControl("Labelprocid"))).Text;
+
+        int count = getrecordcount("IDProcessingType", strid);
+
+        if (count > 0)
+        {
+            Alert.Show("Do you want to edit the Master Record?  As there are (" + count + ") “Issues Records” Related to it.  ");
+        }
+        else if (count < 0)
+        {
+            lblmastererror.Text = "Error Editing";
+            e.Cancel = true;
+        }
+
+
+    }
 
     protected void bindFileTypeddlcontrols()
     {
@@ -1669,22 +1711,113 @@ public partial class Transactions : System.Web.UI.Page
 
 
 
+   
 
 
-    protected void gridprocessingtype_RowEditing(object sender, GridViewEditEventArgs e)
+    private int getrecordcount(string p,string id)
     {
-        bool test = true;
-        string strid;
-        GridViewRow row = gridprocessingtype.Rows[e.NewEditIndex];
-        
-         strid=((Label)(row.FindControl("Labelprocid"))).Text;
+        string strsql = "SELECT CAST(COUNT(*) AS int) from Issuetbl where "+p+"="+id;
+        int retval;
+        try
+        {
+            SqlConnection conn = new SqlConnection(strconn);
 
-       //  Alert.confirm1("testing", "hidmaster");
-        // Alert.OkConfirm("testing", "lblmastermsg");
-         //Alert.Show1();
-         Alert.Show("You cannot delete this Master Record. As there are “Issues Records” Related to it." );
+            SqlCommand cmd = new SqlCommand(strsql, conn);
+
+            conn.Open();
+            retval = (int)cmd.ExecuteScalar();
+            conn.Close();
+            return retval;
+             
+
+        }
+        catch (Exception ex)
+        {
+            return -1;
+        }
+
+    }
+
+
+
+
+
+    protected void gridFileType_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        lblmastererror.Text = "";
+
+        string strid;
+        GridViewRow row = gridFileType.Rows[e.NewEditIndex];
+
+        strid = ((Label)(row.FindControl("Labelfileid"))).Text;
+
+        int count = getrecordcount("IDFileType", strid);
+
+        if (count > 0)
+        {
+            Alert.Show("Do you want to edit the Master Record?  As there are (" + count + ") “Issues Records” Related to it.");
+        }
+        else if (count < 0)
+        {
+            lblmastererror.Text = "Error Editing";
             e.Cancel = true;
-        
+        }
+
+    }
+    protected void gridFileType_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        lblmastererror.Text = "";
+
+        string strid;
+        GridViewRow row = gridFileType.Rows[e.RowIndex];
+
+        strid = ((Label)(row.FindControl("Labelfileid"))).Text;
+
+        int count = getrecordcount("IDFileType", strid);
+
+        if (count > 0)
+        {
+            Alert.Show("You cannot delete this Master Record. As there are (" + count + ") “Issues Records” Related to it.  ");
+            e.Cancel = true;
+        }
+    }
+    protected void gridissuetype_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        lblmastererror.Text = "";
+
+        string strid;
+        GridViewRow row = gridissuetype.Rows[e.RowIndex];
+
+        strid = ((Label)(row.FindControl("Labelissueid"))).Text;
+
+        int count = getrecordcount("IDIssueType", strid);
+
+        if (count > 0)
+        {
+            Alert.Show("You cannot delete this Master Record. As there are (" + count + ") “Issues Records” Related to it.  ");
+            e.Cancel = true;
+        }
+    }
+    protected void gridissuetype_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        lblmastererror.Text = "";
+
+        string strid;
+        GridViewRow row = gridissuetype.Rows[e.NewEditIndex];
+
+        strid = ((Label)(row.FindControl("Labelissueid"))).Text;
+
+        int count = getrecordcount("IDIssueType", strid);
+
+        if (count > 0)
+        {
+            Alert.Show("Do you want to edit the Master Record?  As there are (" + count + ") “Issues Records” Related to it.");
+        }
+        else if (count < 0)
+        {
+            lblmastererror.Text = "Error Editing";
+            e.Cancel = true;
+        }
 
     }
 }
