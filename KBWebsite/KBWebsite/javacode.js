@@ -1,11 +1,41 @@
 ﻿
 
-                
+
+
+function MyFunc() {
+    //$get('ImageButton1')
+    var ddlcounty = document.getElementById("ctl00_ContentPlaceHolder1_TabContainer1_editMastertab_hidmaster");
+    var ddlstate = document.getElementById("ctl00_ContentPlaceHolder1_TabContainer1_editMastertab_lblmastermsg");
+    if (confirm('There are Records Associated with this Master Record Do you want to Edit? ')) {
+
+        ddlcounty.value = "1";
+        ddlstate.value = "1";
+        //                document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_editMastertab_').value = "1"
+        //                document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_editMastertab_').value = "1"
+
+
+        return false;
+    }
+    else {
+        //cancel button clicked.
+        //We will return true so that we can write server side in code behind
+        alert("hello world");
+        ddlcounty.value = "0";
+        ddlstate.value = "0";
+        //                document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_editMastertab_hidmaster').value = "0"
+        //                document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_editMastertab_lblmastermsg').value = "0"
+        return true;
+    }
+}
 
 
                  function HideModalPopup() {
                      var modal = $find('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_ModalPopupExtender1');
                      // var modal1 = $find('PanelRecentissue');
+                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtdownfile').style.display = "none";
+                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_btnrecentdown').style.display = "none";
+                    
+                          
                      modal.hide();
                      // modal1.style.visibility = "visible";
                  }
@@ -19,6 +49,9 @@
                  }
                  function HideModalPopupsch() {
                      var modal = $find('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_ModalPopupExtendersch');
+                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtdownfilesch').style.display = "none";
+                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_btnschdown').style.display = "none";
+                                    
                      // var modal1 = $find('PanelRecentissue');
                      modal.hide();
                      // modal1.style.visibility = "visible";
@@ -137,6 +170,23 @@
                                  case "IDIssueType":
                                      document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_ddlpupitypesch').value = xmlvalue;
                                      break;
+                                     case "Isuplodedfile":
+                                     if(xmlvalue=="true") {
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtdownfilesch').style.display = "";
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_btnschdown').style.display = "";
+                     
+                                     }
+                                     break;
+
+                                 case "IDuploadedfile":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_hidschid').value = xmlvalue;
+
+                                     break;
+                                 case "FileName":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_SearchIssuestab_txtdownfilesch').value = xmlvalue;
+                                     break;
+                                    
+                                     
                              }
                          }
                      }
@@ -250,6 +300,23 @@
                                  case "IDIssueType":
                                      document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_ddlpupitype').value = xmlvalue;
                                      break;
+                                 case "Isuplodedfile":
+                                     if (xmlvalue == "true") {
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtdownfile').style.display = "";
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_btnrecentdown').style.display = "";  
+                                    
+                                     }
+                                     break;
+
+                                 case "IDuploadedfile":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_hiduploadfileid').value = xmlvalue;
+
+                                     break;
+                                 case "FileName":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_RecentIssuestab_txtdownfile').value = xmlvalue;
+                                     break;
+                                     
+                                    
                              }
                          }
                      }

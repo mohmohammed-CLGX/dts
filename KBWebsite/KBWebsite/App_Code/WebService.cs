@@ -36,8 +36,9 @@ public class WebService : System.Web.Services.WebService
         string sql = "SELECT County.FIPS, County.StateCounty, County.State, County.County, [IDIssue]," +
                      "[FIPSCounty] ,[IDProcessingType],[IDFileType] ,[IDIssueType] ,isnull([Edition],'') as Edition ,isnull([Version],'') as Version,[Title]," +
                      "[IssueDetails] ,[Resolution] ,[Submitter],case([Relatedlink]) when '' then null else [Relatedlink] end  as Relatedlink   ,isnull([ICP],'') as ICP,[IssueCreatedDate],[IssueCreatedUser]," +
-                     "[IssueUpdatedDate],[IssueUpdatedUser],[Isuplodedfile] ,[IDuploadedfile] FROM " +
-                     " County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty where IDissue=" + IssueID;
+                     "[IssueUpdatedDate],[IssueUpdatedUser],[Isuplodedfile] ,Issuetbl.[IDuploadedfile],Uploadedfiletbl.FileName FROM " +
+                     " County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty "+
+                     " left outer join Uploadedfiletbl on Uploadedfiletbl.IDuploadedfile=Issuetbl.IDuploadedfile where IDissue=" + IssueID;
         try
         {
             SqlDataAdapter da = new SqlDataAdapter(sql, System.Configuration.ConfigurationManager.ConnectionStrings["kbConnectionString"].ToString());

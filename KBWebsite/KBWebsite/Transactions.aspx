@@ -161,11 +161,11 @@
             //  update the src with the new value
             img.src = src;
         }
-   
-  
+
+        
     </script>
 
-    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="2" Width="1032px"
+    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="3" Width="1032px"
         Height="1000px" onactivetabchanged="TabContainer1_ActiveTabChanged" >
         <cc1:TabPanel runat="server" HeaderText="Recent Issues" ID="RecentIssuestab">
             <HeaderTemplate>
@@ -284,6 +284,9 @@
                         <td>
                             <asp:Panel ID="Panel14" runat="server" BackColor="LightGray" Height="600px" Width="500px">
                                 <table>
+                                    
+                                   
+                                    
                                     <tr>
                                         <td width="13px">
                                         </td>
@@ -295,7 +298,7 @@
                                             <asp:HiddenField ID="hidCusCode" runat="server" />
                                         </td>
                                     </tr>
-                                    <tr>
+                                     <tr>
                                         <td width="13px">
                                         </td>
                                         <td>
@@ -306,7 +309,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                         <td width="13px">
                                         </td>
                                         <td>
                                             <asp:Label ID="Label3" runat="server" Text="State:" />
@@ -441,16 +444,32 @@
                                             <asp:TextBox ID="txtpupresolution" runat="server" Rows="4" Width="330px" TextMode="MultiLine"></asp:TextBox>
                                         </td>
                                     </tr>
+                                    
+                                        
+                                            <tr>
+                                             <td width="13px">
+                                                <td>
+                                                   <asp:TextBox ID="txtdownfile" runat="server" ReadOnly="True" Width="100px"></asp:TextBox>
+                                                    <asp:HiddenField ID="hiduploadfileid" runat="server" />
+                                                </td>
+                                                <td>
+                                                    <asp:Button ID="btnrecentdown" runat="server" Text="Download File" 
+                                                        OnClick="btnrecentdown_Click"/>
+                                            </td>
+                                            </tr>
+                                    
                                     <tr>
                                         <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Button ID="btnupdate" runat="server" Text="Update" OnClick="btnupdate_Click" />
+                                            <asp:Button ID="btnupdate" runat="server" OnClick="btnupdate_Click" 
+                                                Text="Update" />
                                         </td>
                                         <td>
                                             <asp:Button ID="btncancel" runat="server" Text="Cancel" />
                                         </td>
                                     </tr>
+                                    
                                 </table>
                             </asp:Panel>
                         </td>
@@ -953,6 +972,17 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                             <td width="13px">
+                                                <td>
+                                                   <asp:TextBox ID="txtdownfilesch" runat="server" ReadOnly="True" Width="100px"></asp:TextBox>
+                                                    <asp:HiddenField ID="hidschid" runat="server" />
+                                                </td>
+                                                <td>
+                                                    <asp:Button ID="btnschdown" runat="server" Text="Download File" 
+                                                        OnClick="btnschdown_Click"/>
+                                            </td>
+                                            </tr>
+                                    <tr>
                                         <td width="13px">
                                         </td>
                                         <td>
@@ -1116,8 +1146,10 @@
                             <tr>
                                 <td style="height: 30px" colspan="4" align="right">
                                     <br />
-                                    <asp:Button ID="btnNew" runat="server" Font-Size="X-Small" OnClick="btnNew_Click"
-                                        Text="Save" />
+                                    <asp:Button ID="Button4" runat="server" OnClick="Button4_Click"
+                                        Text="Button" />
+                                    <asp:Button ID="btnNew" runat="server" Font-Size="X-Small" 
+                                        OnClick="btnNew_Click" Text="Save" />
                                 </td>
                             </tr>
                     </table>
@@ -1204,6 +1236,12 @@
                     CollapsedImage="App_Themes/CollapsiblePanel/images/faqsopen.png" SuppressPostBack="True"
                     Enabled="True">
                 </cc1:CollapsiblePanelExtender>
+                <table><tr><td align="right">
+              <asp:Label ID="lblmastererror" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
+                            <asp:Label ID="lblmastermsg" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
+                    <asp:HiddenField ID="hidmaster" runat="server" />
+            </td></tr></table>
+                
                 <table width="100%" style="height: 90%">
                     <tr valign="top">
                         <td width="10%">
@@ -1218,7 +1256,8 @@
                                     CellPadding="4" ForeColor="#333333" GridLines="Vertical" Width="98%" ShowFooter="True"
                                     EnableModelValidation="True" OnRowCommand="gridprocessingtype_RowCommand" 
                                     onrowdeleted="gridprocessingtype_RowDeleted" 
-                                    onrowupdated="gridprocessingtype_RowUpdated">
+                                    onrowupdated="gridprocessingtype_RowUpdated" 
+                                    onrowediting="gridprocessingtype_RowEditing">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">

@@ -20,6 +20,8 @@ public partial class Transactions : System.Web.UI.Page
         strconn = System.Configuration.ConfigurationManager.ConnectionStrings["kbConnectionString"].ToString();
         btnupdate.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnupdate.UniqueID, "");
         btnupdatesch.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnupdatesch.UniqueID, "");
+        btnrecentdown.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnrecentdown.UniqueID, "");
+        btnschdown.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnschdown.UniqueID, "");
         if (!IsPostBack)
         {
             bindrecentgv();
@@ -33,9 +35,12 @@ public partial class Transactions : System.Web.UI.Page
         ddlstate_countynew.Attributes.Add("onchange", "return newstateselchange();");
         ddlfpisnew.Attributes.Add("onchange", "return newFipsselchange();");
         ddlfipssch.Attributes.Add("onchange", "return fipsschonchange();");
-
+       // lblrecentdown.Style.Add("display", "none");
         txtcountysch.Style.Add("display", "none");
-
+        btnrecentdown.Style.Add("display", "none");
+        txtdownfile.Style.Add("display", "none");
+        txtdownfilesch.Style.Add("display", "none");
+        btnschdown.Style.Add("display", "none");
        // ddlRecentFips.Attributes.Add("onchange", "return fipsselchangeRecent();");
 
       //  ddlFipssch.Attributes.Add("onchange", "return fipsselchange();");
@@ -49,13 +54,14 @@ public partial class Transactions : System.Web.UI.Page
     private void bindnewrecentgrid()
     {
         string strsql = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
-               "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, Issuetbl.Title," +
-               "Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink, Issuetbl.ICP, " +
+               "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, SUBSTRING(Title,0,100) as Title," +
+               "SUBSTRING(IssueDetails,0,200) as IssueDetails, SUBSTRING(Resolution,0,150) as Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink, Issuetbl.ICP, " +
                "Issuetbl.IssueCreatedDate, Issuetbl.IssueCreatedUser FROM County " +
                " INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
                " INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
                " INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
                " INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType order by Issuetbl.IDIssue desc";
+
 
         DataSet ds = new DataSet();
         try
@@ -156,9 +162,17 @@ public partial class Transactions : System.Web.UI.Page
         //    e.Row.Attributes.Add("onMouseOut", "this.style.background='#ffffff'");
         //}
     }
+    protected void btnschdown_Click(object sender, EventArgs e)
+    {
+        string id = hidschid.Value;
+        downloadkbfile(id);
+    }
 
-
-
+     protected void btnrecentdown_Click(object sender, EventArgs e)
+    {
+        string id = hiduploadfileid.Value;
+         downloadkbfile(id);
+    }
     protected void btnupdate_Click(object sender, EventArgs e)
     {
         string stredition = txtpupEdition.Text.ToUpper() != "N/A" ? txtpupEdition.Text : "null";
@@ -181,24 +195,29 @@ public partial class Transactions : System.Web.UI.Page
             conn.Close();
 
             bindrecentgv();
+            btnrecentdown.Style.Add("display", "none");
+            txtdownfile.Style.Add("display", "none");
         }
         catch (Exception ex)
         {
-
+            btnrecentdown.Style.Add("display", "none");
+            txtdownfile.Style.Add("display", "none");
         }
     }
 
     protected void bindrecentgv()
     {
         string strsql = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
-                "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, Issuetbl.Title," +
-                "Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink, Issuetbl.ICP, " +
+                "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, SUBSTRING(Title,0,100) as Title," +
+                "SUBSTRING(IssueDetails,0,200) as IssueDetails, SUBSTRING(Resolution,0,150) as Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink, Issuetbl.ICP, " +
                 "Issuetbl.IssueCreatedDate, Issuetbl.IssueCreatedUser FROM County " +
                 " INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
                 " INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
                 " INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
                 " INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType order by Issuetbl.IDIssue desc";
-
+      
+     
+        
         DataSet ds = new DataSet();
         try
         {
@@ -238,11 +257,13 @@ public partial class Transactions : System.Web.UI.Page
 
             string strsql = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
                            "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, " +
-                           "Issuetbl.Title, Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
+                           "SUBSTRING(Title,0,100) as Title, SUBSTRING(IssueDetails,0,200) as IssueDetails, SUBSTRING(Resolution,0,150) as Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
                         "Issuetbl.ICP,Issuetbl.IssueCreatedDate ,[IssueCreatedUser] FROM  County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
                         "INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
                         "INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
                         "INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType ";
+            
+     
             if (strstate != "" || strfips != "" || strfdate != "" || strtdate != "")
             {
                 strsql = strsql + " where ";
@@ -452,14 +473,34 @@ public partial class Transactions : System.Web.UI.Page
         if (Int32.TryParse(txtICPnew.Text, out test))
             ICP=txtICPnew.Text;
         string IssueCreatedDate=DateTime.Now.ToString("yyyy/MM/dd");
-        string command = "insert into [Issuetbl](FIPSCounty,IDProcessingType,IDFileType,IDIssueType,Edition,Version,Title,IssueDetails,Resolution," +
-                           "Submitter,Relatedlink,ICP,IssueCreatedDate,Isuplodedfile) " +
-                             " Values('" + FIPSCounty + "'," + IDProcessingType + "," + IDFileType + "," + IDIssueType + "," + Edition+","+
-                         strVersion + ",'" + Title + "','"+IssueDetails+ "','"+Resolution + "','"+Submitter+ "','"+Relatedlink+"',"+ICP+",'"+
-                        IssueCreatedDate+"',0)";
+       
     
         try
         {
+            int upid = 0;
+            bool isfile = false;
+            if (FileUploadkb.PostedFile != null || !string.IsNullOrEmpty(FileUploadkb.PostedFile.FileName) ||
+             FileUploadkb.PostedFile.InputStream != null)
+            {
+                upid=uploadkbfile();
+                if (upid > 0)
+                {
+                    isfile = true;
+                }
+                else
+                {
+                    lblerrnew.Text = "Error - unable to upload file. Please try again.";
+                    return;
+                }
+
+                
+            }
+            string command = "insert into [Issuetbl](FIPSCounty,IDProcessingType,IDFileType,IDIssueType,Edition,Version,Title,IssueDetails,Resolution," +
+                          "Submitter,Relatedlink,ICP,IssueCreatedDate,Isuplodedfile,IDuploadedfile) " +
+                            " Values('" + FIPSCounty + "'," + IDProcessingType + "," + IDFileType + "," + IDIssueType + "," + Edition + "," +
+                        strVersion + ",'" + Title + "','" + IssueDetails + "','" + Resolution + "','" + Submitter + "','" + Relatedlink + "'," + ICP + ",'" +
+                       IssueCreatedDate + "','"+isfile+"',"+upid+")";
+            
             SqlConnection conn = new SqlConnection(strconn);
             SqlCommand cmd = new SqlCommand(command, conn);
             conn.Open();
@@ -480,6 +521,7 @@ public partial class Transactions : System.Web.UI.Page
             txtSubmitternew.Text = "";
             txtRelatedLinksnew.Text = "";
             lblmsgnew.Text = "New Issue Submited Successfully";
+            
           
             bindnewrecentgrid();
 
@@ -491,6 +533,160 @@ public partial class Transactions : System.Web.UI.Page
         }
     }
 
+    private int uploadkbfile()
+    {
+         
+
+
+        
+            try
+            {
+                SqlConnection conn = new SqlConnection(strconn);
+
+
+                string command = "INSERT INTO [Uploadedfiletbl] ([FileName], [FileSize], [ContentType], [FileData]) " +
+                                    "VALUES (@FileName, @FileSize, @ContentType, @FileData);" + " SELECT CAST(scope_identity() AS int)";
+
+                SqlCommand cmd = new SqlCommand(command, conn);
+                cmd.Parameters.AddWithValue("@FileName", FileUploadkb.FileName.Trim());
+                cmd.Parameters.AddWithValue("@ContentType", FileUploadkb.PostedFile.ContentType);
+
+                byte[] imageBytes = new byte[FileUploadkb.PostedFile.InputStream.Length + 1];
+                FileUploadkb.PostedFile.InputStream.Read(imageBytes, 0, imageBytes.Length);
+                cmd.Parameters.AddWithValue("@FileData", imageBytes);
+                cmd.Parameters.AddWithValue("@FileSize", FileUploadkb.PostedFile.InputStream.Length);
+               
+                conn.Open();
+                int id=(int)cmd.ExecuteScalar();
+                
+                //cmd.ExecuteNonQuery();
+                // .Text = "File successfully uploaded - thank you.";
+                conn.Close();
+                return id;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        
+    }
+
+    private void downloadkbfile(string upid)
+    {
+        byte[] file = null;
+        string strfilename = "";
+        string strext = "";
+        string length;
+        try
+        {
+            string strsql = "SELECT [FileName]  ,[FileSize] ,[ContentType] ,[FileData]  FROM [kb].[dbo].[Uploadedfiletbl] where [IDuploadedfile]=" + upid;
+
+            SqlConnection conn = new SqlConnection(strconn);
+            SqlCommand cmd = new SqlCommand(strsql, conn);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                file = (byte[])reader["FileData"];
+                strfilename = (string)reader["FileName"];
+                strext = (string)reader["ContentType"];
+            }
+            length = file.Length.ToString();
+            conn.Close();
+            //strext = ReturnExtension(strext);
+            Response.Clear();
+            Response.ClearContent();
+            Response.ContentType = strext;
+            
+      Response.AppendHeader("Content-Disposition", "attachment; filename=\"" + strfilename + "\"");
+      Response.AppendHeader("Content-Length", length);
+
+      Response.Flush();
+      Response.BinaryWrite(file);
+            //Response.ClearContent();
+          //  Response.ContentType = ReturnExtension(strext);
+            //Response.AddHeader("Content-Disposition", "attachment;filename=" + strfilename);
+
+            ////  BinaryWriter bw = new HttpResponse.BinaryWriter();
+            //Response.ContentType = ReturnExtension(strext);
+            //Response.BinaryWrite(file);
+
+          
+           // Response.End();
+        }
+        catch (Exception ex)
+        {
+        }
+
+    }
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+       // downloadkbfile(5);
+        
+       // downloadkbfile(4);
+
+    }
+    private string ReturnExtension(string fileExtension)
+    {
+        switch (fileExtension)
+        {
+            case ".htm":
+            case ".html":
+            case ".log":
+                return "text/HTML";
+            case ".txt":
+                return "text/plain";
+            case ".doc":
+                return "application/ms-word";
+            case ".tiff":
+            case ".tif":
+                return "image/tiff";
+            case ".asf":
+                return "video/x-ms-asf";
+            case ".avi":
+                return "video/avi";
+            case ".zip":
+                return "application/zip";
+            case ".xls":
+            case ".csv":
+                return "application/vnd.ms-excel";
+            case ".gif":
+                return "image/gif";
+            case ".jpg":
+            case "jpeg":
+                return "image/jpeg";
+            case ".bmp":
+                return "image/bmp";
+            case ".wav":
+                return "audio/wav";
+            case ".mp3":
+                return "audio/mpeg3";
+            case ".mpg":
+            case "mpeg":
+                return "video/mpeg";
+            case ".rtf":
+                return "application/rtf";
+            case ".asp":
+                return "text/asp";
+            case ".pdf":
+                return "application/pdf";
+            case ".fdf":
+                return "application/vnd.fdf";
+            case ".ppt":
+                return "application/mspowerpoint";
+            case ".dwg":
+                return "image/vnd.dwg";
+            case ".msg":
+                return "application/msoutlook";
+            case ".xml":
+            case ".sdxl":
+                return "application/xml";
+            case ".xdp":
+                return "application/vnd.adobe.xdp+xml";
+            default:
+                return "application/octet-stream";
+        }
+    }
 
 
 
@@ -923,11 +1119,12 @@ public partial class Transactions : System.Web.UI.Page
 
             string strselect = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
                                "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, " +
-                               "Issuetbl.Title, Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
+                               "SUBSTRING(Title,0,100) as Title, SUBSTRING(IssueDetails,0,200) as IssueDetails,  SUBSTRING(Resolution,0,150) as Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
                             "Issuetbl.ICP,Issuetbl.IssueCreatedDate ,[IssueCreatedUser] FROM  County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
                             "INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
                             "INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
                             "INNER JOIN ProcessingTypetbl ON Issuetbl.IDProcessingType = ProcessingTypetbl.IDProcessingType " + strwhere + " order by Issuetbl.IDIssue desc";
+
 
             SqlDataAdapter da;
             DataSet ds = new DataSet();
@@ -1202,11 +1399,14 @@ public partial class Transactions : System.Web.UI.Page
             cmd.ExecuteNonQuery();
             conn.Close();
             TabContainer1.ActiveTab = TabContainer1.Tabs[1];
+            txtdownfilesch.Style.Add("display", "none");
+            btnschdown.Style.Add("display", "none");
          //   bindschgrid();
         }
         catch (Exception ex)
         {
-
+            txtdownfilesch.Style.Add("display", "none");
+            btnschdown.Style.Add("display", "none");
         }
     }
 
@@ -1468,5 +1668,23 @@ public partial class Transactions : System.Web.UI.Page
 
 
 
-    
+
+
+
+    protected void gridprocessingtype_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        bool test = true;
+        string strid;
+        GridViewRow row = gridprocessingtype.Rows[e.NewEditIndex];
+        
+         strid=((Label)(row.FindControl("Labelprocid"))).Text;
+
+       //  Alert.confirm1("testing", "hidmaster");
+        // Alert.OkConfirm("testing", "lblmastermsg");
+         //Alert.Show1();
+         Alert.Show("You cannot delete this Master Record. As there are “Issues Records” Related to it." );
+            e.Cancel = true;
+        
+
+    }
 }
