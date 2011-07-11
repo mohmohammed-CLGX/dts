@@ -229,6 +229,7 @@ public partial class Transactions : System.Web.UI.Page
             {
                 gvrecent.DataSource = ds.Tables[0];
                 gvrecent.DataBind();
+                if(TabContainer1.ActiveTab == TabContainer1.Tabs[0])
                 TabContainer1.ActiveTab = TabContainer1.Tabs[0];
             }
             else
@@ -306,21 +307,33 @@ public partial class Transactions : System.Web.UI.Page
                 da.Dispose();
                 gvrecent.DataSource = ds.Tables[0];
                 gvrecent.DataBind();
-               ddlRecentState.SelectedIndex=0;
+                lblmsgrecent.Text = "Result with Rows Count: " + ds.Tables[0].Rows.Count;
+                btnrecentclear.Enabled = true;
+                //  ddlRecentState.SelectedIndex=0;
                
-              txtRecentFromdt.Text="";
-              txtRecentTodt.Text="";
+             // txtRecentFromdt.Text="";
+            //  txtRecentTodt.Text="";
 
 
             }
             catch (Exception ex)
             {
+                lblerrrecent.Text = "Error geting Rows";
             }
 
         }
         else
         {
         }
+    }
+    protected void btnrecentclear_Click(object sender, EventArgs e)
+    {
+        lblerrrecent.Text = lblmsgrecent.Text = "";
+
+        ccddRegion.SelectedValue = "";
+        txtRecentFromdt.Text = "";
+        txtRecentTodt.Text = "";
+        bindrecentgv();
     }
     #endregion
     public DataTable getproc()
@@ -452,9 +465,17 @@ public partial class Transactions : System.Web.UI.Page
             FIPSCounty = ddlstate_countynew.SelectedValue.ToString();
         }
 
-        string IDProcessingType=ddlProcessingtypenew.SelectedValue.ToString();
-        string IDFileType=ddlFileTypenew.SelectedValue.ToString();
-        string IDIssueType=ddlIssueTypenew.SelectedValue.ToString();
+        string IDProcessingType = "1";
+        if (ddlProcessingtypenew.SelectedIndex > 0)
+        {
+            IDProcessingType = ddlProcessingtypenew.SelectedValue.ToString();
+        }
+        string IDFileType = "1";
+        if (ddlFileTypenew.SelectedIndex > 0)
+            IDFileType = ddlFileTypenew.SelectedValue.ToString();
+        string IDIssueType = "1";
+        if (ddlIssueTypenew.SelectedIndex > 0)
+            IDIssueType = ddlIssueTypenew.SelectedValue.ToString();
         int test;
         string Edition="null";
         if(Int32.TryParse(txtEditionnew.Text,out test))
@@ -480,27 +501,42 @@ public partial class Transactions : System.Web.UI.Page
         {
             int upid = 0;
             bool isfile = false;
-            if (FileUploadkb.PostedFile != null || !string.IsNullOrEmpty(FileUploadkb.PostedFile.FileName) ||
-             FileUploadkb.PostedFile.InputStream != null)
+            if (FileUploadkb.FileName != "")
             {
-                upid=uploadkbfile();
-                if (upid > 0)
+                if (FileUploadkb.PostedFile != null || !string.IsNullOrEmpty(FileUploadkb.PostedFile.FileName) ||
+                 FileUploadkb.PostedFile.InputStream != null)
                 {
-                    isfile = true;
-                }
-                else
-                {
-                    lblerrnew.Text = "Error - unable to upload file. Please try again.";
-                    return;
+                    if (FileUploadkb.FileBytes.Length > 0)
+                    {
+                        upid = uploadkbfile();
+                        if (upid > 0)
+                        {
+                            isfile = true;
+                        }
+                        else
+                        {
+                            lblerrnew.Text = "Error - unable to upload file. Please try again.";
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        lblerrnew.Text = "Error - canot upload o Bytes file. Please try again.";
+                        return;
+                    }
+
+
                 }
 
-                
             }
+            string struid = "null";
+            if (upid > 0)
+                struid = upid.ToString();
             string command = "insert into [Issuetbl](FIPSCounty,IDProcessingType,IDFileType,IDIssueType,Edition,Version,Title,IssueDetails,Resolution," +
                           "Submitter,Relatedlink,ICP,IssueCreatedDate,Isuplodedfile,IDuploadedfile) " +
                             " Values('" + FIPSCounty + "'," + IDProcessingType + "," + IDFileType + "," + IDIssueType + "," + Edition + "," +
                         strVersion + ",'" + Title + "','" + IssueDetails + "','" + Resolution + "','" + Submitter + "','" + Relatedlink + "'," + ICP + ",'" +
-                       IssueCreatedDate + "','"+isfile+"',"+upid+")";
+                       IssueCreatedDate + "','" + isfile + "'," + struid + ")";
             
             SqlConnection conn = new SqlConnection(strconn);
             SqlCommand cmd = new SqlCommand(command, conn);
@@ -525,6 +561,7 @@ public partial class Transactions : System.Web.UI.Page
             
           
             bindnewrecentgrid();
+            bindrecentgv();
 
 
         }
@@ -1077,7 +1114,33 @@ public partial class Transactions : System.Web.UI.Page
                 }
             }
 
+            if (ddlwildcardstitlesch.SelectedValue != "0")
+            {
+                if (ddlwildcardstitlesch.SelectedValue == "Like")
+                {
+                    if (txttitlesch.Text.Length > 0)
+                        strwhere += "Issuetbl.Title Like '%" + txttitlesch.Text + "%'" + straddor;
+                }
+                else if (ddlwildcardstitlesch.SelectedValue == "Not Like")
+                {
+                    if (txttitlesch.Text.Length > 0)
+                        strwhere += "Issuetbl.Title Not Like '%" + txttitlesch.Text + "%'" + straddor;
+                }
+                else if (ddlwildcardstitlesch.SelectedValue == "Contains")
+                {
+                    if (txttitlesch.Text.Length > 0)
+                    {
+                        strwhere += "CONTAINS(Issuetbl.Title , '\"" + txttitlesch.Text + "\"')" + straddor;
+                    }
 
+                }
+
+            }
+            else
+            {
+                if (txttitlesch.Text.Length > 0)
+                    strwhere += "Issuetbl.Title='" + txtIssuedetailsch.Text.Trim() + "'" + straddor;
+            }
 
 
             if (ddlwildcsh.SelectedValue != "0")
@@ -1185,7 +1248,7 @@ public partial class Transactions : System.Web.UI.Page
                     GridViewResult.DataSource = ds.Tables[0];
                     GridViewResult.DataBind();
 
-                    clearschcontrols();
+                    
                 }
                 else
                 {
@@ -1243,6 +1306,7 @@ public partial class Transactions : System.Web.UI.Page
          txtSubmittersch.Text != "" ||
          txtfdatesch.Text != "" ||
          txttdatesch.Text != "" ||
+         txttitlesch.Text!="" ||
          txtIssuedetailsch.Text != "" ||
          txtResolutionsch.Text != "")
         {
@@ -1272,6 +1336,8 @@ public partial class Transactions : System.Web.UI.Page
         ddlwildcardsresolutionsch.SelectedIndex = 0;
         txtIssuedetailsch.Text = "";
         txtResolutionsch.Text = "";
+        ddlwildcardstitlesch.SelectedIndex = 0;
+        txttitlesch.Text = "";
         
 
     }
@@ -1820,4 +1886,14 @@ public partial class Transactions : System.Web.UI.Page
         }
 
     }
-}
+    protected void btnschclear_Click(Object sender, EventArgs e)
+    {
+        Errorsch.Text = MSGsch.Text = "";
+
+        clearschcontrols();
+        GridViewResult.Visible = false;
+        
+        GridViewResult.DataSource = null;
+        GridViewResult.DataBind();
+    }
+    }

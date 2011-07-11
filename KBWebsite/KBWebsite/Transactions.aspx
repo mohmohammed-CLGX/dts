@@ -11,43 +11,45 @@
     <script language="javascript" type="text/javascript">
 
 
-                function fipsschonchange() {
+        function fipsschonchange() {
 
 
-            
-                var ddlfipsschvalue = document.getElementById("<%=ddlfipssch.ClientID%>")
-                if (ddlfipsschvalue.selectedIndex > 0) {
-                    WebService.getstatefromfips(ddlfipsschvalue.value, setstate);
-                }
-                else {
-                    var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
-                    var ddlcounty = document.getElementById("<%=ddlcountysch.ClientID%>");
-                    var txt = document.getElementById("<%=txtcountysch.ClientID%>");
-                    ddlstate.selectedIndex = 0;
-                    ddlstate.disabled = false;
-                    ddlcounty.style.display = "";
-                    txt.style.display = 'none'
-                    txt.value = "";
-                }
-                   
-                   
-                }
-                function setstate(state) {
-                    var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
-                    var ddlcounty = document.getElementById("<%=ddlcountysch.ClientID%>");
 
-                    var txt = document.getElementById("<%=txtcountysch.ClientID%>");
-                    var ddlfipsschvalue = document.getElementById("<%=ddlfipssch.ClientID%>").value;
-                    // document.getElementById("sel").value = 3
-                    var mySplitResult = state.split(";");
-                    ddlstate.value = mySplitResult[0];
-                    //ddlcounty.value = ddlfipsschvalue;
-                    ddlstate.disabled = true;
-                    ddlcounty.style.display = 'none';
-                    txt.style.display = "";
-                    txt.value = mySplitResult[1];
-                    
-                }
+            var ddlfipsschvalue = document.getElementById("<%=ddlfipssch.ClientID%>")
+            if (ddlfipsschvalue.selectedIndex > 0) {
+                WebService.getstatefromfips(ddlfipsschvalue.value, setstate);
+            }
+            else {
+                var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
+                var ddlcounty = document.getElementById("<%=ddlcountysch.ClientID%>");
+                var txt = document.getElementById("<%=txtcountysch.ClientID%>");
+                ddlstate.selectedIndex = 0;
+                ddlstate.disabled = false;
+                ddlcounty.style.display = "";
+                ddlcounty.disabled = true;
+                ddlcounty.selectedIndex = 0;
+                txt.style.display = 'none'
+                txt.value = "";
+            }
+
+
+        }
+        function setstate(state) {
+            var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
+            var ddlcounty = document.getElementById("<%=ddlcountysch.ClientID%>");
+
+            var txt = document.getElementById("<%=txtcountysch.ClientID%>");
+            var ddlfipsschvalue = document.getElementById("<%=ddlfipssch.ClientID%>").value;
+            // document.getElementById("sel").value = 3
+            var mySplitResult = state.split(";");
+            ddlstate.value = mySplitResult[0];
+            //ddlcounty.value = ddlfipsschvalue;
+            ddlstate.disabled = true;
+            ddlcounty.style.display = 'none';
+            txt.style.display = "";
+            txt.value = mySplitResult[1];
+
+        }
         function OpenSearchResults(str) {
             var url = document.getElementById(str);
 
@@ -87,7 +89,7 @@
         }
 
 
-        
+
         function countyselchange() {
             var ddlcounty = document.getElementById("<%=ddlcountysch.ClientID%>");
             var ddlstate = document.getElementById("<%=ddlstatesch.ClientID%>");
@@ -165,7 +167,7 @@
         
     </script>
 
-    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="2" Width="1032px"
+    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="1" Width="1032px"
         Height="1000px" onactivetabchanged="TabContainer1_ActiveTabChanged" >
         <cc1:TabPanel runat="server" HeaderText="Recent Issues" ID="RecentIssuestab">
             <HeaderTemplate>
@@ -217,7 +219,9 @@
                             </asp:Panel>
                         </td>
                         <td width="100px">
-                            <asp:Button runat="server" ID="btnrecentgo" Text="GO" OnClick="btnrecentgo_Click" />
+                            <asp:Button runat="server" ID="btnrecentgo" Text="GO" OnClick="btnrecentgo_Click" Font-Size="X-Small" />
+                            <asp:Button ID="btnrecentclear" runat="server" Font-Size="X-Small" 
+                                onclick="btnrecentclear_Click" Text="Clear" enable="false"/>
                         </td>
                     </tr>
                 </table>
@@ -588,12 +592,9 @@
                                 GroupingText="Search by" Width="1000px">
                                 <table style="width: 100%; height:100%;">
                                     <tr>
-                                        <td class="style6">
-                                            &nbsp;
-                                        </td>
-                                        <td class="style7">
-                                            <asp:Panel ID="Paneleditionsch" runat="server" Font-Size="X-Small" 
-                                                GroupingText="Edition\version">
+                                        <td >
+                                             <asp:Panel ID="Paneleditionsch" runat="server" Font-Size="X-Small" 
+                                                GroupingText="Edition\version" Width="100px">
                                                 <asp:TextBox ID="txtEditionsch" runat="server" Font-Size="X-Small" 
                                                     MaxLength="2" Width="15px"></asp:TextBox>
                                                 \
@@ -614,22 +615,22 @@
                                                 </cc1:ValidatorCalloutExtender>
                                             </asp:Panel>
                                         </td>
-                                        <td>
+                                        <td >
                                             <asp:Panel ID="PanelIcpsch" runat="server" Font-Size="X-Small" 
-                                                GroupingText="ICP">
+                                                GroupingText="ICP" Width="60px">
                                                 <asp:TextBox ID="txtRelatedICPsch" runat="server" Font-Size="X-Small" 
                                                     MaxLength="5" Width="40px"></asp:TextBox>
                                             </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Panel ID="PanelSubmittersch" runat="server" Font-Size="X-Small" 
-                                                GroupingText="Submitter">
+                                           <asp:Panel ID="PanelSubmittersch" runat="server" Font-Size="X-Small" 
+                                                GroupingText="Submitter" Width="125px">
                                                 <asp:TextBox ID="txtSubmittersch" runat="server" Font-Size="X-Small"></asp:TextBox>
                                             </asp:Panel>
                                         </td>
                                         <td>
                                             <asp:Panel ID="PanelDatesch" runat="server" Font-Size="X-Small" 
-                                                GroupingText="Date">
+                                                GroupingText="Date" Width="220px">
                                                 <asp:ImageButton ID="ImageButton1" runat="server" Height="20px" 
                                                     ImageAlign="Middle" ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
                                                 <asp:TextBox ID="txtfdatesch" runat="server" Font-Size="X-Small" MaxLength="10" 
@@ -645,6 +646,20 @@
                                                 </cc1:CalendarExtender>
                                                 <asp:ImageButton ID="ImageButton2" runat="server" Height="20px" 
                                                     ImageAlign="Middle" ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
+                                            </asp:Panel> 
+                                        </td>
+                                        <td>
+                                           <asp:Panel ID="pnlschTitle" runat="server" Font-Size="X-Small" 
+                                                GroupingText="Title" Width="460px">
+                                                <asp:Label ID="Label33" runat="server" Text="Wildcard"></asp:Label>
+                                                                <asp:DropDownList ID="ddlwildcardstitlesch" runat="server" Font-Size="X-Small" 
+                                                                    Height="16px" Width="121px">
+                                                                    <asp:ListItem Value="0">---Select---</asp:ListItem>
+                                                                    <asp:ListItem>Like</asp:ListItem>
+                                                                    <asp:ListItem>Contains</asp:ListItem>
+                                                                    <asp:ListItem>Not Like</asp:ListItem>
+                                                                </asp:DropDownList>
+                                                <asp:TextBox ID="txttitlesch" runat="server" Font-Size="X-Small" Width="250px"></asp:TextBox>
                                             </asp:Panel>
                                         </td>
                                     </tr>
@@ -720,7 +735,7 @@
                         </tr>
                         <tr>
                             
-                            <td align="right" colspan="2" width="200px">
+                            <td align="right" colspan="3" width="600px">
                                 <asp:RadioButtonList ID="radioandor" runat="server" 
                                     RepeatDirection="Horizontal"  Font-Size="X-Small"  >
                                  <asp:listitem value="And" />
@@ -729,6 +744,8 @@
                            
                                 <asp:Button ID="btnsearch" runat="server" Font-Size="X-Small" 
                                     OnClick="btnsearch_Click" Text="Search" />
+                                    <asp:Button ID="btnschclear" runat="server" Font-Size="X-Small" 
+                                    OnClick="btnschclear_Click" Text="Clear" />
                             </td>
                         </tr>
                     </tr>
