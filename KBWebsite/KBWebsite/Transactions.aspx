@@ -166,6 +166,8 @@
 
         
     </script>
+    
+
 
     <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="1" Width="1032px"
         Height="1000px" onactivetabchanged="TabContainer1_ActiveTabChanged" >
@@ -174,9 +176,9 @@
                 Recent Issues
             </HeaderTemplate>
             <ContentTemplate>
-                <table><tr><td align="right">
+                <table><tr><td align="left">
               <asp:Label ID="lblerrrecent" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
-                            <asp:Label ID="lblmsgrecent" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
+              <asp:Label ID="lblmsgrecent" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
             
             </td></tr></table>
                 <table>
@@ -216,6 +218,35 @@
                                 <cc1:CalendarExtender ID="CalendarExtender3" runat="server" Enabled="True" PopupButtonID="ImageButton4"
                                     TargetControlID="txtRecentTodt">
                                 </cc1:CalendarExtender>
+                                
+                                
+                                <asp:RegularExpressionValidator ID="regFromDate" 
+                    runat="server" ErrorMessage="Please enter a date in mm-dd-yyyy format." 
+                    ControlToValidate="txtRecentFromdt" Display="None" ValidationExpression="([1-9]|0[1-9]|1[012])([-]|[/])([1-9]|0[1-9]|[12][0-9]|3[01])([-]|[/])(19|20)\d\d"></asp:RegularExpressionValidator>
+                    <cc1:ValidatorCalloutExtender ID="cmpInvalidFromDate_vldCalloutExtender"
+                                    runat="server" Enabled="True" TargetControlID="regFromDate">
+                    </cc1:ValidatorCalloutExtender>                    
+                    <asp:RegularExpressionValidator ID="regToDate" 
+                    runat="server" ErrorMessage="Please enter a date in mm-dd-yyyy format." 
+                    ControlToValidate="txtRecentTodt" Display="None" ValidationExpression="([1-9]|0[1-9]|1[012])([-]|[/])([1-9]|0[1-9]|[12][0-9]|3[01])([-]|[/])(19|20)\d\d"></asp:RegularExpressionValidator>
+                    <cc1:ValidatorCalloutExtender ID="cmpInvalidToDate_vldCalloutExtender"
+                                    runat="server" Enabled="True" TargetControlID="regToDate">
+                    </cc1:ValidatorCalloutExtender>
+                    
+                    
+                    <!-- Calendar - From date cannot be greater than To date validation -->                                    
+                    <asp:CompareValidator ID="cmpValidatorDate" runat="server" ControlToCompare="txtRecentFromdt" 
+                    ControlToValidate="txtRecentTodt" Operator="GreaterThanEqual" Type="Date" Display="None" 
+                    ErrorMessage="From Date cannot be greater than To Date"  >
+                       </asp:CompareValidator> 
+                    <cc1:ValidatorCalloutExtender ID="cmpValidatorDate_vldCalloutExtender"
+                    runat="server" Enabled="True" TargetControlID="cmpValidatorDate">
+                    </cc1:ValidatorCalloutExtender> 
+                    
+                    
+                    
+                    
+                    
                             </asp:Panel>
                         </td>
                         <td width="100px">
@@ -233,7 +264,7 @@
                                 <div style="width: 980px; height: 380px; overflow: auto;">
                                     <asp:GridView ID="gvrecent" runat="server" AutoGenerateColumns="False" DataKeyNames="IDIssue"
                                         OnRowDataBound="gvrecent_RowDataBound" DataKeys="IDIssue" Width="1500px" CellPadding="4"
-                                        ForeColor="#333333" GridLines="None">
+                                        ForeColor="#333333" GridLines="None" HeaderStyle-CssClass="HeaderStyle">
                                         <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                                         <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
                                         <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
@@ -309,7 +340,7 @@
                                             <asp:Label ID="Label2" runat="server" Text="FIPS:" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupfips" runat="server" ReadOnly="True"></asp:TextBox>
+                                            <asp:TextBox ID="txtpupfips" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -319,7 +350,7 @@
                                             <asp:Label ID="Label3" runat="server" Text="State:" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupstate" runat="server" ReadOnly="True"></asp:TextBox>
+                                            <asp:TextBox ID="txtpupstate" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -329,7 +360,7 @@
                                             <asp:Label ID="Label4" runat="server" Text="County:" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupcounty" runat="server" ReadOnly="True"></asp:TextBox>
+                                            <asp:TextBox ID="txtpupcounty" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -425,7 +456,7 @@
                                             <asp:Label ID="Label13" runat="server" Text="RelatedLinks:" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpuprlinks" runat="server" TextMode="MultiLine" Width="330px"></asp:TextBox>
+                                            <asp:TextBox ID="txtpuprlinks" runat="server" TextMode="MultiLine" Width="330px" ReadOnly="true" BackColor="ControlLight"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -490,30 +521,25 @@
                 Search Issues
             </HeaderTemplate>
             <ContentTemplate>
-                <table style="width: 100%;" width="1000">
-                    <tr><td>
-                    
-                    </td></tr>
-                    <tr>
-                        <td >
-                            &nbsp;</td>
-                        <td class="style4" align="right">
-                           <asp:Label ID="Errorsch" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
+            <table>
+            
+            <tr><td align="left">
+                    <asp:Label ID="Errorsch" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
                             <asp:Label ID="MSGsch" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
-                        </td>
-                        <td class="style5" >
-                         
-                        </td>
-                    </tr>
+                    </td></tr>
+                    
+            </table>
+                <table style="width: 100%;" width="1000">
+                    
                     <tr>
                         <td>
                         </td>
-                        <td class="style9">
+                        <td >
                             <asp:Panel ID="Panel4" runat="server" BackColor="#CCCCCC" GroupingText="Search by"
                                 Font-Size="Smaller" Width="1000px">
                                 <table style="width: 100%; height: 67px;">
                                     <tr>
-                                        <td class="style14" style="width: 168px">
+                                        <td  style="width: 168px">
                                             <asp:Panel ID="panelstatecountysch" runat="server" GroupingText="State/County" Font-Size="X-Small"
                                                 Width="330px">
                                                 <asp:DropDownList ID="ddlstatesch" runat="server" Width="150px" AppendDataBoundItems="True"
@@ -646,6 +672,30 @@
                                                 </cc1:CalendarExtender>
                                                 <asp:ImageButton ID="ImageButton2" runat="server" Height="20px" 
                                                     ImageAlign="Middle" ImageUrl="~/App_Themes/calendar_icon.png" Width="20px" />
+                                                    
+                                                    
+                                                    <asp:RegularExpressionValidator ID="regFromDatesch" 
+                    runat="server" ErrorMessage="Please enter a date in mm-dd-yyyy format." 
+                    ControlToValidate="txtfdatesch" Display="None" ValidationExpression="([1-9]|0[1-9]|1[012])([-]|[/])([1-9]|0[1-9]|[12][0-9]|3[01])([-]|[/])(19|20)\d\d"></asp:RegularExpressionValidator>
+                    <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender5"
+                                    runat="server" Enabled="True" TargetControlID="regFromDatesch">
+                    </cc1:ValidatorCalloutExtender>                    
+                    <asp:RegularExpressionValidator ID="regToDatesch" 
+                    runat="server" ErrorMessage="Please enter a date in mm-dd-yyyy format." 
+                    ControlToValidate="txttdatesch" Display="None" ValidationExpression="([1-9]|0[1-9]|1[012])([-]|[/])([1-9]|0[1-9]|[12][0-9]|3[01])([-]|[/])(19|20)\d\d"></asp:RegularExpressionValidator>
+                    <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender6"
+                                    runat="server" Enabled="True" TargetControlID="regToDatesch">
+                    </cc1:ValidatorCalloutExtender>
+                    
+                    
+                    <!-- Calendar - From date cannot be greater than To date validation -->                                    
+                    <asp:CompareValidator ID="cmpValidatorDatesch" runat="server" ControlToCompare="txtfdatesch" 
+                    ControlToValidate="txttdatesch" Operator="GreaterThanEqual" Type="Date" Display="None" 
+                    ErrorMessage="From Date cannot be greater than To Date"  >
+                       </asp:CompareValidator> 
+                    <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender7"
+                    runat="server" Enabled="True" TargetControlID="cmpValidatorDatesch">
+                    </cc1:ValidatorCalloutExtender> 
                                             </asp:Panel> 
                                         </td>
                                         <td>
@@ -756,7 +806,7 @@
                                 <div style="width: 980px; height: 380px; overflow: auto;">
                                     <asp:GridView ID="GridViewResult" runat="server" AutoGenerateColumns="False" 
                                         CellPadding="4" DataKeys="IDIssue" Font-Size="X-Small" ForeColor="#333333" 
-                                        GridLines="None" OnRowDataBound="GridViewResult_RowDataBound" Width="1500px">
+                                        GridLines="None" OnRowDataBound="GridViewResult_RowDataBound" Width="1500px" HeaderStyle-CssClass="HeaderStyle">
                                         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                                         <Columns>
                                             <asp:HyperLinkField AccessibleHeaderText="HyperLink1" 
@@ -849,7 +899,7 @@
                                             <asp:Label ID="Label18" runat="server" Text="FIPS:" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupfipssch" runat="server" ReadOnly="True"></asp:TextBox>
+                                            <asp:TextBox ID="txtpupfipssch" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -859,7 +909,7 @@
                                             <asp:Label ID="Label19" runat="server" Text="State:" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupstatesch" runat="server" ReadOnly="True"></asp:TextBox>
+                                            <asp:TextBox ID="txtpupstatesch" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -869,7 +919,7 @@
                                             <asp:Label ID="Label20" runat="server" Text="County:" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupcountysch" runat="server" ReadOnly="True"></asp:TextBox>
+                                            <asp:TextBox ID="txtpupcountysch" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -965,7 +1015,7 @@
                                             <asp:Label ID="Label29" runat="server" Text="RelatedLinks:" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpuprlinkssch" runat="server" TextMode="MultiLine" Width="330px"></asp:TextBox>
+                                            <asp:TextBox ID="txtpuprlinkssch" runat="server" TextMode="MultiLine" Width="330px" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1024,7 +1074,7 @@
             <HeaderTemplate>
                 New Issue</HeaderTemplate>
             <ContentTemplate>
-            <table><tr><td align="right">
+            <table><tr><td align="left">
               <asp:Label ID="lblerrnew" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
               <asp:Label ID="lblmsgnew" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
             
@@ -1083,7 +1133,7 @@
                             <td rowspan="2" colspan="3">
                                 <table>
                                     <tr>
-                                        <td width="117">
+                                        <td width="117px">
                                             <asp:Panel ID="PanelEdition" runat="server" GroupingText="Edition" Width="100px">
                                                 <asp:TextBox ID="txtEditionnew" runat="server" Font-Size="XX-Small" MaxLength="3"
                                                     Width="30px">N/A</asp:TextBox>
@@ -1106,15 +1156,15 @@
                                                 </cc1:ValidatorCalloutExtender>
                                             </asp:Panel>
                                         </td>
-                                        <td width="123">
-                                            <asp:Panel ID="PanelRelatedICP" runat="server" GroupingText="Related ICP" Width="83px">
+                                        <td width="135px">
+                                            <asp:Panel ID="PanelRelatedICP" runat="server" GroupingText="Related ICP" Width="87px">
                                                 <asp:TextBox ID="txtICPnew" runat="server" Font-Size="X-Small" MaxLength="5" Width="40px">N/A</asp:TextBox>
                                             </asp:Panel>
                                         </td>
-                                        <td width="200">
-                                            <asp:Panel ID="PanelTitle" runat="server" GroupingText="Title" Width="240px" Style="margin-left: 0px">
-                                                <asp:TextBox ID="txtTitlenew" runat="server" Font-Size="X-Small" MaxLength="100"
-                                                    Width="226px"></asp:TextBox>
+                                        <td width="270px">
+                                            <asp:Panel ID="PanelTitle" runat="server" GroupingText="Title" Width="260px" Style="margin-left: 0px">
+                                                <asp:TextBox ID="txtTitlenew" runat="server" Font-Size="X-Small" 
+                                                    Width="240px"></asp:TextBox>
                                             </asp:Panel>
                                         </td>
                                     </tr>
@@ -1163,8 +1213,11 @@
                             <tr>
                                 <td style="height: 30px" colspan="4" align="right">
                                     <br />
+                                    
                                     <asp:Button ID="btnNew" runat="server" Font-Size="X-Small" 
                                         OnClick="btnNew_Click" Text="Save" />
+                                        <asp:Button ID="btnnewclear" runat="server" Font-Size="X-Small" 
+                                        OnClick="btnnewclear_Click" Text="Clear" />
                                 </td>
                             </tr>
                     </table>
@@ -1175,12 +1228,12 @@
                     <asp:GridView ID="RecentIssuesgrid" runat="server" AutoGenerateColumns="False" 
                         DataKeyNames="IDIssue"
                                          DataKeys="IDIssue" Width="1500px" CellPadding="4"
-                                        ForeColor="#333333" GridLines="None">
+                                        ForeColor="#333333" GridLines="None"  HeaderStyle-CssClass="HeaderStyle">
                                         <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                                         <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
                                         <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                                         <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
-                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White"  />
                                         <EditRowStyle BackColor="#999999" />
                                         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                                         <Columns>
@@ -1254,7 +1307,7 @@
                
                 
                     
-                <table><tr><td align="right">
+                <table><tr><td align="left">
               <asp:Label ID="lblmastererror" runat="server"  ForeColor="Red" Font-Size="Smaller"></asp:Label>
                             <asp:Label ID="lblmasternew" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
                    
@@ -1276,7 +1329,7 @@
                                     onrowdeleted="gridprocessingtype_RowDeleted" 
                                     onrowupdated="gridprocessingtype_RowUpdated" 
                                     onrowediting="gridprocessingtype_RowEditing" 
-                                    onrowdeleting="gridprocessingtype_RowDeleting">
+                                    onrowdeleting="gridprocessingtype_RowDeleting" HeaderStyle-CssClass="HeaderStyle">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1365,7 +1418,7 @@
                                     OnRowCommand="gridFileType_RowCommand" 
                                     onrowupdated="gridFileType_RowUpdated" 
                                     onrowdeleted="gridFileType_RowDeleted" onrowdeleting="gridFileType_RowDeleting" 
-                                    onrowediting="gridFileType_RowEditing">
+                                    onrowediting="gridFileType_RowEditing" HeaderStyle-CssClass="HeaderStyle">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1453,7 +1506,7 @@
                                     OnRowCommand="gridissuetype_RowCommand" onrowdeleted="gridissuetype_RowDeleted" 
                                     onrowupdated="gridissuetype_RowUpdated" 
                                     onrowdeleting="gridissuetype_RowDeleting" 
-                                    onrowediting="gridissuetype_RowEditing">
+                                    onrowediting="gridissuetype_RowEditing" HeaderStyle-CssClass="HeaderStyle">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1540,7 +1593,7 @@
                                     DataSourceID="SqlDataSourcefaq" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
                                     Width="98%" ShowFooter="True" EnableModelValidation="True" OnRowCommand="gridfaq_RowCommand"
                                      onrowdeleted="gridfaq_RowDeleted" 
-                                    onrowupdated="gridfaq_RowUpdated">
+                                    onrowupdated="gridfaq_RowUpdated" HeaderStyle-CssClass="HeaderStyle">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
