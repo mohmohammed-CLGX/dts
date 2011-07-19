@@ -64,6 +64,148 @@ function MyFunc() {
                      modal.show();
                      WebService.FetchOneCustomer(IssueID, DisplayResultsch);
                  }
+
+                 function ShowMyModalPopupnew(IssueID) {
+                     //var modal = $find('ContentPlaceHolder1_TabContainer1_RecentIssuestab_ModalPopupExtender1');
+                     //var modal = document.getElementById("<%=ModalPopupExtender1.ClientID%>");
+                     var modal = $find('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_ModalPopupExtendernew');
+
+                     modal.show();
+                     WebService.FetchOneCustomer(IssueID, DisplayResultnew);
+                 }
+                 function HideModalPopupnew() {
+                     var modal = $find('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_ModalPopupExtendernew');
+                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtdownfilenew').style.display = "none";
+                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_btnnewdown').style.display = "none";
+
+                     // var modal1 = $find('PanelRecentissue');
+                     modal.hide();
+                     // modal1.style.visibility = "visible";
+                 }
+                 function DisplayResultnew(result) {
+                     var doc;
+                     if (window.ActiveXObject) {
+                         doc = new ActiveXObject("Microsoft.XMLDOM");
+                         doc.preserveWhiteSpace = "true";
+                         doc.async = "false";
+                         doc.loadXML(result);
+                     }
+                     else {
+                         var parser = new DOMParser();
+                          doc = parser.parseFromString(result, "text/xml");
+                     }
+
+                     var root = doc.documentElement.childNodes;
+                     var tags;
+
+                     for (var i = 0; i < root.length; i++) {
+                         if (root[i].nodeType == 1) {
+                             tags = root[i].childNodes;
+                         }
+                     }
+
+                     for (var i = 0; i < tags.length; i++) {
+                         if (tags[i].nodeType == 1) {
+                             var xmlvalue;
+                             try {
+                                 xmlvalue = tags[i].childNodes[0].nodeValue;
+                             }
+                             catch (Error) {
+                                 xmlvalue = "";
+                             }
+
+                             switch (tags[i].nodeName) {
+                                 case "IDIssue":
+                                     var label = document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_lblnewID');
+                                     label.innerHTML = xmlvalue;
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_hidnew').value = xmlvalue;
+                                     break;
+                                 case "FIPSCounty":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupfipsnew').value = xmlvalue;
+                                     break;
+                                 case "State":
+                                     if (xmlvalue != "00")
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupstatenew').value = xmlvalue;
+                                     else
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupstatenew').value = "Nationwide"
+
+                                     break;
+                                 case "County":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupcountynew').value = xmlvalue;
+                                     break;
+
+
+                                 case "Edition":
+                                     if (xmlvalue != "0")
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupEditionnew').value = xmlvalue;
+                                     else
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupEditionnew').value = "N/A";
+
+                                     break;
+                                 case "Version":
+                                     if (xmlvalue != "0")
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupVersionnew').value = xmlvalue;
+                                     else
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupVersionnew').value = "N/A";
+
+                                     break;
+                                 case "ICP":
+                                     if (xmlvalue != "0")
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupicpnew').value = xmlvalue;
+                                     else
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupicpnew').value = "N/A";
+
+                                     break;
+                                 case "County":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupcountynew').value = xmlvalue;
+                                     break;
+                                 case "Relatedlink":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpuprlinksnew').value = xmlvalue;
+                                     break;
+
+                                 case "IssueDetails":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupissuenew').value = xmlvalue;
+                                     break;
+                                 case "Resolution":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupresolutionnew').value = xmlvalue;
+                                     break;
+                                     txtpuptitle
+                                 case "Title":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpuptitlenew').value = xmlvalue;
+                                     break;
+                                 case "Submitter":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtpupSubmitternew').value = xmlvalue;
+                                     break;
+                                 case "IDProcessingType":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_ddlpupptypenew').value = xmlvalue;
+                                     break;
+                                 case "IDFileType":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_ddlpupftypenew').value = xmlvalue;
+                                     break;
+                                 case "IDIssueType":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_ddlpupitypenew').value = xmlvalue;
+                                     break;
+                                 case "Isuplodedfile":
+                                     if (xmlvalue == "true") {
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtdownfilenew').style.display = "";
+                                         document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_btnnewdown').style.display = "";
+
+                                     }
+                                     break;
+
+                                 case "IDuploadedfile":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_hidnewid').value = xmlvalue;
+
+                                     break;
+                                 case "FileName":
+                                     document.getElementById('ctl00_ContentPlaceHolder1_TabContainer1_NewIssuetab_txtdownfilenew').value = xmlvalue;
+                                     break;
+
+
+                             }
+                         }
+                     }
+                 }
                  function fnClickUpdate(sender, e) {
                      __doPostBack(sender, e);
                  }

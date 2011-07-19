@@ -22,32 +22,38 @@ public partial class Transactions : System.Web.UI.Page
         btnupdatesch.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnupdatesch.UniqueID, "");
         btnrecentdown.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnrecentdown.UniqueID, "");
         btnschdown.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnschdown.UniqueID, "");
+        btnupdatenew.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnupdatenew.UniqueID, "");
+        btnnewdown.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnnewdown.UniqueID, "");
+       
        
         if (!IsPostBack)
         {
             bindrecentgv();
             bindnewrecentgrid();
+            ddlstate_countynew.Attributes.Add("onchange", "return newstateselchange();");
+            ddlfpisnew.Attributes.Add("onchange", "return newFipsselchange();");
+            ddlfipssch.Attributes.Add("onchange", "return fipsschonchange();");
+            // lblrecentdown.Style.Add("display", "none");
+            txtcountysch.Style.Add("display", "none");
+            btnrecentdown.Style.Add("display", "none");
+            txtdownfile.Style.Add("display", "none");
+            txtdownfilesch.Style.Add("display", "none");
 
+            btnschdown.Style.Add("display", "none");
+            txtdownfilenew.Style.Add("display", "none");
+            btnnewdown.Style.Add("display", "none");
+            // ddlRecentFips.Attributes.Add("onchange", "return fipsselchangeRecent();");
+
+            //  ddlFipssch.Attributes.Add("onchange", "return fipsselchange();");
+            // ddlcountysch1.Attributes.Add("onchange", "return countyselchange();");
+            Button3.Attributes.Add("onclick", "OpenUrlLinks();return false;");
             radioandor.SelectedIndex = 0;
 
         }
        
         //GridView6.DataBind();
        // GridViewResult.DataBind();
-        ddlstate_countynew.Attributes.Add("onchange", "return newstateselchange();");
-        ddlfpisnew.Attributes.Add("onchange", "return newFipsselchange();");
-        ddlfipssch.Attributes.Add("onchange", "return fipsschonchange();");
-       // lblrecentdown.Style.Add("display", "none");
-        txtcountysch.Style.Add("display", "none");
-        btnrecentdown.Style.Add("display", "none");
-        txtdownfile.Style.Add("display", "none");
-        txtdownfilesch.Style.Add("display", "none");
-        btnschdown.Style.Add("display", "none");
-       // ddlRecentFips.Attributes.Add("onchange", "return fipsselchangeRecent();");
-
-      //  ddlFipssch.Attributes.Add("onchange", "return fipsselchange();");
-       // ddlcountysch1.Attributes.Add("onchange", "return countyselchange();");
-        Button3.Attributes.Add("onclick", "OpenUrlLinks();return false;");
+       
      //  Button3.Attributes.Add("OnClick", "OpenSearchResults('" + txtRelatedLinksnew.ClientID + "');");
       //  ddlstatesch.Attributes.Add("onchange", "stateselchange();");
       
@@ -177,6 +183,7 @@ public partial class Transactions : System.Web.UI.Page
     }
     protected void btnupdate_Click(object sender, EventArgs e)
     {
+        lblmsgrecent.Text = lblerrrecent.Text = "";
         string stredition = txtpupEdition.Text.ToUpper() != "N/A" ? txtpupEdition.Text : "null";
         string strversion = txtpupVersion.Text.ToUpper() != "N/A" ? txtpupVersion.Text : "null";
         string strICP = txtpupicp.Text.ToUpper() != "N/A" ? txtpupicp.Text : "null";
@@ -199,12 +206,14 @@ public partial class Transactions : System.Web.UI.Page
             bindrecentgv();
             btnrecentdown.Style.Add("display", "none");
             txtdownfile.Style.Add("display", "none");
+            lblmsgrecent.Text = "Issue(" + hidCusCode.Value + ") updated successfully ";
             TabContainer1.ActiveTab = TabContainer1.Tabs[0];
         }
         catch (Exception ex)
         {
             btnrecentdown.Style.Add("display", "none");
             txtdownfile.Style.Add("display", "none");
+            lblerrrecent.Text = "Error updating issue(" + hidCusCode.Value + ")";
             TabContainer1.ActiveTab = TabContainer1.Tabs[0];
         }
     }
@@ -275,6 +284,7 @@ public partial class Transactions : System.Web.UI.Page
                 {
                     lblerrrecent.Text = "From Date should be less than current date";
                     txtRecentFromdt.Focus();
+                    bindrecentgvtonull();
                     return;
                 }
 
@@ -287,6 +297,7 @@ public partial class Transactions : System.Web.UI.Page
                 {
                     lblerrrecent.Text = "To Date should be less than current date";
                     txtRecentTodt.Focus();
+                    bindrecentgvtonull();
                     return;
                 }
             }
@@ -359,6 +370,7 @@ public partial class Transactions : System.Web.UI.Page
             catch (Exception ex)
             {
                 lblerrrecent.Text = "Error geting Rows";
+                bindrecentgvtonull();
                 TabContainer1.ActiveTab = TabContainer1.Tabs[0];
             }
 
@@ -366,6 +378,13 @@ public partial class Transactions : System.Web.UI.Page
         else
         {
         }
+    }
+
+    private void bindrecentgvtonull()
+    {
+        gvrecent.DataSource = null;
+        gvrecent.DataBind();
+        TabContainer1.ActiveTab = TabContainer1.Tabs[0];
     }
     protected void btnrecentclear_Click(object sender, EventArgs e)
     {
@@ -465,6 +484,7 @@ public partial class Transactions : System.Web.UI.Page
     }
     protected void btnnewclear_Click(object sender, EventArgs e)
     {
+        lblerrnew.Text = lblmsgnew.Text = "";
         ddlstate_countynew.SelectedIndex = -1;
         ddlfpisnew.SelectedIndex = -1;
         ddlProcessingtypenew.SelectedIndex = -1;
@@ -473,11 +493,11 @@ public partial class Transactions : System.Web.UI.Page
         txtTitlenew.Text = "";
         txtIssueDetailsnew.Text = "";
         txtResolutionnew.Text = "";
-        txtEditionnew.Text = "";
-        txtVersionnew.Text = "";
+        txtEditionnew.Text = "N/A";
+        txtVersionnew.Text = "N/A";
         txtSubmitternew.Text = "";
         txtRelatedLinksnew.Text = "";
-        txtICPnew.Text = "";
+        txtICPnew.Text = "N/A";
     }
     protected void btnNew_Click(object sender, EventArgs e)
     {
@@ -1071,6 +1091,7 @@ public partial class Transactions : System.Web.UI.Page
                  straddor = " " + radioandor.SelectedItem.Text+" ";
             if (straddor == string.Empty)
                 straddor = " and";
+            
             if (ddlstatesch.SelectedValue != "")
             {
                 strstate = ddlstatesch.SelectedValue;
@@ -1083,10 +1104,10 @@ public partial class Transactions : System.Web.UI.Page
                 strwhere += "Issuetbl.FIPSCounty='" + ddlcountysch.SelectedValue + "' " + straddor;
 
             }
-            
-            if (ddlfipssch.SelectedIndex > 0)
+            else if (ddlfipssch.SelectedIndex > 0)
             {
                 strfips = ddlfipssch.SelectedValue;
+                
                 strwhere += "Issuetbl.FIPSCounty='" + strfips + "' " + straddor;
             }
             
@@ -1341,6 +1362,16 @@ public partial class Transactions : System.Web.UI.Page
             SqlDataAdapter da;
             DataSet ds = new DataSet();
 
+            if (strfips.Length > 0)
+            {
+
+                CascadingDropDown1.SelectedValue = getstatefromfips(strfips).Split(';')[0];
+               // CascadingDropDown1.Enabled = false;
+
+                CascadingDropDown2.SelectedValue = strfips;
+                ddlfipssch.SelectedIndex = 0;
+               // CascadingDropDown2.Enabled = false;
+            }
             try
             {
 
@@ -1379,6 +1410,21 @@ public partial class Transactions : System.Web.UI.Page
             Errorsch.Text = "Please Select one search criteria ";
         }
         
+    }
+    protected string getstatefromfips(string fips)
+    {
+        try
+        {
+            string sql = "select state,county from county where fips='" + fips + "'";
+            SqlDataAdapter da = new SqlDataAdapter(sql, System.Configuration.ConfigurationManager.ConnectionStrings["kbConnectionString"].ToString());
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            return ds.Tables[0].Rows[0]["state"].ToString() + ";" + ds.Tables[0].Rows[0]["county"].ToString();
+        }
+        catch (Exception ex)
+        {
+            return "";
+        }
     }
 
     private bool checkdates(string p, string p_2)
@@ -1596,9 +1642,26 @@ public partial class Transactions : System.Web.UI.Page
             // _singleClickButton.Attributes.Add("onclick", "ShowMyModalPopup('" + gvrecent.DataKeys[e.Row.RowIndex].Value + "')");
         }
     }
+
+ 
+        protected void RecentIssuesgrid_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            HyperLink HyperLink1 = (HyperLink)e.Row.Cells[0].Controls[0];
+
+            HyperLink1.ImageUrl = "~/img/select.png";
+            HyperLink1.ToolTip = "Detail view";
+            DataRowView row = (DataRowView)e.Row.DataItem;
+            
+            HyperLink1.Attributes.Add("onclick", "ShowMyModalPopupnew('" + row["IDIssue"] + "')");
+          
+        }
+    }
+
     protected void btnupdatesch_Click(object sender, EventArgs e)
     {
-
+        Errorsch.Text = MSGsch.Text = "";
         string stredition = txtpupEditionsch.Text.ToUpper() != "N/A" ? txtpupEditionsch.Text : "null";
         string strversion = txtpupVersionsch.Text.ToUpper() != "N/A" ? txtpupVersionsch.Text : "null";
         string strICP = txtpupicpsch.Text.ToUpper() != "N/A" ? txtpupicpsch.Text : "null";
@@ -1622,12 +1685,14 @@ public partial class Transactions : System.Web.UI.Page
             txtdownfilesch.Style.Add("display", "none");
             btnschdown.Style.Add("display", "none");
             btnsearch_Click(null, null);
+            MSGsch.Text = "Issue(" + hidsch.Value + ") updated successfully ";
          //   bindschgrid();
         }
         catch (Exception ex)
         {
             txtdownfilesch.Style.Add("display", "none");
             btnschdown.Style.Add("display", "none");
+            Errorsch.Text = lblerrnew.Text = "Error updating issue(" + hidsch.Value + ")";
         }
     }
 
@@ -2009,4 +2074,54 @@ public partial class Transactions : System.Web.UI.Page
         GridViewResult.DataSource = null;
         GridViewResult.DataBind();
     }
+
+
+
+
+    protected void btnnewdown_Click(object sender, EventArgs e)
+    {
+        string id = hidnewid.Value;
+        downloadkbfile(id);
+    }
+
+
+    protected void btnupdatenew_Click(object sender, EventArgs e)
+    {
+
+        lblerrnew.Text = lblmsgnew.Text = "";
+        string stredition = txtpupEditionnew.Text.ToUpper() != "N/A" ? txtpupEditionnew.Text : "null";
+        string strversion = txtpupVersionnew.Text.ToUpper() != "N/A" ? txtpupVersionnew.Text : "null";
+        string strICP = txtpupicpnew.Text.ToUpper() != "N/A" ? txtpupicpnew.Text : "null";
+
+        string sql = "Update Issuetbl Set IDProcessingType=" + ddlpupptypenew.SelectedValue.ToString() +
+                     ", IDFileType=" + ddlpupftypenew.SelectedValue.ToString() + " ,IDIssueType=" + ddlpupitypenew.SelectedValue.ToString() +
+                     " ,Edition=" + stredition + " ,Version=" + strversion + " ,Title='" + txtpuptitlenew.Text +
+                     "' ,IssueDetails='" + txtpupissuenew.Text + "' ,Resolution='" + txtpupresolutionnew.Text +
+                     "' ,Submitter='" + txtpupSubmitternew.Text + "' ,Relatedlink='" + txtpuprlinksnew.Text +
+                     "' ,ICP=" + strICP + " Where IDIssue=" + hidnew.Value;
+
+       
+        try
+        {
+            SqlConnection conn = new SqlConnection(strconn);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            TabContainer1.ActiveTab = TabContainer1.Tabs[2];
+            txtdownfilenew.Style.Add("display", "none");
+            btnnewdown.Style.Add("display", "none");
+            bindnewrecentgrid();
+            bindrecentgv();
+            lblmsgnew.Text = "Issue(" + hidnew.Value + ") updated successfully ";
+        }
+        catch (Exception ex)
+        {
+            txtdownfilenew.Style.Add("display", "none");
+            btnnewdown.Style.Add("display", "none");
+            lblerrnew.Text = "Error updating issue(" + hidnew.Value + ")";
+        }
+    }
+
+
     }

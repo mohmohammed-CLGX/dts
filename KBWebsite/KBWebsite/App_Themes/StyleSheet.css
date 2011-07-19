@@ -1,4 +1,54 @@
-﻿BODY
+﻿
+
+.IE8Fix 
+{ 
+    z-index: 1000;
+
+}
+	
+body, input
+{
+	font-family: Tahoma;
+	font-size: 11px;
+}
+
+.modalBackground
+{
+	background-color: Gray;
+	filter: alpha(opacity=80);
+	opacity: 0.8;
+}
+.modal
+{
+    background-color:Olive;
+    
+    filter:alpha(opacity=40);
+    opacity:0.7;
+}
+.modalPopup
+{
+	background-color: #ffffdd;
+	border-width: 1px;
+	-moz-border-radius: 5px;
+	border-style: solid;
+	border-color: Gray;	
+	min-width: 250px;
+	max-width:400px;	
+}
+
+.topHandle
+{
+	background-color: #97bae6;	
+}
+
+.table
+{
+	padding:0;
+	margin:0;
+}
+
+.HeaderStyle th{text-align:left}
+BODY
 {
 	background-color:aliceblue;
 	margin:50px;
@@ -58,6 +108,9 @@
 	background-color:#fffacd;
 	color:#000;
 }
+
+        .HeaderStyle th{text-align:left}
+ 
 .grid .datatable .row TD.first { padding-left:10px; }
 .grid .datatable TH.first { padding-left:10px; }
 .grid .datatable .row:hover .first
@@ -127,3 +180,76 @@ div.WhiteLine {
  padding-right: 0px;
  color:Gray;
 }
+
+
+
+.staticMenuItemStyle {
+text-align:center;
+display:block;
+padding-left:2px;
+padding-right:2px;
+margin-left:0;
+}
+
+.staticMenuItemSelectedStyle {
+border:solid 1px #000;
+}
+
+.staticHoverStyle {
+background-image:url(../Images/bg-black.gif);
+}
+
+.menuItem {
+display:block;
+}
+
+.dynamicMenuItemStyle {
+border:solid 1px #000;
+background-color:Silver;
+color:Red;
+z-index:200;
+position:relative;
+}
+
+.background {
+border:solid 1px #000;
+background-image:url(../Images/bg-black.gif);
+}
+
+.NavigationMenu {
+font-family:Verdana;
+font-size:10pt;
+color: #FFF;
+font-weight:600;
+z-index:101;
+background-image:url(../Images/bg-black.gif);
+}
+
+#h {
+background:#CCCFFF;
+padding:5px 0 6px 10px;
+}
+
+#e {
+border:solid 1px #919191;
+background-image:url(../Images/sub.gif);
+padding:0 0 1px;
+}
+
+.menuItemMouseOver,.menuItemSelected {
+border:solid 1px Navy;
+background-image:url(../Images/bg-black.gif);
+}
+
+.NavigationMenu A:link,.NavigationMenu A:visited,.NavigationMenu A:active {
+text-decoration:none;
+color:#FFF;
+display:block;
+}
+
+.currentNodeStyle,.nodeStyle,.rootNodeStyle,a.siteMapPath {
+text-decoration:none;
+font-family:Verdana;
+font-size:10pt;
+}
+
