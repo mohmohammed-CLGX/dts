@@ -1382,7 +1382,7 @@ public partial class Transactions : System.Web.UI.Page
                 if (ds.Tables[0].Rows.Count > 0)
                 {
                     GridViewResult.Visible = true;
-                    MSGsch.Text = "Search Result with Rows Count: " + ds.Tables[0].Rows.Count;
+                    MSGsch.Text = "Search Result with Row Count: " + ds.Tables[0].Rows.Count;
                     GridViewResult.DataSource = ds.Tables[0];
                     GridViewResult.DataBind();
 
