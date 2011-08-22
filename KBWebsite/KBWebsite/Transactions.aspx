@@ -5,8 +5,24 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
    
-    
-   
+    <style type="text/css">
+     .cpHeader
+        {
+            color: white;
+            background-color: #719DDB;
+            font: bold 11px auto "Trebuchet MS", Verdana;
+            font-size: 12px;
+            cursor: pointer;
+            width:450px;
+            height:18px;
+            padding: 4px;           
+        }
+        .pBOdy
+        {
+            border-top:solid 2px #719DDB;
+        }
+        </style>
+  
 
     <script language="javascript" type="text/javascript">
 
@@ -172,9 +188,9 @@
         
     </script>
     
+<div
 
-
-    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="1" Width="1032px"
+    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="0" Width="1032px"
         Height="1000px" onactivetabchanged="TabContainer1_ActiveTabChanged" >
         <cc1:TabPanel runat="server" HeaderText="Recent Issues" ID="RecentIssuestab">
             <HeaderTemplate>
@@ -242,8 +258,7 @@
                     <!-- Calendar - From date cannot be greater than To date validation -->                                    
                     <asp:CompareValidator ID="cmpValidatorDate" runat="server" ControlToCompare="txtRecentFromdt" 
                     ControlToValidate="txtRecentTodt" Operator="GreaterThanEqual" Type="Date" Display="None" 
-                    ErrorMessage="From Date cannot be greater than To Date"  >
-                       </asp:CompareValidator> 
+                    ErrorMessage="From Date cannot be greater than To Date"  ></asp:CompareValidator> 
                     <cc1:ValidatorCalloutExtender ID="cmpValidatorDate_vldCalloutExtender"
                     runat="server" Enabled="True" TargetControlID="cmpValidatorDate">
                     </cc1:ValidatorCalloutExtender> 
@@ -266,57 +281,95 @@
                         <td>
                             <asp:Panel ID="PanelRecentissue" runat="server" Width="1000px" Height="390px" GroupingText="Recent Issues"
                                 Font-Size="X-Small">
-                                <div style="width: 980px; height: 380px; overflow: auto;">
-                                    <asp:GridView ID="gvrecent" runat="server" AutoGenerateColumns="False" DataKeyNames="IDIssue"
-                                        OnRowDataBound="gvrecent_RowDataBound" DataKeys="IDIssue" Width="1500px" CellPadding="4"
-                                        ForeColor="#333333" GridLines="None" HeaderStyle-CssClass="HeaderStyle">
-                                        <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
-                                        <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                                        <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
-                                        <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
-                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                                        <EditRowStyle BackColor="#999999" />
-                                        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-                                        <Columns>
-                                            <asp:HyperLinkField AccessibleHeaderText="HyperLink1" Text="Select" HeaderImageUrl="~/img/select.png">
-                                                <ControlStyle Font-Underline="True" />
-                                            </asp:HyperLinkField>
-                                            <asp:ImageField AccessibleHeaderText="select" NullImageUrl="~/img/select.png" ReadOnly="True">
-                                            </asp:ImageField>
-                                            <asp:BoundField DataField="IDIssue" HeaderText="ID" InsertVisible="False" ReadOnly="True"
-                                                SortExpression="IDIssue" />
-                                            <asp:BoundField DataField="IssueCreatedDate" DataFormatString="{0:MMM d, yyyy}" HtmlEncode="False"
-                                                HeaderText="Created Date" SortExpression="IssueCreatedDate">
-                                                <ItemStyle Width="130px" />
-                                            </asp:BoundField>
-                                            <asp:BoundField DataField="FIPSCounty" HeaderText="FIPS" SortExpression="FIPSCounty" />
-                                            <asp:BoundField DataField="County" HeaderText="County" SortExpression="County" />
-                                            <asp:BoundField DataField="State" HeaderText="State" SortExpression="State" />
-                                            <asp:BoundField DataField="FileType" HeaderText="File Type" SortExpression="FileType">
-                                                <ItemStyle Width="150px" />
-                                            </asp:BoundField>
-                                            <asp:BoundField DataField="IssueType" HeaderText="Issue Type" SortExpression="IssueType">
-                                                <ItemStyle Width="150px" />
-                                            </asp:BoundField>
-                                            <asp:BoundField DataField="ProcessingType" HeaderText="Processing Type" SortExpression="ProcessingType">
-                                                <ItemStyle Width="250px" />
-                                            </asp:BoundField>
-                                            <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title">
-                                                <ItemStyle Width="200px" />
-                                            </asp:BoundField>
-                                            <asp:BoundField DataField="IssueDetails" HeaderText="Issue Details" SortExpression="IssueDetails">
-                                                <ItemStyle Width="300px" />
-                                            </asp:BoundField>
-                                            <asp:BoundField DataField="Resolution" HeaderText="Resolution" SortExpression="Resolution">
-                                                <ItemStyle Width="300px" />
-                                            </asp:BoundField>
-                                            <asp:BoundField DataField="Submitter" HeaderText="Submitter" SortExpression="Submitter" />
-                                            <asp:BoundField DataField="Edition" HeaderText="Edition" SortExpression="Edition" />
-                                            <asp:BoundField DataField="Version" HeaderText="Version" SortExpression="Version" />
-                                            <asp:BoundField DataField="IssueCreatedUser" HeaderText="Created User" SortExpression="IssueCreatedUser" />
-                                        </Columns>
-                                    </asp:GridView>
+                                <div style="width: 940px; height: 100%; ">
+                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+                  <asp:ListView ID="gvrecent" runat="server" 
+                onitemdatabound="gvrecent_ItemDataBound">
+        <LayoutTemplate >
+        <asp:PlaceHolder id="itemPlaceholder" runat="server" />
+        </LayoutTemplate>
+        <ItemTemplate>
+       
+         <table>
+         <tr>
+         <td>
+          <asp:Panel ID="pHeader" runat="server" CssClass="cpHeader" Width="100px" Height="100%">
+         <asp:Image ID="img" runat="server" ImageUrl="~/images/collapse.jpg" />
+               <%-- <asp:Label ID="lblText" runat="server" />--%>
+               <asp:Label ID="lblTitle1" runat="server"><%#Eval("Title")%></asp:Label>
+               </asp:Panel>
+         </td>
+         </tr>
+         <tr>
+         <td>
+        
+         </td><td>
+          <asp:Panel ID="pBody" runat="server" CssClass="pBOdy" >
+           <div style="overflow:auto; height:150px;width:500px;" >  
+          
+           <table width="500px">
+           <tr>
+           <td>
+          <asp:HyperLink ID="lnkDisplay" runat="server" NavigateUrl="#">Select</asp:HyperLink>
+           <table>
+           <tr>
+           <tr>
+           <td>
+          Issue Details:
+           </td>
+           </tr>
+           <tr>
+           <td>
+           <%#Eval("IssueDetails")%>
+           </td>
+           </tr>
+            <tr>
+           <td>
+           Resolution:
+           </td>
+           </tr>
+           <tr>
+           <td>
+           <%#Eval("Resolution")%>
+           </td>
+           </tr>
+           </table>          
+           </td>
+           </tr>
+           </table>
+            </div>
+            </asp:Panel>
+            <cc1:CollapsiblePanelExtender ID="CollapsiblePanelExtender1" runat="server" TargetControlID="pBody" CollapseControlID="img" ExpandControlID="img"
+Collapsed="false" TextLabelID=""
+ExpandedImage="~/images/collapse.jpg"
+    CollapsedImage="~/images/expand.jpg" ImageControlID="img"
+CollapsedSize="0">
+            </cc1:CollapsiblePanelExtender>
+         </td>
+         </tr>
+         
+         </table>
+            
+           <%-- </asp:Panel>--%>
+         </ItemTemplate>
+</asp:ListView>
+<div id="pager">
+                                <asp:DataPager ID="pgr" runat="server" PagedControlID="gvrecent" PageSize="4">
+                                <Fields>
+                                <asp:NumericPagerField />
+                                </Fields>
+                                </asp:DataPager>
                                 </div>
+
+           
+        </ContentTemplate>
+        <Triggers>
+                                <asp:PostBackTrigger ControlID="pgr" />
+                            </Triggers>
+        </asp:UpdatePanel>
+                                </div>
+                                
                             </asp:Panel>
                         </td>
                     </tr>
@@ -461,7 +514,8 @@
                                             <asp:Label ID="Label13" runat="server" Text="RelatedLinks:" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpuprlinks" runat="server" TextMode="MultiLine" Width="330px" ReadOnly="true" BackColor="ControlLight"></asp:TextBox>
+                                            <asp:TextBox ID="txtpuprlinks" runat="server" TextMode="MultiLine" 
+                                                Width="330px" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -696,8 +750,7 @@
                     <!-- Calendar - From date cannot be greater than To date validation -->                                    
                     <asp:CompareValidator ID="cmpValidatorDatesch" runat="server" ControlToCompare="txtfdatesch" 
                     ControlToValidate="txttdatesch" Operator="GreaterThanEqual" Type="Date" Display="None" 
-                    ErrorMessage="From Date cannot be greater than To Date"  >
-                       </asp:CompareValidator> 
+                    ErrorMessage="From Date cannot be greater than To Date"  ></asp:CompareValidator> 
                     <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender7"
                     runat="server" Enabled="True" TargetControlID="cmpValidatorDatesch">
                     </cc1:ValidatorCalloutExtender> 
@@ -811,7 +864,8 @@
                                 <div style="width: 980px; height: 380px; overflow: auto;">
                                     <asp:GridView ID="GridViewResult" runat="server" AutoGenerateColumns="False" 
                                         CellPadding="4" DataKeys="IDIssue" Font-Size="X-Small" ForeColor="#333333" 
-                                        GridLines="None" OnRowDataBound="GridViewResult_RowDataBound" Width="1500px" HeaderStyle-CssClass="HeaderStyle">
+                                        GridLines="None" OnRowDataBound="GridViewResult_RowDataBound" 
+                                        Width="1500px">
                                         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                                         <Columns>
                                             <asp:HyperLinkField AccessibleHeaderText="HyperLink1" 
@@ -866,7 +920,8 @@
                                         </Columns>
                                         <EditRowStyle BackColor="#999999" />
                                         <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" 
+                                            CssClass="HeaderStyle" />
                                         <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                                         <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                                         <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
@@ -2022,4 +2077,4 @@
         TypeName="KBDAL.DBConnectionsKB"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="StateObjectDataSource" runat="server" SelectMethod="getStatelist"
         TypeName="KBDAL.DBConnectionsKB"></asp:ObjectDataSource>
-</asp:Content>
+    </asp:Content>

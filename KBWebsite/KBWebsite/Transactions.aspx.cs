@@ -15,6 +15,11 @@ public partial class Transactions : System.Web.UI.Page
     //string strfiletype;
     //string strcommenttype;
     string strconn ;
+    protected void Page_PreRender()
+    {
+        //  bindrecentgv();
+       
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         strconn = System.Configuration.ConfigurationManager.ConnectionStrings["kbConnectionString"].ToString();
@@ -28,7 +33,7 @@ public partial class Transactions : System.Web.UI.Page
        
         if (!IsPostBack)
         {
-            bindrecentgv();
+           bindrecentgv();
             bindnewrecentgrid();
             ddlstate_countynew.Attributes.Add("onchange", "return newstateselchange();");
             ddlfpisnew.Attributes.Add("onchange", "return newFipsselchange();");
@@ -148,18 +153,21 @@ public partial class Transactions : System.Web.UI.Page
         }
     }
 
-    protected void gvrecent_RowDataBound(object sender, GridViewRowEventArgs e)
+    protected void gvrecent_RowDataBound(object sender, CommandEventArgs e)
     {
+       // Label1.Text = e.CommandArgument.ToString();
+       // ModalPopupExtender1.Show();
+        ClientScript.RegisterStartupScript(typeof(Page), "display", "<script language=JavaScript>ShowMyModalPopup('" + e.CommandArgument.ToString() + "');</script>");
 
-        if (e.Row.RowType == DataControlRowType.DataRow)
-        {
-            HyperLink HyperLink1 = (HyperLink)e.Row.Cells[0].Controls[0];
+       // //if (e.Row.RowType == DataControlRowType.DataRow)
+       // //{
+       // //    //HyperLink HyperLink1 = (HyperLink)e.Row.Cells[0].Controls[0];
 
-            HyperLink1.ImageUrl = "~/img/select.png";
-            HyperLink1.ToolTip = "Detail view";
-            HyperLink1.Attributes.Add("onclick", "ShowMyModalPopup('" + gvrecent.DataKeys[e.Row.RowIndex].Value + "')");
-            // _singleClickButton.Attributes.Add("onclick", "ShowMyModalPopup('" + gvrecent.DataKeys[e.Row.RowIndex].Value + "')");
-        }
+       // //    //HyperLink1.ImageUrl = "~/img/select.png";
+       // //    //HyperLink1.ToolTip = "Detail view";
+       // //    //HyperLink1.Attributes.Add("onclick", "ShowMyModalPopup('" + gvrecent.DataKeys[e.Row.RowIndex].Value + "')");
+       // //    //// _singleClickButton.Attributes.Add("onclick", "ShowMyModalPopup('" + gvrecent.DataKeys[e.Row.RowIndex].Value + "')");
+       // //}
     }
 
     protected void gvrecent_RowCreated(object sender, GridViewRowEventArgs e)
@@ -223,7 +231,7 @@ public partial class Transactions : System.Web.UI.Page
         lblerrrecent.Text = lblmsgrecent.Text = "";
         string strsql = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
                 "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, SUBSTRING(Title,0,100) as Title," +
-                "SUBSTRING(IssueDetails,0,200) as IssueDetails, SUBSTRING(Resolution,0,150) as Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink, Issuetbl.ICP, " +
+                " IssueDetails, Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink, Issuetbl.ICP, " +
                 "Issuetbl.IssueCreatedDate, Issuetbl.IssueCreatedUser FROM County " +
                 " INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
                 " INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
@@ -1897,9 +1905,9 @@ public partial class Transactions : System.Web.UI.Page
     }
     protected void BindRecentIssue(GridView grv)
     {
-        string strsql = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
-                               "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, " +
-                               "Issuetbl.Title, Issuetbl.IssueDetails, Issuetbl.Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
+        string strsql = "SELECT Issuetbl.IDIssue as IDIssue , Issuetbl.FIPSCounty as FIPSCounty, County.County, County.State, FileType.FileType," +
+                               "IssueTypetbl.IssueType as IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, " +
+                               "Issuetbl.Title as Title, Issuetbl.IssueDetails as IssueDetails , Issuetbl.Resolution as Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink," +
                             "Issuetbl.ICP,Issuetbl.IssueCreatedDate,Issuetbl.[IssueCreatedUser] FROM  County INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
                             "INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
                             "INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
@@ -2124,4 +2132,32 @@ public partial class Transactions : System.Web.UI.Page
     }
 
 
+    protected void gvrecent_ItemDataBound(object sender, ListViewItemEventArgs e)
+    {
+        HyperLink lnkDisplay;
+        if (e.Item.ItemType == ListViewItemType.DataItem)
+        {
+            
+            lnkDisplay = (HyperLink)e.Item.FindControl("lnkDisplay");
+          lnkDisplay.ImageUrl = "~/img/select.png";
+           lnkDisplay.ToolTip = "Detail view";
+
+           ListViewDataItem currentItem = (ListViewDataItem)e.Item;
+           DataKey currentDataKey = gvrecent.DataKeys[currentItem.DataItemIndex];
+           ListViewDataItem dataItem = (ListViewDataItem)e.Item;
+           int issueId = (int)DataBinder.Eval(dataItem.DataItem, "IDIssue");
+
+           lnkDisplay.Attributes.Add("onclick", "ShowMyModalPopup('" + issueId .ToString()+ "')");
+
+        }
     }
+    protected void DataPager_PreRender(object sender, EventArgs e)
+    {
+        bindrecentgv();
+    }
+    protected void listItems_PagePropertiesChanging(object sender, EventArgs e)
+    {
+       // this.pgr.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+        bindrecentgv();
+    }
+}
