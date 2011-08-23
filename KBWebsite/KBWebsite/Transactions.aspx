@@ -370,7 +370,7 @@ CollapsedSize="0">
                     </tr>
                     <tr>
                         <td>
-             <asp:Panel ID="Panel14" runat="server" BackColor="LightGray" Height="418px" 
+             <asp:Panel ID="Panel14" runat="server" BackColor="LightGray" Height="418px" GroupingText="Recent Issue Detail view"
         Width="100%">
                                 <table>                                   
                                    
@@ -915,7 +915,7 @@ CollapsedSize="0">
                 <table>
                     <tr>
                         <td>
-                             <asp:Panel ID="panalpopupsch" runat="server" BackColor="LightGray" Height="418px" 
+                             <asp:Panel ID="panalpopupsch" runat="server" BackColor="LightGray" Height="418px" GroupingText="Search Issues Detail view"
         Width="100%">
                                 <table>                                   
                                    
@@ -1308,7 +1308,7 @@ CollapsedSize="0">
                  <table>
                     <tr>
                         <td>
-                             <asp:Panel ID="panalpopupnew" runat="server" BackColor="LightGray" Height="418px" 
+                             <asp:Panel ID="panalpopupnew" runat="server" BackColor="LightGray" Height="418px" GroupingText="New Issue Detail view"
         Width="100%">
                                 <table>                                   
                                    
