@@ -17,7 +17,7 @@ public partial class Transactions : System.Web.UI.Page
     string strconn ;
     protected void Page_PreRender()
     {
-        //  bindrecentgv();
+         bindrecentgv();
        
     }
     protected void Page_Load(object sender, EventArgs e)
@@ -55,7 +55,7 @@ public partial class Transactions : System.Web.UI.Page
             radioandor.SelectedIndex = 0;
 
         }
-       
+        Panel14.GroupingText = TabContainer1.ActiveTab.HeaderText;
         //GridView6.DataBind();
        // GridViewResult.DataBind();
        

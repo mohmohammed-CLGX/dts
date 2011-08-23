@@ -281,9 +281,8 @@
                         <td>
                             <asp:Panel ID="PanelRecentissue" runat="server" Width="1000px" Height="390px" GroupingText="Recent Issues"
                                 Font-Size="X-Small">
-                                <div style="width: 940px; height: 100%; ">
-                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
+                                <div style="width:940px;height:500px;overflow:auto; ">
+                                    
                   <asp:ListView ID="gvrecent" runat="server" 
                 onitemdatabound="gvrecent_ItemDataBound">
         <LayoutTemplate >
@@ -354,20 +353,16 @@ CollapsedSize="0">
            <%-- </asp:Panel>--%>
          </ItemTemplate>
 </asp:ListView>
-<div id="pager">
-                                <asp:DataPager ID="pgr" runat="server" PagedControlID="gvrecent" PageSize="4">
+<%--<div id="pager">
+                                <asp:DataPager ID="pgr" runat="server" PagedControlID="gvrecent" PageSize="4" >
                                 <Fields>
                                 <asp:NumericPagerField />
                                 </Fields>
                                 </asp:DataPager>
-                                </div>
+                                </div>--%>
 
            
-        </ContentTemplate>
-        <Triggers>
-                                <asp:PostBackTrigger ControlID="pgr" />
-                            </Triggers>
-        </asp:UpdatePanel>
+    
                                 </div>
                                 
                             </asp:Panel>
@@ -375,197 +370,179 @@ CollapsedSize="0">
                     </tr>
                     <tr>
                         <td>
-                            <asp:Panel ID="Panel14" runat="server" BackColor="LightGray" Height="600px" Width="500px">
-                                <table>
-                                    
+             <asp:Panel ID="Panel14" runat="server" BackColor="LightGray" Height="418px" 
+        Width="100%">
+                                <table>                                   
                                    
                                     
                                     <tr>
                                         <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label1" runat="server" Text="Issue ID # :" />
+                                        <asp:Panel ID="pnlIssueId" runat="server" GroupingText="IssueId" Width="166px">
+                                         <asp:Label ID="lblID" runat="server" Text="Label"></asp:Label>
+                                            <asp:HiddenField ID="hidCusCode" runat="server" /> 
+                                        </asp:Panel>
+                                         
+                                        </td>
+                                        <td style="width: 304px">
+                                            <asp:Panel ID="pnlFips" runat="server" GroupingText="FIPS:" Width="140px">
+                                            <asp:TextBox ID="txtpupfips" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Label ID="lblID" runat="server" Text="Label"></asp:Label>
-                                            <asp:HiddenField ID="hidCusCode" runat="server" />
-                                        </td>
-                                    </tr>
-                                     <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label2" runat="server" Text="FIPS:" />
+                                        <asp:Panel ID="pnlState" runat="server" GroupingText="State:" Width="189px">
+                                         <asp:TextBox ID="txtpupstate" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True"></asp:TextBox></asp:Panel>
+                                            
+                                           
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupfips" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
+                                           <asp:Panel runat="server" ID="pnlCountry" GroupingText="Country:">
+                                           <asp:TextBox ID="txtpupcounty" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True"></asp:TextBox>
+                                           </asp:Panel>
+                                           
+                                            
                                         </td>
                                     </tr>
                                     <tr>
                                          <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label3" runat="server" Text="State:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupstate" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label4" runat="server" Text="County:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupcounty" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label5" runat="server" Text="Processing Type:" />
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlpupptype" runat="server" Width="200px" DataSourceID="ProcessingTypeObjectDataSource"
-                                                DataTextField="ProcessingType" DataValueField="IDProcessingType">
+                                        <asp:Panel runat="server" ID="pnlProcessingType" GroupingText="Processing Type:" 
+                                                Width="219px">
+                                          
+                                            <asp:DropDownList ID="ddlpupptype" runat="server" 
+                                                DataSourceID="ProcessingTypeObjectDataSource" DataTextField="ProcessingType" 
+                                                DataValueField="IDProcessingType" Width="200px">
+                                            </asp:DropDownList></asp:Panel>
+                                         </td>
+                                        <td style="width: 304px">
+                                        <asp:Panel runat="server" ID="pnlFileType" GroupingText="File Type:" Width="181px">
+                                        <asp:DropDownList ID="ddlpupftype" runat="server" 
+                                                DataSourceID="FileTypeObjectDataSource" DataTextField="FileType" 
+                                                DataValueField="IDFileType" Width="174px" Height="16px">
                                             </asp:DropDownList>
-                                        </td>
+                                        </asp:Panel>
+                                            
+                                            
+                                         </td>
+                                         <td>
+                                         <asp:Panel ID="pnlIssueType" runat="server" GroupingText="Issue Type:" 
+                                                 Width="204px">
+                                          <asp:DropDownList ID="ddlpupitype" runat="server" 
+                                                 DataSourceID="IssueTypeObjectDataSource" DataTextField="IssueType" 
+                                                 DataValueField="IDIssueType" Width="200px">
+                                             </asp:DropDownList>
+                                         </asp:Panel>
+                                             
+                                            
+                                         </td>
+                                         <td>
+                                         <asp:Panel ID="pnlEdition" runat="server" GroupingText="Edition:">
+                                         <asp:TextBox ID="txtpupEdition" runat="server"></asp:TextBox>
+                                         </asp:Panel>
+                                             
+                                             
+                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Label ID="lblftype" runat="server" Text="File Type:" />
+                                        <asp:Panel runat="server" ID="pnlVersion" GroupingText="Version:" Width="119px">
+                                         <asp:TextBox ID="txtpupVersion" runat="server"></asp:TextBox>
+                                        </asp:Panel>
+                                           
+                                           
                                         </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlpupftype" runat="server" Width="200px" DataSourceID="FileTypeObjectDataSource"
-                                                DataTextField="FileType" DataValueField="IDFileType">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label7" runat="server" Text="Issue Type:" />
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlpupitype" runat="server" Width="200px" DataSourceID="IssueTypeObjectDataSource"
-                                                DataTextField="IssueType" DataValueField="IDIssueType">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label8" runat="server" Text="Edition:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupEdition" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label9" runat="server" Text="Version:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupVersion" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label10" runat="server" Text="ICP:" />
-                                        </td>
-                                        <td>
+                                        <td style="width: 304px">
+                                        <asp:Panel runat="server" ID="pnlICP" GroupingText="ICP:" Width="136px">
+                                            
                                             <asp:TextBox ID="txtpupicp" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label11" runat="server" Text="Title:" />
-                                        </td>
-                                        <td>
+                                        <asp:Panel runat="server" ID="pnlTitle" GroupingText="Title:" Width="201px">
+                                          
                                             <asp:TextBox ID="txtpuptitle" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label12" runat="server" Text="Submitter:" />
-                                        </td>
-                                        <td>
+                                        <asp:Panel runat="server" ID="pnlSubmitter" GroupingText="Submitter:">
+                                            
                                             <asp:TextBox ID="txtpupSubmitter" runat="server"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
+                                        <td colspan="4">
+                                        <table>
+                                        <tr>
                                         <td>
-                                            <asp:Label ID="Label13" runat="server" Text="RelatedLinks:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpuprlinks" runat="server" TextMode="MultiLine" 
-                                                Width="330px" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label14" runat="server" Text="Issue Details:" />
+                                        <asp:Panel runat="server" ID="pnlRelatedLinks" GroupingText="RelatedLinks:" 
+                                                Width="100%">
+                                         
+                                            <asp:TextBox ID="txtpuprlinks" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True" TextMode="MultiLine" Width="342px" Height="60px"></asp:TextBox>
+                                                </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupissue" runat="server" Rows="4" TextMode="MultiLine" Width="330px"></asp:TextBox>
+                                         <asp:Panel ID="pnlIssueDetails" runat="server" GroupingText="Issue Details:" 
+                                                Width="100%">
+                                                <asp:TextBox ID="txtpupissue" runat="server" Rows="4" TextMode="MultiLine" 
+                                                    Width="375px"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label15" runat="server" Text="Resolution:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupresolution" runat="server" Rows="4" Width="330px" TextMode="MultiLine"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    
+                                        </tr>
+                                        </table>
                                         
-                                            <tr>
-                                             <td width="13px">
-                                                <td>
-                                                   <asp:TextBox ID="txtdownfile" runat="server" ReadOnly="True" Width="100px"></asp:TextBox>
-                                                    <asp:HiddenField ID="hiduploadfileid" runat="server" />
-                                                </td>
-                                                <td>
-                                                    <asp:Button ID="btnrecentdown" runat="server" Text="Download File" 
-                                                        OnClick="btnrecentdown_Click"/>
-                                            </td>
-                                            </tr>
-                                    
+                                           
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px" style="height: 98px">
+                                        </td>
+                                        <td colspan="3" style="height: 98px">
+                                            <asp:Panel ID="pnlResolution" runat="server" GroupingText="Resolution:" 
+                                                Width="347px">
+                                                <asp:TextBox ID="txtpupresolution" runat="server" Rows="4" TextMode="MultiLine" 
+                                                    Width="330px"></asp:TextBox>
+                                            </asp:Panel>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
+                                        <td colspan="3">
+                                            <asp:TextBox ID="txtdownfile" runat="server" ReadOnly="True" Width="100px"></asp:TextBox>
+                                            <asp:Button ID="btnrecentdown" runat="server" OnClick="btnrecentdown_Click" 
+                                                Text="Download File" />
+                                            <asp:HiddenField ID="hiduploadfileid" runat="server" />
+                                        </td>
                                         <td>
+                                            &nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px">
+                                        </td>
+                                        <td colspan="3">
                                             <asp:Button ID="btnupdate" runat="server" OnClick="btnupdate_Click" 
                                                 Text="Update" />
-                                        </td>
-                                        <td>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <asp:Button ID="btncancel" runat="server" Text="Cancel" />
                                         </td>
+                                        <td>
+                                            &nbsp;</td>
                                     </tr>
                                     
                                 </table>
                             </asp:Panel>
+                       
                         </td>
                     </tr>
                 </table>
@@ -938,187 +915,176 @@ CollapsedSize="0">
                 <table>
                     <tr>
                         <td>
-                            <asp:Panel ID="panalpopupsch" runat="server" BackColor="LightGray" Height="600px"
-                                Width="500px">
-                                <table>
+                             <asp:Panel ID="panalpopupsch" runat="server" BackColor="LightGray" Height="418px" 
+        Width="100%">
+                                <table>                                   
+                                   
+                                    
                                     <tr>
                                         <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label16" runat="server" Text="Issue ID # :" />
+                                        <asp:Panel ID="Panel16" runat="server" GroupingText="IssueId" Width="166px">
+                                         <asp:Label ID="lblschID" runat="server" Text="Label"></asp:Label>
+                                            <asp:HiddenField ID="hidsch" runat="server" /> 
+                                        </asp:Panel>
+                                         
+                                        </td>
+                                        <td style="width: 304px">
+                                            <asp:Panel ID="Panel17" runat="server" GroupingText="FIPS:" Width="140px">
+                                            <asp:TextBox ID="txtpupfipssch" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Label ID="lblschID" runat="server" Text="Label"></asp:Label>
-                                            <asp:HiddenField ID="hidsch" runat="server" />
+                                        <asp:Panel ID="Panel18" runat="server" GroupingText="State:" Width="189px">
+                                         <asp:TextBox ID="txtpupstatesch" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True"></asp:TextBox></asp:Panel>
+                                            
+                                           
+                                        </td>
+                                        <td>
+                                           <asp:Panel runat="server" ID="Panel19" GroupingText="Country:">
+                                           <asp:TextBox ID="txtpupcountysch" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True"></asp:TextBox>
+                                           </asp:Panel>
+                                           
+                                            
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="13px">
+                                         <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label18" runat="server" Text="FIPS:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupfipssch" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label19" runat="server" Text="State:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupstatesch" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label20" runat="server" Text="County:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupcountysch" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label21" runat="server" Text="Processing Type:" />
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlpupptypesch" runat="server" Width="200px" DataSourceID="ProcessingTypeObjectDataSource"
-                                                DataTextField="ProcessingType" DataValueField="IDProcessingType">
+                                        <asp:Panel runat="server" ID="Panel20" GroupingText="Processing Type:" 
+                                                Width="219px">
+                                          
+                                            <asp:DropDownList ID="ddlpupptypesch" runat="server" 
+                                                DataSourceID="ProcessingTypeObjectDataSource" DataTextField="ProcessingType" 
+                                                DataValueField="IDProcessingType" Width="200px">
+                                            </asp:DropDownList></asp:Panel>
+                                         </td>
+                                        <td style="width: 304px">
+                                        <asp:Panel runat="server" ID="Panel21" GroupingText="File Type:" Width="181px">
+                                        <asp:DropDownList ID="ddlpupftypesch" runat="server" 
+                                                DataSourceID="FileTypeObjectDataSource" DataTextField="FileType" 
+                                                DataValueField="IDFileType" Width="174px" Height="16px">
                                             </asp:DropDownList>
-                                        </td>
+                                        </asp:Panel>
+                                            
+                                            
+                                         </td>
+                                         <td>
+                                         <asp:Panel ID="Panel22" runat="server" GroupingText="Issue Type:" 
+                                                 Width="204px">
+                                          <asp:DropDownList ID="ddlpupitypesch" runat="server" 
+                                                 DataSourceID="IssueTypeObjectDataSource" DataTextField="IssueType" 
+                                                 DataValueField="IDIssueType" Width="200px">
+                                             </asp:DropDownList>
+                                         </asp:Panel>
+                                             
+                                            
+                                         </td>
+                                         <td>
+                                         <asp:Panel ID="Panel23" runat="server" GroupingText="Edition:">
+                                         <asp:TextBox ID="txtpupEditionsch" runat="server"></asp:TextBox>
+                                         </asp:Panel>
+                                             
+                                             
+                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label22" runat="server" Text="File Type:" />
+                                        <asp:Panel runat="server" ID="Panel24" GroupingText="Version:" Width="119px">
+                                         <asp:TextBox ID="txtpupVersionsch" runat="server"></asp:TextBox>
+                                        </asp:Panel>
+                                           
+                                           
                                         </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlpupftypesch" runat="server" Width="200px" DataSourceID="FileTypeObjectDataSource"
-                                                DataTextField="FileType" DataValueField="IDFileType">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label23" runat="server" Text="Issue Type:" />
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlpupitypesch" runat="server" Width="200px" DataSourceID="IssueTypeObjectDataSource"
-                                                DataTextField="IssueType" DataValueField="IDIssueType">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label24" runat="server" Text="Edition:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupEditionsch" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label25" runat="server" Text="Version:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupVersionsch" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label26" runat="server" Text="ICP:" />
-                                        </td>
-                                        <td>
+                                        <td style="width: 304px">
+                                        <asp:Panel runat="server" ID="Panel25" GroupingText="ICP:" Width="136px">
+                                            
                                             <asp:TextBox ID="txtpupicpsch" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label27" runat="server" Text="Title:" />
-                                        </td>
-                                        <td>
+                                        <asp:Panel runat="server" ID="Panel26" GroupingText="Title:" Width="201px">
+                                          
                                             <asp:TextBox ID="txtpuptitlesch" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label28" runat="server" Text="Submitter:" />
-                                        </td>
-                                        <td>
+                                        <asp:Panel runat="server" ID="Panel27" GroupingText="Submitter:">
+                                            
                                             <asp:TextBox ID="txtpupSubmittersch" runat="server"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
+                                        <td colspan="4">
+                                        <table>
+                                        <tr>
                                         <td>
-                                            <asp:Label ID="Label29" runat="server" Text="RelatedLinks:" />
+                                        <asp:Panel runat="server" ID="Panel28" GroupingText="RelatedLinks:" 
+                                                Width="100%">
+                                         
+                                            <asp:TextBox ID="txtpuprlinkssch" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True" TextMode="MultiLine" Width="342px" Height="60px"></asp:TextBox>
+                                                </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpuprlinkssch" runat="server" TextMode="MultiLine" Width="330px" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
+                                         <asp:Panel ID="Panel29" runat="server" GroupingText="Issue Details:" 
+                                                Width="100%">
+                                                <asp:TextBox ID="txtpupissuesch" runat="server" Rows="4" TextMode="MultiLine" 
+                                                    Width="375px"></asp:TextBox>
+                                            </asp:Panel>
+                                        </td>
+                                        </tr>
+                                        </table>
+                                        
+                                           
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px" style="height: 98px">
+                                        </td>
+                                        <td colspan="3" style="height: 98px">
+                                            <asp:Panel ID="Panel30" runat="server" GroupingText="Resolution:" 
+                                                Width="347px">
+                                                <asp:TextBox ID="txtpupresolutionsch" runat="server" Rows="4" TextMode="MultiLine" 
+                                                    Width="330px"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
-                                        <td>
-                                            <asp:Label ID="Label30" runat="server" Text="Issue Details:" />
+                                        <td colspan="3">
+                                            <asp:TextBox ID="txtdownfilesch" runat="server" ReadOnly="True" Width="100px"></asp:TextBox>
+                                            <asp:Button ID="btnschdown" runat="server" OnClick="btnschdown_Click" 
+                                                Text="Download File" />
+                                            <asp:HiddenField ID="hidschid" runat="server" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupissuesch" runat="server" Rows="4" TextMode="MultiLine" Width="330px"></asp:TextBox>
-                                        </td>
+                                            &nbsp;</td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
-                                        <td>
-                                            <asp:Label ID="Label31" runat="server" Text="Resolution:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupresolutionsch" runat="server" Rows="4" Width="330px" TextMode="MultiLine"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                             <td width="13px">
-                                                <td>
-                                                   <asp:TextBox ID="txtdownfilesch" runat="server" ReadOnly="True" Width="100px"></asp:TextBox>
-                                                    <asp:HiddenField ID="hidschid" runat="server" />
-                                                </td>
-                                                <td>
-                                                    <asp:Button ID="btnschdown" runat="server" Text="Download File" 
-                                                        OnClick="btnschdown_Click"/>
-                                            </td>
-                                            </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Button ID="btnupdatesch" runat="server" Text="Update" OnClick="btnupdatesch_Click" />
-                                        </td>
-                                        <td>
+                                        <td colspan="3">
+                                            <asp:Button ID="btnupdatesch" runat="server" OnClick="btnupdatesch_Click" 
+                                                Text="Update" />
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <asp:Button ID="btncancelsch" runat="server" Text="Cancel" />
                                         </td>
+                                        <td>
+                                            &nbsp;</td>
                                     </tr>
+                                    
                                 </table>
                             </asp:Panel>
                         </td>
@@ -1342,187 +1308,176 @@ CollapsedSize="0">
                  <table>
                     <tr>
                         <td>
-                            <asp:Panel ID="panalpopupnew" runat="server" BackColor="LightGray" Height="600px"
-                                Width="500px">
-                                <table>
+                             <asp:Panel ID="panalpopupnew" runat="server" BackColor="LightGray" Height="418px" 
+        Width="100%">
+                                <table>                                   
+                                   
+                                    
                                     <tr>
                                         <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label34" runat="server" Text="Issue ID # :" />
+                                        <asp:Panel ID="Panel31" runat="server" GroupingText="IssueId" Width="166px">
+                                         <asp:Label ID="lblnewID" runat="server" Text="Label"></asp:Label>
+                                            <asp:HiddenField ID="hidnew" runat="server" /> 
+                                        </asp:Panel>
+                                         
+                                        </td>
+                                        <td style="width: 304px">
+                                            <asp:Panel ID="Panel32" runat="server" GroupingText="FIPS:" Width="140px">
+                                            <asp:TextBox ID="txtpupfipsnew" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Label ID="lblnewID" runat="server" Text="Label"></asp:Label>
-                                            <asp:HiddenField ID="hidnew" runat="server" />
+                                        <asp:Panel ID="Panel33" runat="server" GroupingText="State:" Width="189px">
+                                         <asp:TextBox ID="txtpupstatenew" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True"></asp:TextBox></asp:Panel>
+                                            
+                                           
+                                        </td>
+                                        <td>
+                                           <asp:Panel runat="server" ID="Panel34" GroupingText="Country:">
+                                           <asp:TextBox ID="txtpupcountynew" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True"></asp:TextBox>
+                                           </asp:Panel>
+                                           
+                                            
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="13px">
+                                         <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label35" runat="server" Text="FIPS:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupfipsnew" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label36" runat="server" Text="State:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupstatenew" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label37" runat="server" Text="County:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupcountynew" runat="server" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label38" runat="server" Text="Processing Type:" />
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlpupptypenew" runat="server" Width="200px" DataSourceID="ProcessingTypeObjectDataSource"
-                                                DataTextField="ProcessingType" DataValueField="IDProcessingType">
+                                        <asp:Panel runat="server" ID="Panel35" GroupingText="Processing Type:" 
+                                                Width="219px">
+                                          
+                                            <asp:DropDownList ID="ddlpupptypenew" runat="server" 
+                                                DataSourceID="ProcessingTypeObjectDataSource" DataTextField="ProcessingType" 
+                                                DataValueField="IDProcessingType" Width="200px">
+                                            </asp:DropDownList></asp:Panel>
+                                         </td>
+                                        <td style="width: 304px">
+                                        <asp:Panel runat="server" ID="Panel36" GroupingText="File Type:" Width="181px">
+                                        <asp:DropDownList ID="ddlpupftypenew" runat="server" 
+                                                DataSourceID="FileTypeObjectDataSource" DataTextField="FileType" 
+                                                DataValueField="IDFileType" Width="174px" Height="16px">
                                             </asp:DropDownList>
-                                        </td>
+                                        </asp:Panel>
+                                            
+                                            
+                                         </td>
+                                         <td>
+                                         <asp:Panel ID="Panel37" runat="server" GroupingText="Issue Type:" 
+                                                 Width="204px">
+                                          <asp:DropDownList ID="ddlpupitypenew" runat="server" 
+                                                 DataSourceID="IssueTypeObjectDataSource" DataTextField="IssueType" 
+                                                 DataValueField="IDIssueType" Width="200px">
+                                             </asp:DropDownList>
+                                         </asp:Panel>
+                                             
+                                            
+                                         </td>
+                                         <td>
+                                         <asp:Panel ID="Panel38" runat="server" GroupingText="Edition:">
+                                         <asp:TextBox ID="txtpupEditionnew" runat="server"></asp:TextBox>
+                                         </asp:Panel>
+                                             
+                                             
+                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label39" runat="server" Text="File Type:" />
+                                        <asp:Panel runat="server" ID="Panel39" GroupingText="Version:" Width="119px">
+                                         <asp:TextBox ID="txtpupVersionnew" runat="server"></asp:TextBox>
+                                        </asp:Panel>
+                                           
+                                           
                                         </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlpupftypenew" runat="server" Width="200px" DataSourceID="FileTypeObjectDataSource"
-                                                DataTextField="FileType" DataValueField="IDFileType">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label40" runat="server" Text="Issue Type:" />
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlpupitypenew" runat="server" Width="200px" DataSourceID="IssueTypeObjectDataSource"
-                                                DataTextField="IssueType" DataValueField="IDIssueType">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label41" runat="server" Text="Edition:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupEditionnew" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label42" runat="server" Text="Version:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupVersionnew" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label43" runat="server" Text="ICP:" />
-                                        </td>
-                                        <td>
+                                        <td style="width: 304px">
+                                        <asp:Panel runat="server" ID="Panel40" GroupingText="ICP:" Width="136px">
+                                            
                                             <asp:TextBox ID="txtpupicpnew" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label44" runat="server" Text="Title:" />
-                                        </td>
-                                        <td>
+                                        <asp:Panel runat="server" ID="Panel41" GroupingText="Title:" Width="201px">
+                                          
                                             <asp:TextBox ID="txtpuptitlenew" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="13px">
+                                            </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:Label ID="Label45" runat="server" Text="Submitter:" />
-                                        </td>
-                                        <td>
+                                        <asp:Panel runat="server" ID="Panel42" GroupingText="Submitter:">
+                                            
                                             <asp:TextBox ID="txtpupSubmitternew" runat="server"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
+                                        <td colspan="4">
+                                        <table>
+                                        <tr>
                                         <td>
-                                            <asp:Label ID="Label46" runat="server" Text="RelatedLinks:" />
+                                        <asp:Panel runat="server" ID="Panel43" GroupingText="RelatedLinks:" 
+                                                Width="100%">
+                                         
+                                            <asp:TextBox ID="txtpuprlinksnew" runat="server" BackColor="ControlLight" 
+                                                ReadOnly="True" TextMode="MultiLine" Width="342px" Height="60px"></asp:TextBox>
+                                                </asp:Panel>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpuprlinksnew" runat="server" TextMode="MultiLine" Width="330px" ReadOnly="True" BackColor="ControlLight"></asp:TextBox>
+                                         <asp:Panel ID="Panel44" runat="server" GroupingText="Issue Details:" 
+                                                Width="100%">
+                                                <asp:TextBox ID="txtpupissuenew" runat="server" Rows="4" TextMode="MultiLine" 
+                                                    Width="375px"></asp:TextBox>
+                                            </asp:Panel>
+                                        </td>
+                                        </tr>
+                                        </table>
+                                        
+                                           
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="13px" style="height: 98px">
+                                        </td>
+                                        <td colspan="3" style="height: 98px">
+                                            <asp:Panel ID="Panel45" runat="server" GroupingText="Resolution:" 
+                                                Width="347px">
+                                                <asp:TextBox ID="txtpupresolutionnew" runat="server" Rows="4" TextMode="MultiLine" 
+                                                    Width="330px"></asp:TextBox>
+                                            </asp:Panel>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
-                                        <td>
-                                            <asp:Label ID="Label47" runat="server" Text="Issue Details:" />
+                                        <td colspan="3">
+                                            <asp:TextBox ID="txtdownfilenew" runat="server" ReadOnly="True" Width="100px"></asp:TextBox>
+                                            <asp:Button ID="btnnewdown" runat="server" OnClick="btnnewdown_Click" 
+                                                Text="Download File" />
+                                            <asp:HiddenField ID="hidnewid" runat="server" />
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtpupissuenew" runat="server" Rows="4" TextMode="MultiLine" Width="330px"></asp:TextBox>
-                                        </td>
+                                            &nbsp;</td>
                                     </tr>
                                     <tr>
                                         <td width="13px">
                                         </td>
-                                        <td>
-                                            <asp:Label ID="Label48" runat="server" Text="Resolution:" />
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtpupresolutionnew" runat="server" Rows="4" Width="330px" TextMode="MultiLine"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                             <td width="13px">
-                                                <td>
-                                                   <asp:TextBox ID="txtdownfilenew" runat="server" ReadOnly="True" Width="100px"></asp:TextBox>
-                                                    <asp:HiddenField ID="hidnewid" runat="server" />
-                                                </td>
-                                                <td>
-                                                    <asp:Button ID="btnnewdown" runat="server" Text="Download File" 
-                                                        OnClick="btnnewdown_Click"/>
-                                            </td>
-                                            </tr>
-                                    <tr>
-                                        <td width="13px">
-                                        </td>
-                                        <td>
-                                            <asp:Button ID="btnupdatenew" runat="server" Text="Update" OnClick="btnupdatenew_Click" />
-                                        </td>
-                                        <td>
+                                        <td colspan="3">
+                                            <asp:Button ID="btnupdatenew" runat="server" OnClick="btnupdatenew_Click" 
+                                                Text="Update" />
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <asp:Button ID="btncancelnew" runat="server" Text="Cancel" />
                                         </td>
+                                        <td>
+                                            &nbsp;</td>
                                     </tr>
+                                    
                                 </table>
                             </asp:Panel>
                         </td>
