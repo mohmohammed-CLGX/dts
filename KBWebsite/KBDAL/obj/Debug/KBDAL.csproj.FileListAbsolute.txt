@@ -23,3 +23,8 @@ C:\corelogic\kbwebsite\KBDAL\bin\Debug\KBDAL.pdb
 C:\corelogic\kbwebsite\KBDAL\obj\Debug\ResolveAssemblyReference.cache
 C:\corelogic\kbwebsite\KBDAL\obj\Debug\KBDAL.dll
 C:\corelogic\kbwebsite\KBDAL\obj\Debug\KBDAL.pdb
+C:\kbsvn\KBDAL\bin\Debug\KBDAL.dll
+C:\kbsvn\KBDAL\bin\Debug\KBDAL.pdb
+C:\kbsvn\KBDAL\obj\Debug\ResolveAssemblyReference.cache
+C:\kbsvn\KBDAL\obj\Debug\KBDAL.dll
+C:\kbsvn\KBDAL\obj\Debug\KBDAL.pdb

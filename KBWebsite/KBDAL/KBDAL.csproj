@@ -51,6 +51,7 @@
     <Compile Include="CIssueType.cs" />
     <Compile Include="County.cs" />
     <Compile Include="CProcessingType.cs" />
+    <Compile Include="CSubmitter.cs" />
     <Compile Include="DBConnections.cs" />
     <Compile Include="Interfaceissue.cs" />
     <Compile Include="Issue.cs" />

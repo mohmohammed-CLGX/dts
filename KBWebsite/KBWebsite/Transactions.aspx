@@ -77,14 +77,15 @@
             var url = document.getElementById("<%=txtRelatedLinksnew.ClientID%>").value;
 
             var urls = url.split(",");
-             var regexp = /(http|https|HTTP|HTTPS):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+             var regexp = /(http|https|HTTP|HTTPS|Http|Https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
 
            // var regexp = new RegExp("^(((h|H?)(t|T?)(t|T?)(p|P?)(s|S?))\://)?(www.|[a-zA-Z0-9].)[a-zA-Z0-9\-\.]+\.[a-zA-Z]*$");
             for (var i = 0; i < urls.length; i++) {
 
-                if (regexp.test(urls[i])) {
+                var urltemp=urls[i].replace("www.", "").replace("WWW.","");
+                if (regexp.test(urltemp)) {
                     // alert(urls[i]);
-                    window.open(urls[i], "", 'width=900,height=600,menubar=yes,status=yes,location=yes,toolbar=yes,scrollbars=yes');
+                    window.open(urltemp, "", 'width=900,height=600,menubar=yes,status=yes,location=yes,toolbar=yes,scrollbars=yes');
 
                 }
                 else {
@@ -188,9 +189,9 @@
         
     </script>
     
-<div
 
-    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="0" Width="1032px"
+
+    <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="2" Width="1032px"
         Height="1000px" onactivetabchanged="TabContainer1_ActiveTabChanged" >
         <cc1:TabPanel runat="server" HeaderText="Recent Issues" ID="RecentIssuestab">
             <HeaderTemplate>
@@ -353,13 +354,6 @@ CollapsedSize="0">
            <%-- </asp:Panel>--%>
          </ItemTemplate>
 </asp:ListView>
-<%--<div id="pager">
-                                <asp:DataPager ID="pgr" runat="server" PagedControlID="gvrecent" PageSize="4" >
-                                <Fields>
-                                <asp:NumericPagerField />
-                                </Fields>
-                                </asp:DataPager>
-                                </div>--%>
 
            
     
@@ -416,14 +410,14 @@ CollapsedSize="0">
                                           
                                             <asp:DropDownList ID="ddlpupptype" runat="server" 
                                                 DataSourceID="ProcessingTypeObjectDataSource" DataTextField="ProcessingType" 
-                                                DataValueField="IDProcessingType" Width="200px">
+                                                DataValueField="IDProcessingType" Width="200px" >
                                             </asp:DropDownList></asp:Panel>
                                          </td>
                                         <td style="width: 304px">
                                         <asp:Panel runat="server" ID="pnlFileType" GroupingText="File Type:" Width="181px">
                                         <asp:DropDownList ID="ddlpupftype" runat="server" 
                                                 DataSourceID="FileTypeObjectDataSource" DataTextField="FileType" 
-                                                DataValueField="IDFileType" Width="174px" Height="16px">
+                                                DataValueField="IDFileType" Width="174px" >
                                             </asp:DropDownList>
                                         </asp:Panel>
                                             
@@ -452,7 +446,7 @@ CollapsedSize="0">
                                         <td width="13px">
                                         </td>
                                         <td>
-                                        <asp:Panel runat="server" ID="pnlVersion" GroupingText="Version:" Width="119px">
+                                        <asp:Panel runat="server" ID="pnlVersion" GroupingText="Version:" Width="150px">
                                          <asp:TextBox ID="txtpupVersion" runat="server"></asp:TextBox>
                                         </asp:Panel>
                                            
@@ -968,7 +962,7 @@ CollapsedSize="0">
                                         <asp:Panel runat="server" ID="Panel21" GroupingText="File Type:" Width="181px">
                                         <asp:DropDownList ID="ddlpupftypesch" runat="server" 
                                                 DataSourceID="FileTypeObjectDataSource" DataTextField="FileType" 
-                                                DataValueField="IDFileType" Width="174px" Height="16px">
+                                                DataValueField="IDFileType" Width="174px">
                                             </asp:DropDownList>
                                         </asp:Panel>
                                             
@@ -997,7 +991,7 @@ CollapsedSize="0">
                                         <td width="13px">
                                         </td>
                                         <td>
-                                        <asp:Panel runat="server" ID="Panel24" GroupingText="Version:" Width="119px">
+                                        <asp:Panel runat="server" ID="Panel24" GroupingText="Version:" Width="150px">
                                          <asp:TextBox ID="txtpupVersionsch" runat="server"></asp:TextBox>
                                         </asp:Panel>
                                            
@@ -1105,12 +1099,13 @@ CollapsedSize="0">
               <asp:Label ID="lblmsgnew" runat="server" ForeColor="Green" Font-Size="X-Small" ></asp:Label>
             
             </td></tr></table>
-                <asp:Panel ID="Panel2" runat="server" GroupingText="Add New" Font-Size="XX-Small" Width="1000px">
+                <asp:Panel ID="PanalAddNew" runat="server" GroupingText="Add New" Font-Size="XX-Small" Width="1000px">
                     <table style="width: 87%;">
                         <tr>
                             <td>
                                 <asp:Label ID="Label6" runat="server" Text="      " Font-Size="X-Small"></asp:Label>
                                 <asp:Panel ID="Panel10" runat="server" GroupingText="State/County ">
+                                    <asp:HiddenField ID="hidnewupdate" runat="server" />
                                     <asp:DropDownList ID="ddlstate_countynew" runat="server" AppendDataBoundItems="True"
                                         DataSourceID="FIPSObjectDataSource" DataTextField="StateCounty" DataValueField="FIPS"
                                         Font-Size="X-Small" Width="200px">
@@ -1165,9 +1160,9 @@ CollapsedSize="0">
                                                     Width="30px">N/A</asp:TextBox>
                                                 <asp:RegularExpressionValidator ID="ValidatEditionnew" runat="server" ValidationExpression="^((N/A)|(100)|(\d{0,2}))$"
                                                     ErrorMessage="Edition should be in the range of 0-100 or N/A" Display="None"
-                                                    ControlToValidate="txtEditionnew" />
+                                                    ControlToValidate="txtEditionnew" SetFocusOnError = "True"  ValidationGroup="newissuegrp"/>
                                                 <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender2" runat="server" TargetControlID="ValidatEditionnew"
-                                                    Enabled="True">
+                                                    Enabled="True"  >
                                                 </cc1:ValidatorCalloutExtender>
                                             </asp:Panel>
                                         </td>
@@ -1175,8 +1170,10 @@ CollapsedSize="0">
                                             <asp:Panel ID="PanelVersion" runat="server" GroupingText="Version" Width="100px">
                                                 <asp:TextBox ID="txtVersionnew" runat="server" Font-Size="X-Small" MaxLength="3"
                                                     Width="30px">N/A</asp:TextBox>
-                                                <asp:RegularExpressionValidator ID="Validatversionnew" runat="server" ValidationExpression="^((N/A)|([0-9]|1[0-9]|2[0-5]))$"
-                                                    ErrorMessage="Version should be in the range of 0-25 or N/A" Display="None" ControlToValidate="txtVersionnew" />
+                                                <asp:RegularExpressionValidator ID="Validatversionnew" runat="server" 
+                                                ValidationExpression="^((N/A)|([0-9]|1[0-9]|2[0-5]))$"
+                                                    ErrorMessage="Version should be in the range of 0-25 or N/A" Display="None" 
+                                                    ControlToValidate="txtVersionnew" SetFocusOnError = "True" ValidationGroup="newissuegrp"/>
                                                 <cc1:ValidatorCalloutExtender ID="ValidatorCalloutExtender1" runat="server" TargetControlID="Validatversionnew"
                                                     Enabled="True">
                                                 </cc1:ValidatorCalloutExtender>
@@ -1204,21 +1201,34 @@ CollapsedSize="0">
                         </tr>
                         <tr>
                             <td colspan="2" rowspan="2" valign="top">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                
                                 <asp:Panel ID="PanelSubmitter" runat="server" GroupingText="Submitter">
-                                    <asp:TextBox ID="txtSubmitternew" runat="server" Font-Size="X-Small" MaxLength="50"
-                                        Width="200px"></asp:TextBox>
+                                         <asp:DropDownList ID="ddlnewSubmitter" runat="server" AppendDataBoundItems="True"
+                                        DataSourceID="SubmitterObjectDataSource" DataTextField="Name" DataValueField="SubmitterID"
+                                        Font-Size="X-Small" Width="200px">
+                                        <asp:ListItem Text="---Select---" Value="0"></asp:ListItem>
+                                    </asp:DropDownList>
+                                    
+                                     
                                 </asp:Panel>
+                                
+                                
                                 <br />
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Panel
+                                <asp:Panel
                                     ID="Panel9" runat="server" GroupingText="Related Links">
                                     <asp:TextBox ID="txtRelatedLinksnew" runat="server" Font-Size="X-Small" Width="242px"></asp:TextBox>
                                     <asp:Button ID="Button3" runat="server" Font-Size="XX-Small" Text="Go To Link" CausesValidation="False"
                                         UseSubmitBehavior="False" />
                                 </asp:Panel>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <asp:Panel ID="Panel15" runat="server" GroupingText="Upload File">
+                                <asp:RequiredFieldValidator ID="rfvnewsubmitter" runat ="server" InitialValue="0"  
+                                        ControlToValidate ="ddlnewSubmitter" ErrorMessage ="Please Select Submitter" 
+                                        Display="None" SetFocusOnError = "True" ValidationGroup="newissuegrp"></asp:RequiredFieldValidator>
+                                        <cc1:ValidatorCalloutExtender ID="vcenewsubmiter" runat="server" 
+                                        TargetControlID="rfvnewsubmitter"  
+                                                    Enabled="True"  >
+                                                </cc1:ValidatorCalloutExtender>
+                                
+                                <asp:Panel ID="PanelUploadfile" runat="server" GroupingText="Upload File">
                                     <asp:FileUpload ID="FileUploadkb" runat="server" Width="312px" />
                                 </asp:Panel>
                             </td>
@@ -1241,35 +1251,55 @@ CollapsedSize="0">
                                     <br />
                                     
                                     <asp:Button ID="btnNew" runat="server" Font-Size="X-Small" 
-                                        OnClick="btnNew_Click" Text="Save" />
+                                        OnClick="btnNew_Click" Text="Save" ValidationGroup="newissuegrp" />
                                         <asp:Button ID="btnnewclear" runat="server" Font-Size="X-Small" 
                                         OnClick="btnnewclear_Click" Text="Clear" />
+                                        <asp:Button ID="btnnewDel" runat="server" Font-Size="X-Small" 
+                                        OnClick="btnnewdelete_Click" Text="Delete"  Visible="False"/>
                                 </td>
                             </tr>
                     </table>
                 </asp:Panel>
-                <asp:Panel ID="Panel1" runat="server" GroupingText="Recently Added" Width="1000px"
+                  <table width="300px" >
+                    <tr>
+                        <td>
+                             <asp:Panel ID="Panelconfirmdelnew" runat="server" BackColor="LightGray" Height="150px"  Width="250px" GroupingText="Confirm Delete"
+        >
+                                <table>
+                                <tr ><td colspan="2" ></td>
+                                    <asp:Label ID="lblconfirmdelnew" runat="server" ></asp:Label>
+                                </tr>
+                                <tr><td> 
+                                    <asp:Button ID="btncancelnewdel" runat="server" Text="Cancel" /></td>
+                                <td>
+                                    <asp:Button ID="btnconfirmdelnew" runat="server" Text="Confirm"  OnClick="btnconfirmdelete_Click"/></td></tr>
+                                </table>
+                              
+                            </asp:Panel>
+                        </td>
+                    </tr>
+                </table>
+                <cc1:ModalPopupExtender ID="mpeconfirmnewdelete" runat="server" PopupControlID="Panelconfirmdelnew"
+                    TargetControlID="Panelconfirmdelnew" CancelControlID="btncancelnewdel" OnCancelScript="HideModalPopupmpenewdel()"
+                    DropShadow="True" BackgroundCssClass="modal" DynamicServicePath="" Enabled="True">
+                </cc1:ModalPopupExtender>
+               
+                 <asp:Panel ID="Panel1" runat="server" GroupingText="Recently Added" Width="1000px"
                     Font-Size="X-Small" Height="390px" >
                       <div style="width: 980px; height: 380px; overflow: auto;">
                     <asp:GridView ID="RecentIssuesgrid" runat="server" AutoGenerateColumns="False" 
-                                        CellPadding="4" DataKeys="IDIssue" Font-Size="X-Small" ForeColor="#333333" 
-                                        GridLines="None" OnRowDataBound="RecentIssuesgrid_RowDataBound" Width="1500px" 
-                                        HeaderStyle-CssClass="HeaderStyle">
+                                        CellPadding="4" DataKeyNames="IDIssue"  Font-Size="X-Small" ForeColor="#333333" 
+                                        GridLines="None" OnRowDataBound="RecentIssuesgrid_RowDataBound" OnRowCommand ="RecentIssuesgrid_RowCommand" 
+                              Width="1500px" AutoGenerateSelectButton="True">
                                         <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                                         <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
                                         <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                                         <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
-                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White"  />
+                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" 
+                                            CssClass="HeaderStyle"  />
                                         <EditRowStyle BackColor="#999999" />
                                         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                                         <Columns>
-                                           <asp:HyperLinkField AccessibleHeaderText="HyperLink1" 
-                                                HeaderImageUrl="~/img/select.png" Text="Select">
-                                                <ControlStyle Font-Underline="True" />
-                                            </asp:HyperLinkField>
-                                            <asp:ImageField AccessibleHeaderText="select" NullImageUrl="~/img/select.png" 
-                                                ReadOnly="True">
-                                            </asp:ImageField>
                                             <asp:BoundField DataField="IDIssue" HeaderText="ID" InsertVisible="False" ReadOnly="True"
                                                 SortExpression="IDIssue" />
                                             <asp:BoundField DataField="IssueCreatedDate" DataFormatString="{0:MMM d, yyyy}" HtmlEncode="False"
@@ -1305,6 +1335,7 @@ CollapsedSize="0">
                                     </asp:GridView>
                      </div>
                 </asp:Panel>
+                
                  <table>
                     <tr>
                         <td>
@@ -1361,7 +1392,7 @@ CollapsedSize="0">
                                         <asp:Panel runat="server" ID="Panel36" GroupingText="File Type:" Width="181px">
                                         <asp:DropDownList ID="ddlpupftypenew" runat="server" 
                                                 DataSourceID="FileTypeObjectDataSource" DataTextField="FileType" 
-                                                DataValueField="IDFileType" Width="174px" Height="16px">
+                                                DataValueField="IDFileType" Width="174px">
                                             </asp:DropDownList>
                                         </asp:Panel>
                                             
@@ -1390,7 +1421,7 @@ CollapsedSize="0">
                                         <td width="13px">
                                         </td>
                                         <td>
-                                        <asp:Panel runat="server" ID="Panel39" GroupingText="Version:" Width="119px">
+                                        <asp:Panel runat="server" ID="Panel39" GroupingText="Version:" Width="150px">
                                          <asp:TextBox ID="txtpupVersionnew" runat="server"></asp:TextBox>
                                         </asp:Panel>
                                            
@@ -1518,6 +1549,12 @@ CollapsedSize="0">
                     CollapsedImage="App_Themes/CollapsiblePanel/images/faqsopen.png" SuppressPostBack="True"
                     Enabled="True">
                 </cc1:CollapsiblePanelExtender>
+                 <cc1:CollapsiblePanelExtender ID="cpesubmitter" runat="server" TargetControlID="panelSubmitterDetail"
+                    ExpandControlID="panelSubmitterTitle" CollapseControlID="panelSubmitterTitle" Collapsed="True"
+                    ImageControlID="imgsubmitterTitle" ExpandedImage="App_Themes/CollapsiblePanel/images/Submitterclose.png"
+                    CollapsedImage="App_Themes/CollapsiblePanel/images/Submitteropen.png" SuppressPostBack="True"
+                    Enabled="True">
+                </cc1:CollapsiblePanelExtender>
                
                 
                     
@@ -1543,7 +1580,7 @@ CollapsedSize="0">
                                     onrowdeleted="gridprocessingtype_RowDeleted" 
                                     onrowupdated="gridprocessingtype_RowUpdated" 
                                     onrowediting="gridprocessingtype_RowEditing" 
-                                    onrowdeleting="gridprocessingtype_RowDeleting" HeaderStyle-CssClass="HeaderStyle">
+                                    onrowdeleting="gridprocessingtype_RowDeleting">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1599,7 +1636,8 @@ CollapsedSize="0">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                     <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
                                     <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" 
+                                        CssClass="HeaderStyle" />
                                     <EditRowStyle BackColor="#2461BF" />
                                     <AlternatingRowStyle BackColor="White" />
                                 </asp:GridView>
@@ -1632,7 +1670,7 @@ CollapsedSize="0">
                                     OnRowCommand="gridFileType_RowCommand" 
                                     onrowupdated="gridFileType_RowUpdated" 
                                     onrowdeleted="gridFileType_RowDeleted" onrowdeleting="gridFileType_RowDeleting" 
-                                    onrowediting="gridFileType_RowEditing" HeaderStyle-CssClass="HeaderStyle">
+                                    onrowediting="gridFileType_RowEditing">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1688,7 +1726,8 @@ CollapsedSize="0">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                     <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
                                     <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" 
+                                        CssClass="HeaderStyle" />
                                     <EditRowStyle BackColor="#2461BF" />
                                     <AlternatingRowStyle BackColor="White" />
                                 </asp:GridView>
@@ -1720,7 +1759,7 @@ CollapsedSize="0">
                                     OnRowCommand="gridissuetype_RowCommand" onrowdeleted="gridissuetype_RowDeleted" 
                                     onrowupdated="gridissuetype_RowUpdated" 
                                     onrowdeleting="gridissuetype_RowDeleting" 
-                                    onrowediting="gridissuetype_RowEditing" HeaderStyle-CssClass="HeaderStyle">
+                                    onrowediting="gridissuetype_RowEditing">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1776,7 +1815,8 @@ CollapsedSize="0">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                     <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
                                     <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" 
+                                        CssClass="HeaderStyle" />
                                     <EditRowStyle BackColor="#2461BF" />
                                     <AlternatingRowStyle BackColor="White" />
                                 </asp:GridView>
@@ -1807,7 +1847,7 @@ CollapsedSize="0">
                                     DataSourceID="SqlDataSourcefaq" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
                                     Width="98%" ShowFooter="True" EnableModelValidation="True" OnRowCommand="gridfaq_RowCommand"
                                      onrowdeleted="gridfaq_RowDeleted" 
-                                    onrowupdated="gridfaq_RowUpdated" HeaderStyle-CssClass="HeaderStyle">
+                                    onrowupdated="gridfaq_RowUpdated">
                                     <RowStyle BackColor="#EFF3FB" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="ID">
@@ -1819,7 +1859,7 @@ CollapsedSize="0">
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Left" VerticalAlign="Top" Width="50px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Processing Type">
+                                        <asp:TemplateField HeaderText="Faqs">
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtFaqs" runat="server" Text='<%# Bind("Faqs") %>'></asp:TextBox>
                                             </EditItemTemplate>
@@ -1863,7 +1903,8 @@ CollapsedSize="0">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                     <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
                                     <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" 
+                                        CssClass="HeaderStyle" />
                                     <EditRowStyle BackColor="#2461BF" />
                                     <AlternatingRowStyle BackColor="White" />
                                 </asp:GridView>
@@ -1881,6 +1922,106 @@ CollapsedSize="0">
                                     <InsertParameters>
                                         <asp:Parameter Name="Faqs" Type="String" />
                                         <asp:Parameter Name="Faqsans" Type="String" />
+                                    </InsertParameters>
+                                </asp:SqlDataSource>
+                            </asp:Panel>
+                             <asp:Panel ID="panelSubmitterTitle" runat="server" Height="30px" Width="750px">
+                                <img id="imgsubmitterTitle" src="App_Themes/CollapsiblePanel/images/Submitterclose" height="30px"
+                                    width="750px" /></asp:Panel>
+                            <asp:Panel ID="panelSubmitterDetail" runat="server" Height="400px" Width="750px" ScrollBars="Auto">
+                                <asp:GridView ID="gridSubmitter" runat="server" AutoGenerateColumns="False" DataKeyNames="SubmitterID"
+                                    DataSourceID="SqlDataSourceSubmitter" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
+                                    Width="98%" ShowFooter="True" EnableModelValidation="True" OnRowCommand="gridSubmitter_RowCommand"
+                                     onrowdeleted="gridSubmitter_RowDeleted" 
+                                    onrowupdated="gridSubmitter_RowUpdated">
+                                    <RowStyle BackColor="#EFF3FB" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ID">
+                                            <FooterTemplate>
+                                                <asp:Label ID="lblAddnew" runat="server" Text="Add New"></asp:Label>
+                                            </FooterTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblIDSubmitter" runat="server" Text='<%# Bind("SubmitterID") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Left" VerticalAlign="Top" Width="50px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="First Name">
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtFirstname" runat="server" Text='<%# Bind("FirstName") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFirstName" runat="server" Text='<%# Bind("FirstName") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:TextBox ID="newtxtFirstName" runat="server" />
+                                            </FooterTemplate>
+                                            <ItemStyle HorizontalAlign="Left" VerticalAlign="Top" Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Last Name">
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtLastName" runat="server" Text='<%# Bind("LastName") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLastName" runat="server" Text='<%# Bind("LastName") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:TextBox ID="newtxtLastName" runat="server" />
+                                            </FooterTemplate>
+                                            <ItemStyle HorizontalAlign="Left" VerticalAlign="Top" Width="100px" Wrap="True" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="User Level">
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtUserLevel" runat="server" Text='<%# Bind("UserLevel") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUserLevel" runat="server" Text='<%# Bind("UserLevel") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:TextBox ID="newtxtUserLevel" runat="server" />
+                                            </FooterTemplate>
+                                            <ItemStyle HorizontalAlign="Left" VerticalAlign="Top" Width="100px" Wrap="True" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Commands">
+                                            <ItemTemplate>
+                                                <asp:Button CssClass="submitButton" runat="server" ID="Edit" Text="Edit" CommandName="Edit" />
+                                                <asp:Button CssClass="submitButton" runat="server" ID="Delete" Text="Delete" CommandName="Delete" />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:Button CssClass="submitButton" runat="server" ID="Update" Text="Update" CommandName="Update" />
+                                                <asp:Button CssClass="submitButton" runat="server" ID="Cancel" Text="Cancel" CommandName="Cancel" />
+                                            </EditItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Button CssClass="submitButton" runat="server" ID="Insert" Text="Add" CommandName="InsertNew" />
+                                                <asp:Button CssClass="submitButton" runat="server" ID="Cancel" Text="Cancel" CommandName="CancelNew" />
+                                            </FooterTemplate>
+                                            <FooterStyle VerticalAlign="Bottom" />
+                                            <ItemStyle HorizontalAlign="Left" VerticalAlign="Bottom" Width="100px" />
+                                        </asp:TemplateField>
+                                    </Columns>
+                                    <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                    <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                    <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" 
+                                        CssClass="HeaderStyle" />
+                                    <EditRowStyle BackColor="#2461BF" />
+                                    <AlternatingRowStyle BackColor="White" />
+                                </asp:GridView>
+                                <asp:SqlDataSource ID="SqlDataSourceSubmitter" runat="server" ConnectionString="<%$ ConnectionStrings:kbConnectionString %>"
+                                    DeleteCommand="DELETE FROM Submitter WHERE [SubmitterID] = @SubmitterID" InsertCommand="INSERT INTO [Submitter] ([FirstName], [LastName],[UserLevel]) VALUES (@FirstName, @LastName,@userLevel)"
+                                    SelectCommand="SELECT * FROM [Submitter]" UpdateCommand="UPDATE [Submitter] SET [FirstName] = @FirstName, [LastName] = @LastName,[UserLevel] = @UserLevel WHERE [SubmitterID] = @SubmitterID">
+                                    <DeleteParameters>
+                                        <asp:Parameter Name="SubmitterID" Type="Int32" />
+                                    </DeleteParameters>
+                                    <UpdateParameters>
+                                        <asp:Parameter Name="FirstName" Type="String" />
+                                        <asp:Parameter Name="LastName" Type="String" />
+                                        <asp:Parameter Name="UserLevel" Type="Int32" />
+                                           <asp:Parameter Name="SubmitterID" Type="Int32" />
+                                    </UpdateParameters>
+                                    <InsertParameters>
+                                        <asp:Parameter Name="FirstName" Type="String" />
+                                        <asp:Parameter Name="LastName" Type="String" />
+                                        <asp:Parameter Name="UserLevel" Type="Int32" />
                                     </InsertParameters>
                                 </asp:SqlDataSource>
                             </asp:Panel>
@@ -2008,6 +2149,16 @@ CollapsedSize="0">
             <asp:Parameter Name="strIssueTypeDescription" Type="String" />
             <asp:Parameter Name="dtCreateddate" Type="DateTime" />
             <asp:Parameter Name="iCreateduser" Type="Int32" />
+        </InsertParameters>
+    </asp:ObjectDataSource>
+    
+    <asp:ObjectDataSource ID="SubmitterObjectDataSource" runat="server" InsertMethod="insertSubmitter"
+        SelectMethod="getSubmitterlist" TypeName="KBDAL.DBConnectionsKB">
+        <InsertParameters>
+            <asp:Parameter Name="strFirstName" Type="String" />
+            <asp:Parameter Name="strLastName" Type="String" />
+            <asp:Parameter Name="dtCreateddate" Type="DateTime" />
+            <asp:Parameter Name="UserLevel" Type="Int32" />
         </InsertParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ProcessingTypeObjectDataSource" runat="server" InsertMethod="insertProcessingType"

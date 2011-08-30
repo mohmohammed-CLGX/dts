@@ -29,7 +29,7 @@ public partial class Transactions : System.Web.UI.Page
         btnschdown.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnschdown.UniqueID, "");
         btnupdatenew.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnupdatenew.UniqueID, "");
         btnnewdown.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnnewdown.UniqueID, "");
-       
+        btnconfirmdelnew.OnClientClick = String.Format("fnClickUpdate('{0}','{1}')", btnconfirmdelnew.UniqueID, "");
        
         if (!IsPostBack)
         {
@@ -453,10 +453,10 @@ public partial class Transactions : System.Web.UI.Page
                 txtResolutionnew.Text = _gridView.SelectedRow.Cells[11].Text;
                 txtEditionnew.Text = _gridView.SelectedRow.Cells[12].Text;
                 txtVersionnew.Text = _gridView.SelectedRow.Cells[13].Text;
-                txtSubmitternew.Text = _gridView.SelectedRow.Cells[14].Text;
+                //txtSubmitternew.Text = _gridView.SelectedRow.Cells[14].Text;
                 txtRelatedLinksnew.Text = _gridView.SelectedRow.Cells[15].Text;
                 txtICPnew.Text = _gridView.SelectedRow.Cells[16].Text;
-                Panel2.GroupingText = "Details";
+                PanalAddNew.GroupingText = "Details";
                 btnNew.Text = "Clear";
                 TabContainer1.ActiveTabIndex = 2;
                 break;
@@ -493,6 +493,8 @@ public partial class Transactions : System.Web.UI.Page
     protected void btnnewclear_Click(object sender, EventArgs e)
     {
         lblerrnew.Text = lblmsgnew.Text = "";
+        btnNew.Text = "Save";
+        PanalAddNew.GroupingText = "Add New";
         ddlstate_countynew.SelectedIndex = -1;
         ddlfpisnew.SelectedIndex = -1;
         ddlProcessingtypenew.SelectedIndex = -1;
@@ -503,9 +505,13 @@ public partial class Transactions : System.Web.UI.Page
         txtResolutionnew.Text = "";
         txtEditionnew.Text = "N/A";
         txtVersionnew.Text = "N/A";
-        txtSubmitternew.Text = "";
+        ddlnewSubmitter.SelectedIndex = -1;
+       // txtSubmitternew.Text = "";
         txtRelatedLinksnew.Text = "";
         txtICPnew.Text = "N/A";
+        ddlstate_countynew.Enabled = true;
+        ddlfpisnew.Enabled = true;
+        FileUploadkb.Enabled = true;
     }
     protected void btnNew_Click(object sender, EventArgs e)
     {
@@ -514,142 +520,154 @@ public partial class Transactions : System.Web.UI.Page
         if (btnNew.Text == "Clear")
         {
             btnNew.Text = "Submit";
-            
-            Panel2.GroupingText = "Add New";
+
+            PanalAddNew.GroupingText = "Add New";
            // GridView5.SelectedIndex = -1;
            // GridView5.DataBind();
 
 
         }
-
-        if (ddlstate_countynew.SelectedIndex > 0 || ddlfpisnew.SelectedIndex > 0)
+        if(btnNew.Text == "Update" )
+        {
+            Updatenewissue();
+            
+        }
+        else if (btnNew.Text == "Save")
         {
 
-            string FIPSCounty = "00000";
-            if (ddlstate_countynew.SelectedValue.ToString() == "00")
+            if (ddlstate_countynew.SelectedIndex > 0 || ddlfpisnew.SelectedIndex > 0)
             {
-                FIPSCounty = "00000";
 
-            }
-            else if (ddlstate_countynew.SelectedValue.ToString() == "0")
-            {
-                if (ddlfpisnew.SelectedValue.ToString() != "0")
-                    FIPSCounty = ddlfpisnew.SelectedValue.ToString();
-            }
-            else
-            {
-                FIPSCounty = ddlstate_countynew.SelectedValue.ToString();
-            }
-
-            string IDProcessingType = "1";
-            if (ddlProcessingtypenew.SelectedIndex > 0)
-            {
-                IDProcessingType = ddlProcessingtypenew.SelectedValue.ToString();
-            }
-            string IDFileType = "1";
-            if (ddlFileTypenew.SelectedIndex > 0)
-                IDFileType = ddlFileTypenew.SelectedValue.ToString();
-            string IDIssueType = "1";
-            if (ddlIssueTypenew.SelectedIndex > 0)
-                IDIssueType = ddlIssueTypenew.SelectedValue.ToString();
-            int test;
-            string Edition = "null";
-            if (Int32.TryParse(txtEditionnew.Text, out test))
-                Edition = txtEditionnew.Text;
-
-            string strVersion = "null";
-            if (Int32.TryParse(txtVersionnew.Text, out test))
-                strVersion = txtVersionnew.Text;
-
-            string Title = txtTitlenew.Text;
-            string IssueDetails = txtIssueDetailsnew.Text;
-            string Resolution = txtResolutionnew.Text;
-            string Submitter = txtSubmitternew.Text;
-            string Relatedlink = txtRelatedLinksnew.Text;
-
-            string ICP = "null";
-            if (Int32.TryParse(txtICPnew.Text, out test))
-                ICP = txtICPnew.Text;
-            string IssueCreatedDate = DateTime.Now.ToString("yyyy/MM/dd");
-
-
-            try
-            {
-                int upid = 0;
-                bool isfile = false;
-                if (FileUploadkb.FileName != "")
+                string FIPSCounty = "00000";
+                if (ddlstate_countynew.SelectedValue.ToString() == "00")
                 {
-                    if (FileUploadkb.PostedFile != null || !string.IsNullOrEmpty(FileUploadkb.PostedFile.FileName) ||
-                     FileUploadkb.PostedFile.InputStream != null)
+                    FIPSCounty = "00000";
+
+                }
+                else if (ddlstate_countynew.SelectedValue.ToString() == "0")
+                {
+                    if (ddlfpisnew.SelectedValue.ToString() != "0")
+                        FIPSCounty = ddlfpisnew.SelectedValue.ToString();
+                }
+                else
+                {
+                    FIPSCounty = ddlstate_countynew.SelectedValue.ToString();
+                }
+
+                string IDProcessingType = "1";
+                if (ddlProcessingtypenew.SelectedIndex > 0)
+                {
+                    IDProcessingType = ddlProcessingtypenew.SelectedValue.ToString();
+                }
+                string IDFileType = "1";
+                if (ddlFileTypenew.SelectedIndex > 0)
+                    IDFileType = ddlFileTypenew.SelectedValue.ToString();
+                string IDIssueType = "1";
+                if (ddlIssueTypenew.SelectedIndex > 0)
+                    IDIssueType = ddlIssueTypenew.SelectedValue.ToString();
+                int test;
+                string Edition = "null";
+                if (Int32.TryParse(txtEditionnew.Text, out test))
+                    Edition = txtEditionnew.Text;
+
+                string strVersion = "null";
+                if (Int32.TryParse(txtVersionnew.Text, out test))
+                    strVersion = txtVersionnew.Text;
+
+                string Title = txtTitlenew.Text.Replace("'", "''");
+                string IssueDetails = txtIssueDetailsnew.Text.Replace("'", "''");
+                string Resolution = txtResolutionnew.Text.Replace("'", "''");
+
+                string Submitter = "";// txtSubmitternew.Text.Replace("'", "''");
+                if (ddlnewSubmitter.SelectedIndex > 0)
+                    Submitter = ddlnewSubmitter.SelectedItem.Text.ToString();
+                string Relatedlink = txtRelatedLinksnew.Text.Replace("'", "''");
+
+                string ICP = "null";
+                if (Int32.TryParse(txtICPnew.Text, out test))
+                    ICP = txtICPnew.Text;
+                string IssueCreatedDate = DateTime.Now.ToString("yyyy/MM/dd");
+
+
+                try
+                {
+                    int upid = 0;
+                    bool isfile = false;
+                    if (FileUploadkb.FileName != "")
                     {
-                        if (FileUploadkb.FileBytes.Length > 0)
+                        if (FileUploadkb.PostedFile != null || !string.IsNullOrEmpty(FileUploadkb.PostedFile.FileName) ||
+                         FileUploadkb.PostedFile.InputStream != null)
                         {
-                            upid = uploadkbfile();
-                            if (upid > 0)
+                            if (FileUploadkb.FileBytes.Length > 0)
                             {
-                                isfile = true;
+                                upid = uploadkbfile();
+                                if (upid > 0)
+                                {
+                                    isfile = true;
+                                }
+                                else
+                                {
+                                    lblerrnew.Text = "Error - unable to upload file. Please try again.";
+                                    return;
+                                }
                             }
                             else
                             {
-                                lblerrnew.Text = "Error - unable to upload file. Please try again.";
+                                lblerrnew.Text = "Error - uploading 0 Byte file. Please try again.";
                                 return;
                             }
-                        }
-                        else
-                        {
-                            lblerrnew.Text = "Error - uploading 0 Byte file. Please try again.";
-                            return;
-                        }
 
+
+                        }
 
                     }
+                    string struid = "null";
+                    if (upid > 0)
+                        struid = upid.ToString();
+                    string command = "insert into [Issuetbl](FIPSCounty,IDProcessingType,IDFileType,IDIssueType,Edition,Version,Title,IssueDetails,Resolution," +
+                                  "Submitter,Relatedlink,ICP,IssueCreatedDate,Isuplodedfile,IDuploadedfile) " +
+                                    " Values('" + FIPSCounty + "'," + IDProcessingType + "," + IDFileType + "," + IDIssueType + "," + Edition + "," +
+                                strVersion + ",'" + Title + "','" + IssueDetails + "','" + Resolution + "','" + Submitter + "','" + Relatedlink + "'," + ICP + ",'" +
+                               IssueCreatedDate + "','" + isfile + "'," + struid + ")";
+
+                    SqlConnection conn = new SqlConnection(strconn);
+                    SqlCommand cmd = new SqlCommand(command, conn);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    ddlstate_countynew.SelectedIndex = 0;
+
+                    ddlfpisnew.SelectedIndex = 0;
+                    ddlProcessingtypenew.SelectedIndex = 0;
+                    ddlFileTypenew.SelectedIndex = 0;
+                    ddlIssueTypenew.SelectedIndex = 0;
+                    txtEditionnew.Text = "N/A";
+                    txtVersionnew.Text = "N/A";
+                    txtTitlenew.Text = "";
+                    txtIssueDetailsnew.Text = "";
+                    txtResolutionnew.Text = "";
+                    txtICPnew.Text = "N/A";
+                    ddlnewSubmitter.SelectedIndex = -1;
+                    // txtSubmitternew.Text = "";
+                    txtRelatedLinksnew.Text = "";
+                    lblmsgnew.Text = "New Issue Submitted  Successfully";
+
+
+                    bindnewrecentgrid();
+                    bindrecentgv();
+
 
                 }
-                string struid = "null";
-                if (upid > 0)
-                    struid = upid.ToString();
-                string command = "insert into [Issuetbl](FIPSCounty,IDProcessingType,IDFileType,IDIssueType,Edition,Version,Title,IssueDetails,Resolution," +
-                              "Submitter,Relatedlink,ICP,IssueCreatedDate,Isuplodedfile,IDuploadedfile) " +
-                                " Values('" + FIPSCounty + "'," + IDProcessingType + "," + IDFileType + "," + IDIssueType + "," + Edition + "," +
-                            strVersion + ",'" + Title + "','" + IssueDetails + "','" + Resolution + "','" + Submitter + "','" + Relatedlink + "'," + ICP + ",'" +
-                           IssueCreatedDate + "','" + isfile + "'," + struid + ")";
-
-                SqlConnection conn = new SqlConnection(strconn);
-                SqlCommand cmd = new SqlCommand(command, conn);
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                ddlstate_countynew.SelectedIndex = 0;
-
-                ddlfpisnew.SelectedIndex = 0;
-                ddlProcessingtypenew.SelectedIndex = 0;
-                ddlFileTypenew.SelectedIndex = 0;
-                ddlIssueTypenew.SelectedIndex = 0;
-                txtEditionnew.Text = "N/A";
-                txtVersionnew.Text = "N/A";
-                txtTitlenew.Text = "";
-                txtIssueDetailsnew.Text = "";
-                txtResolutionnew.Text = "";
-                txtICPnew.Text = "N/A";
-                txtSubmitternew.Text = "";
-                txtRelatedLinksnew.Text = "";
-                lblmsgnew.Text = "New Issue Submitted  Successfully";
-
-
-                bindnewrecentgrid();
-                bindrecentgv();
-
-
+                catch (Exception ex)
+                {
+                    lblerrnew.Text = "Unable To Submit New Issue";
+                }
             }
-            catch (Exception ex)
+            else
             {
-                lblerrnew.Text = "Unable To Submit New Issue";
+                lblerrnew.Text = "Select state/count or fips ";
+                return;
             }
-        }
-        else
-        {
-            lblerrnew.Text = "Select state/count or fips ";
-            return;
         }
     }
 
@@ -1082,6 +1100,54 @@ public partial class Transactions : System.Web.UI.Page
             }
         }
     }
+
+    protected void gridSubmitter_RowUpdated(object sender, GridViewUpdatedEventArgs e)
+    {
+       // ListViewfaq.DataBind();
+    }
+    protected void gridSubmitter_RowDeleted(object sender, GridViewDeletedEventArgs e)
+    {
+       // ListViewfaq.DataBind();
+    }
+    protected void gridSubmitter_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        if (e.CommandName == "InsertNew")
+        {
+
+            TextBox newtxtFirstName = gridSubmitter.FooterRow.FindControl("newtxtFirstName") as TextBox;
+            TextBox newtxtLastName = gridSubmitter.FooterRow.FindControl("newtxtLastName") as TextBox;
+            TextBox newtxtUserLevel = gridSubmitter.FooterRow.FindControl("newtxtUserLevel") as TextBox;
+
+
+
+            if (newtxtFirstName.Text != string.Empty)
+            {
+                // lblerr.Text = "Enter All Fields";
+
+
+                try
+                {
+                    
+                     
+                    SqlDataSourceSubmitter.InsertParameters["FirstName"].DefaultValue = newtxtFirstName.Text;
+                    SqlDataSourceSubmitter.InsertParameters["LastName"].DefaultValue = newtxtLastName.Text;
+                    SqlDataSourceSubmitter.InsertParameters["UserLevel"].DefaultValue = newtxtUserLevel.Text;
+
+                    SqlDataSourceSubmitter.Insert();
+                    ddlnewSubmitter.Items.Clear();
+                    ddlnewSubmitter.Items.Add(new ListItem("--Select--", "0"));
+                    ddlnewSubmitter.DataBind();
+                   // ListViewfaq.DataBind();
+                    gridSubmitter.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    //  lblerr.Text = ex.Message;
+                }
+            }
+        }
+    }
+
 
     protected void btnsearch_Click(object sender, EventArgs e)
     {
@@ -1656,17 +1722,17 @@ public partial class Transactions : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            HyperLink HyperLink1 = (HyperLink)e.Row.Cells[0].Controls[0];
+            //HyperLink HyperLink1 = (HyperLink)e.Row.Cells[0].Controls[0];
 
-            HyperLink1.ImageUrl = "~/img/select.png";
-            HyperLink1.ToolTip = "Detail view";
-            DataRowView row = (DataRowView)e.Row.DataItem;
-            
-            HyperLink1.Attributes.Add("onclick", "ShowMyModalPopupnew('" + row["IDIssue"] + "')");
-          
+            //HyperLink1.ImageUrl = "~/img/select.png";
+            //HyperLink1.ToolTip = "Detail view";
+            //DataRowView row = (DataRowView)e.Row.DataItem;
+
+            //HyperLink1.Attributes.Add("onclick", "ShowMyModalPopupnew('" + row["IDIssue"] + "')");
+
         }
     }
-
+        
     protected void btnupdatesch_Click(object sender, EventArgs e)
     {
         Errorsch.Text = MSGsch.Text = "";
@@ -2092,7 +2158,183 @@ public partial class Transactions : System.Web.UI.Page
         downloadkbfile(id);
     }
 
+   
 
+    protected void gvrecent_ItemDataBound(object sender, ListViewItemEventArgs e)
+    {
+        HyperLink lnkDisplay;
+        if (e.Item.ItemType == ListViewItemType.DataItem)
+        {
+            
+            lnkDisplay = (HyperLink)e.Item.FindControl("lnkDisplay");
+          lnkDisplay.ImageUrl = "~/img/select.png";
+           lnkDisplay.ToolTip = "Detail view";
+
+           ListViewDataItem currentItem = (ListViewDataItem)e.Item;
+           DataKey currentDataKey = gvrecent.DataKeys[currentItem.DataItemIndex];
+           ListViewDataItem dataItem = (ListViewDataItem)e.Item;
+           int issueId = (int)DataBinder.Eval(dataItem.DataItem, "IDIssue");
+
+           lnkDisplay.Attributes.Add("onclick", "ShowMyModalPopup('" + issueId .ToString()+ "')");
+
+        }
+    }
+    protected void DataPager_PreRender(object sender, EventArgs e)
+    {
+        bindrecentgv();
+    }
+    protected void listItems_PagePropertiesChanging(object sender, EventArgs e)
+    {
+       // this.pgr.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+        bindrecentgv();
+    }
+    protected void RecentIssuesgrid_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+         
+        CIssue objissue = new CIssue();
+        if (e.CommandName=="Select")
+        {
+            int rowindex = Convert.ToInt32(e.CommandArgument);
+            int ID = Convert.ToInt32(RecentIssuesgrid.DataKeys[rowindex].Value);
+           objissue= objdbkb.getIssuerecord(ID);
+           BindNewissuecontrol(objissue);
+           btnnewDel.Visible = true;
+
+        }
+    }
+
+    protected void BindNewissuecontrol(CIssue objissue)
+    {
+        
+        lblerrnew.Text = lblmsgnew.Text = "";
+       
+        ddlstate_countynew.SelectedValue = objissue.FIPSCounty;
+        
+        ddlfpisnew.SelectedValue = objissue.FIPSCounty;
+       
+        ddlProcessingtypenew.SelectedIndex = ddlProcessingtypenew.Items.IndexOf(ddlProcessingtypenew.Items.FindByText(objissue.ProcessingType));
+        ddlFileTypenew.SelectedIndex = ddlFileTypenew.Items.IndexOf(ddlFileTypenew.Items.FindByText(objissue.FileType));
+        ddlIssueTypenew.SelectedIndex = ddlIssueTypenew.Items.IndexOf(ddlIssueTypenew.Items.FindByText(objissue.IssueType));
+        //ddlstate_countynew.Enabled = false;
+        //ddlfpisnew.Enabled = false;
+        FileUploadkb.Enabled = false;
+       
+
+        txtTitlenew.Text = objissue.Title.Replace("''", "'");
+        txtIssueDetailsnew.Text = objissue.IssueDetails.Replace("''", "'");
+        txtResolutionnew.Text = objissue.Resolution.Replace("''", "'");
+        if (objissue.Edition > 0)
+        {
+            txtEditionnew.Text = Convert.ToString(objissue.Edition);
+        }
+        else
+        {
+            txtEditionnew.Text = "N/A";
+        }
+        if (objissue.Version> 0)
+        {
+            txtVersionnew.Text = Convert.ToString(objissue.Version);
+        }
+        else
+        {
+            txtVersionnew.Text = "N/A";
+        }
+        if (objissue.ICP > 0)
+        {
+             txtICPnew.Text = Convert.ToString(objissue.ICP);
+        }
+        else
+        {
+            txtICPnew.Text = "N/A";
+        }
+        if (ddlnewSubmitter.Items.FindByText(objissue.Submitter) != null)
+        {
+            ddlnewSubmitter.SelectedIndex = ddlnewSubmitter.Items.IndexOf(ddlnewSubmitter.Items.FindByText(objissue.Submitter));
+      
+           
+        }
+        else
+        {
+            ddlnewSubmitter.SelectedIndex = -1;
+        }
+        // txtSubmitternew.Text = "";
+        txtRelatedLinksnew.Text = objissue.Relatedlink;
+       
+        btnNew.Text="Update";
+        PanalAddNew.GroupingText = "Update";
+        hidnewupdate.Value = objissue.IDIssue.ToString();
+    }
+    protected void Updatenewissue()
+    {
+
+        lblerrnew.Text = lblmsgnew.Text = "";
+
+        string IDProcessingType = "1";
+        if (ddlProcessingtypenew.SelectedIndex > 0)
+        {
+            IDProcessingType = ddlProcessingtypenew.SelectedValue.ToString();
+        }
+        string IDFileType = "1";
+        if (ddlFileTypenew.SelectedIndex > 0)
+            IDFileType = ddlFileTypenew.SelectedValue.ToString();
+        string IDIssueType = "1";
+        if (ddlIssueTypenew.SelectedIndex > 0)
+            IDIssueType = ddlIssueTypenew.SelectedValue.ToString();
+        int test;
+        string Edition = "null";
+        if (Int32.TryParse(txtEditionnew.Text, out test))
+            Edition = txtEditionnew.Text;
+
+        string strVersion = "null";
+        if (Int32.TryParse(txtVersionnew.Text, out test))
+            strVersion = txtVersionnew.Text;
+
+        string Title = txtTitlenew.Text.Replace("'", "''");
+        string IssueDetails = txtIssueDetailsnew.Text.Replace("'", "''");
+        string Resolution = txtResolutionnew.Text.Replace("'", "''");
+
+        string Submitter = "";// txtSubmitternew.Text.Replace("'", "''");
+        if (ddlnewSubmitter.SelectedIndex > 0)
+            Submitter = ddlnewSubmitter.SelectedItem.Text.ToString();
+        string Relatedlink = txtRelatedLinksnew.Text.Replace("'", "''");
+
+        string ICP = "null";
+        if (Int32.TryParse(txtICPnew.Text, out test))
+            ICP = txtICPnew.Text;
+        string IssueUpdatedDate = DateTime.Now.ToString("yyyy/MM/dd");
+
+
+        string sql = "Update Issuetbl Set IDProcessingType=" + IDProcessingType +
+                     ", IDFileType=" + IDFileType + " ,IDIssueType=" + IDIssueType +
+                     " ,Edition=" + Edition + " ,Version=" + strVersion + " ,Title='" + Title +
+                     "' ,IssueDetails='" + IssueDetails + "' ,Resolution='" + Resolution +
+                     "' ,Submitter='" + Submitter + "' ,Relatedlink='" + Relatedlink +
+                     "' ,ICP=" + ICP + ", IssueUpdatedDate='"+IssueUpdatedDate+"' Where IDIssue=" + hidnewupdate.Value;
+
+
+        try
+        {
+            SqlConnection conn = new SqlConnection(strconn);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            TabContainer1.ActiveTab = TabContainer1.Tabs[2];
+            txtdownfilenew.Style.Add("display", "none");
+            btnnewdown.Style.Add("display", "none");
+            bindnewrecentgrid();
+            bindrecentgv();
+            
+            btnnewclear_Click(null, null);
+            lblmsgnew.Text = "Issue(" + hidnewupdate.Value + ") updated successfully ";
+        }
+        catch (Exception ex)
+        {
+            txtdownfilenew.Style.Add("display", "none");
+            btnnewdown.Style.Add("display", "none");
+            lblerrnew.Text = "Error updating issue(" + hidnewupdate.Value + ")";
+        }
+    }
     protected void btnupdatenew_Click(object sender, EventArgs e)
     {
 
@@ -2130,34 +2372,41 @@ public partial class Transactions : System.Web.UI.Page
             lblerrnew.Text = "Error updating issue(" + hidnew.Value + ")";
         }
     }
-
-
-    protected void gvrecent_ItemDataBound(object sender, ListViewItemEventArgs e)
+    protected void btnnewdelete_Click(object sender, EventArgs e)
     {
-        HyperLink lnkDisplay;
-        if (e.Item.ItemType == ListViewItemType.DataItem)
-        {
-            
-            lnkDisplay = (HyperLink)e.Item.FindControl("lnkDisplay");
-          lnkDisplay.ImageUrl = "~/img/select.png";
-           lnkDisplay.ToolTip = "Detail view";
 
-           ListViewDataItem currentItem = (ListViewDataItem)e.Item;
-           DataKey currentDataKey = gvrecent.DataKeys[currentItem.DataItemIndex];
-           ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-           int issueId = (int)DataBinder.Eval(dataItem.DataItem, "IDIssue");
+        lblerrnew.Text = lblmsgnew.Text = "";
+        lblconfirmdelnew.Text = "Confirm Deletion of Issue (" + hidnewupdate.Value + ")";
+        mpeconfirmnewdelete.Show();
+    }
 
-           lnkDisplay.Attributes.Add("onclick", "ShowMyModalPopup('" + issueId .ToString()+ "')");
 
-        }
-    }
-    protected void DataPager_PreRender(object sender, EventArgs e)
-    {
-        bindrecentgv();
-    }
-    protected void listItems_PagePropertiesChanging(object sender, EventArgs e)
-    {
-       // this.pgr.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
-        bindrecentgv();
-    }
+    protected void btnconfirmdelete_Click(object sender, EventArgs e)
+ {
+     lblerrnew.Text = lblmsgnew.Text = "";
+
+     lblconfirmdelnew.Text = "";
+     string sql = "Delete Issuetbl  Where IDIssue=" + hidnewupdate.Value;
+
+
+     try
+     {
+         SqlConnection conn = new SqlConnection(strconn);
+         conn.Open();
+         SqlCommand cmd = new SqlCommand(sql, conn);
+           cmd.ExecuteNonQuery();
+         conn.Close();
+         TabContainer1.ActiveTab = TabContainer1.Tabs[2];
+         
+         bindnewrecentgrid();
+         bindrecentgv();
+         btnnewclear_Click(null, null);
+         lblmsgnew.Text = "Issue(" + hidnewupdate.Value + ") Deleted successfully ";
+     }
+     catch (Exception ex)
+     {
+        
+         lblerrnew.Text = "Error Deleting Issue(" + hidnewupdate.Value + ")";
+     }
+ }
 }

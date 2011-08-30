@@ -924,7 +924,80 @@ namespace KBDAL
                 return null;
             }
         }
+        public List<CSubmitter> getSubmitterlist()
+        {
+            SqlConnection myConnection = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand("SPSubmitterDetails", myConnection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            myConnection.Open();
+            try
+            {
+                SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
+                List<CSubmitter> results = new List<CSubmitter>();
+                while (reader.Read())
+                {
+
+                    CSubmitter objCSubmitter = new CSubmitter();
+                    objCSubmitter.SubmitterID = Convert.ToInt32(reader["SubmitterID"]);
+                    objCSubmitter.Name = reader["Name"].ToString();
+                    objCSubmitter.UserLevel = reader["UserLevel"].ToString();
+
+
+
+                    results.Add(objCSubmitter);
+                }
+                reader.Close();
+                myConnection.Close();
+                return results;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public int insertSubmitter(string strFirstName, string strLastName, DateTime dtCreateddate, int UserLevel)
+        {
+
+            int retval = 0;
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand("SPInsertSubmitter", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@SubmitterID", SqlDbType.Int, 4));
+            cmd.Parameters["@SubmitterID"].Direction = ParameterDirection.Output;
+            cmd.Parameters.Add(new SqlParameter("@Firstname", SqlDbType.VarChar, 50));
+            cmd.Parameters["@Firstname"].Value = strFirstName;
+            cmd.Parameters.Add(new SqlParameter("@LastName", SqlDbType.VarChar, 50));
+            cmd.Parameters["@LastName"].Value = strLastName;
+            cmd.Parameters.Add(new SqlParameter("@Createddate", SqlDbType.DateTime));
+            cmd.Parameters["@Createddate"].Value = dtCreateddate;
+            cmd.Parameters.Add(new SqlParameter("@UserLevel", SqlDbType.Int, 4));
+            cmd.Parameters["@UserLevel"].Value = UserLevel;
+            
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                retval = (int)cmd.Parameters["@IDFileType"].Value;
+            }
+            catch (SqlException err)
+            {
+                retval = -1;
+            }
+            finally
+            {
+
+                con.Close();
+
+            }
+            return retval;
+
+
+
+
+
+        }
+     
         public List<CIssueType> getIssueTypelist()
         {
             SqlConnection myConnection = new SqlConnection(connectionString);
