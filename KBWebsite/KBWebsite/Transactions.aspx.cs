@@ -232,7 +232,7 @@ public partial class Transactions : System.Web.UI.Page
         string strsql = "SELECT Issuetbl.IDIssue, Issuetbl.FIPSCounty, County.County, County.State, FileType.FileType," +
                 "IssueTypetbl.IssueType, ProcessingTypetbl.ProcessingType, Issuetbl.Edition, Issuetbl.Version, SUBSTRING(Title,0,100) as Title," +
                 " IssueDetails, Resolution, Issuetbl.Submitter, Issuetbl.Relatedlink, Issuetbl.ICP, " +
-                "Issuetbl.IssueCreatedDate, Issuetbl.IssueCreatedUser FROM County " +
+                "CONVERT(datetime, Issuetbl.IssueCreatedDate, 110) as IssueCreatedDate , Issuetbl.IssueCreatedUser FROM County " +
                 " INNER JOIN Issuetbl ON County.FIPS = Issuetbl.FIPSCounty " +
                 " INNER JOIN FileType ON Issuetbl.IDFileType = FileType.IDFileType " +
                 " INNER JOIN IssueTypetbl ON Issuetbl.IDIssueType = IssueTypetbl.IDIssueType " +
@@ -512,6 +512,7 @@ public partial class Transactions : System.Web.UI.Page
         ddlstate_countynew.Enabled = true;
         ddlfpisnew.Enabled = true;
         FileUploadkb.Enabled = true;
+        btnnewDel.Visible = false;
     }
     protected void btnNew_Click(object sender, EventArgs e)
     {

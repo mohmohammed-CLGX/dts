@@ -294,17 +294,18 @@
          <table>
          <tr>
          <td>
-          <asp:Panel ID="pHeader" runat="server" CssClass="cpHeader" Width="100px" Height="100%">
+          <asp:Panel ID="pHeader" runat="server" CssClass="cpHeader" Width="300px" Height="100%">
          <asp:Image ID="img" runat="server" ImageUrl="~/images/collapse.jpg" />
                <%-- <asp:Label ID="lblText" runat="server" />--%>
-               <asp:Label ID="lblTitle1" runat="server"><%#Eval("Title")%></asp:Label>
+               <asp:Label ID="lblTitle1" runat="server"><%#Eval("State")%>\<%#Eval("County")%>\<%#Eval("FIPSCounty")%>\<%#Eval("IssueCreatedDate")%>\<%#Eval("Submitter")%></asp:Label>
                </asp:Panel>
          </td>
          </tr>
          <tr>
          <td>
         
-         </td><td>
+         </td>
+         <td>
           <asp:Panel ID="pBody" runat="server" CssClass="pBOdy" >
            <div style="overflow:auto; height:150px;width:500px;" >  
           
@@ -314,6 +315,33 @@
           <asp:HyperLink ID="lnkDisplay" runat="server" NavigateUrl="#">Select</asp:HyperLink>
            <table>
            <tr>
+           <td >
+          Issue Type:
+           </td>
+           
+           
+           <td>
+           <%#Eval("IssueType")%>
+           </td>
+           </tr>
+            <tr>
+           <td>
+          Processing Type:
+           </td>
+                  
+           <td>
+           <%#Eval("ProcessingType")%>
+           </td>
+           </tr>
+            <tr>
+           <td>
+          File Type:
+           </td>
+                
+           <td>
+           <%#Eval("FileType")%>
+           </td>
+           </tr>
            <tr>
            <td>
           Issue Details:
@@ -340,7 +368,8 @@
            </table>
             </div>
             </asp:Panel>
-            <cc1:CollapsiblePanelExtender ID="CollapsiblePanelExtender1" runat="server" TargetControlID="pBody" CollapseControlID="img" ExpandControlID="img"
+            <cc1:CollapsiblePanelExtender ID="CollapsiblePanelExtender1" runat="server" TargetControlID="pBody" CollapseControlID="img" 
+            ExpandControlID="img"
 Collapsed="false" TextLabelID=""
 ExpandedImage="~/images/collapse.jpg"
     CollapsedImage="~/images/expand.jpg" ImageControlID="img"
